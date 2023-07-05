@@ -1,0 +1,12 @@
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\bin\Debug\net7.0\TaskManager.Identity.Infrastructure.deps.json
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\bin\Debug\net7.0\TaskManager.Identity.Infrastructure.dll
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\bin\Debug\net7.0\TaskManager.Identity.Infrastructure.pdb
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\TaskManager.Identity.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\TaskManager.Identity.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\TaskManager.Identity.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\TaskManager.Identity.Infrastructure.AssemblyInfo.cs
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\TaskManager.Identity.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\TaskManager.Identity.Infrastructure.dll
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\refint\TaskManager.Identity.Infrastructure.dll
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\TaskManager.Identity.Infrastructure.pdb
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Infrastructure\obj\Debug\net7.0\ref\TaskManager.Identity.Infrastructure.dll

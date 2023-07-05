@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\oguzh\\source\\repos\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj": {}
+    "C:\\Users\\Tuana\\Documents\\GitHub\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\oguzh\\source\\repos\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj": {
+    "C:\\Users\\Tuana\\Documents\\GitHub\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\oguzh\\source\\repos\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj",
+        "projectUniqueName": "C:\\Users\\Tuana\\Documents\\GitHub\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj",
         "projectName": "TaskManager.Identity.Application",
-        "projectPath": "C:\\Users\\oguzh\\source\\repos\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj",
-        "packagesPath": "C:\\Users\\oguzh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\oguzh\\source\\repos\\TaskManager\\Identity\\TaskManager.Identity.Application\\obj\\",
+        "projectPath": "C:\\Users\\Tuana\\Documents\\GitHub\\TaskManager\\Identity\\TaskManager.Identity.Application\\TaskManager.Identity.Application.csproj",
+        "packagesPath": "C:\\Users\\Tuana\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Tuana\\Documents\\GitHub\\TaskManager\\Identity\\TaskManager.Identity.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\oguzh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Tuana\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,0 +1,12 @@
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\bin\Debug\net7.0\TaskManager.Identity.Domain.deps.json
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\bin\Debug\net7.0\TaskManager.Identity.Domain.dll
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\bin\Debug\net7.0\TaskManager.Identity.Domain.pdb
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\TaskManager.Identity.Domain.csproj.AssemblyReference.cache
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\TaskManager.Identity.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\TaskManager.Identity.Domain.AssemblyInfoInputs.cache
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\TaskManager.Identity.Domain.AssemblyInfo.cs
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\TaskManager.Identity.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\TaskManager.Identity.Domain.dll
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\refint\TaskManager.Identity.Domain.dll
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\TaskManager.Identity.Domain.pdb
+C:\Users\Tuana\Documents\GitHub\TaskManager\Identity\TaskManager.Identity.Domain\obj\Debug\net7.0\ref\TaskManager.Identity.Domain.dll
