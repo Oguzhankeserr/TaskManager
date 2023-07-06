@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+.vs/ProjectEvaluation/taskmanager.metadata.v5.2
+.vs/ProjectEvaluation/taskmanager.metadata.v5.2
