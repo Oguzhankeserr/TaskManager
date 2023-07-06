@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using TaskManager.Identity.Infrastructure.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+builder.Services.AddDbContext<TaskManagerDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
