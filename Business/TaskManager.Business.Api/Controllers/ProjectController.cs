@@ -44,6 +44,13 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
+        [HttpGet]
+        public async Task<ActionResponse<Project>> GetProject(GetProjectCommandRequest getProjectRequest)
+        {
+            ActionResponse<Project> response = await _mediator.Send(getProjectRequest);
+            return response;
+        }
+
 
         [HttpGet]  //admin için özelleştirme gerekli mi? Projenin adminleri?
         public async Task<ActionResponse<List<Project>>> GetAllProjects()
