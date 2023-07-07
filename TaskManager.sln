@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{CE010842-33C6-4796-8BA4-67997C4FA8A3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Identity.Api", "Identity\TaskManager.Identity.Api\TaskManager.Identity.Api.csproj", "{A3A928C4-BFEE-4F7E-A70C-6A37EC7841A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3DF431A0-CF0B-4B92-9ACC-1EBCAD5B37C9} = {3DF431A0-CF0B-4B92-9ACC-1EBCAD5B37C9}
+		{4169974D-126D-4BBC-AFD6-B51002343902} = {4169974D-126D-4BBC-AFD6-B51002343902}
+		{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7} = {C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Identity.Application", "Identity\TaskManager.Identity.Application\TaskManager.Identity.Application.csproj", "{3DF431A0-CF0B-4B92-9ACC-1EBCAD5B37C9}"
 EndProject
@@ -25,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Business.Api", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonModels", "CommonModels", "{CFB38D3E-A801-4C31-AFB2-A268B6BD878D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.CommonModels", "CommonModels\TaskManager.CommonModels\TaskManager.CommonModels.csproj", "{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.CommonModels", "CommonModels\TaskManager.CommonModels\TaskManager.CommonModels.csproj", "{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

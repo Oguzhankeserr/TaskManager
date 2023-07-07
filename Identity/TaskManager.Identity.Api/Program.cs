@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Identity.Infrastructure.Context;
 using TaskManager.Identity.Infrastructure.Persistence;
+using TaskManager.Identity.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
-
+builder.Services.AddApplicationServices();
 var app = builder.Build();
 
 
@@ -22,6 +23,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseCors(options =>
+           options.WithOrigins("http://localhost:4200")
+           .AllowAnyMethod()
+           .AllowAnyHeader());
 
 app.UseAuthorization();
 InfrastructureServiceRegistration.Migration(app.Services.CreateScope());
