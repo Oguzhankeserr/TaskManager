@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Identity.Infrastructure.Context;
+using TaskManager.Identity.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddPersistenceServices(builder.Configuration);
+
 var app = builder.Build();
 
-builder.Services.AddDbContext<TaskManagerDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -22,6 +24,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+InfrastructureServiceRegistration.Migration(app.Services.CreateScope());
 
 app.MapControllers();
 

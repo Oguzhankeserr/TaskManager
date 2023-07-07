@@ -16,7 +16,7 @@ namespace TaskManager.Identity.Infrastructure.Persistence
         public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<TaskManagerDbContext>(options => options.UseNpgsql
-                (configuration.GetConnectionString("BuySellConnection")));
+                (configuration.GetConnectionString("TaskManagerIdentityConnection")));
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
