@@ -37,7 +37,7 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
-        [HttpPost]
+        [HttpPost] //todo Should the status of the columns also change to false when we delete the project? ASK!
         public async Task<ActionResponse<Project>> DeleteProject(DeleteProjectCommandRequest deleteProjectRequest)
         {
             ActionResponse<Project> response = await _mediator.Send(deleteProjectRequest);
