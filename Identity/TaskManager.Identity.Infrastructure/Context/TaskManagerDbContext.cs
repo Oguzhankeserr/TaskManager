@@ -12,7 +12,7 @@ namespace TaskManager.Identity.Infrastructure.Context
     public class TaskManagerDbContext : IdentityDbContext<AppUser,AppRole, string>
     {
         public TaskManagerDbContext(DbContextOptions options) : base(options)
-        {
+        {//ö
 
         }
     }
