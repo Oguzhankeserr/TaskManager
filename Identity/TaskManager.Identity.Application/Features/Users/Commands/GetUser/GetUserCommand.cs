@@ -14,7 +14,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.GetUser
 {
     public class GetUserCommandRequest : IRequest<ActionResponse<AppUser>>
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 
     public class GetUserCommand : IRequestHandler<GetUserCommandRequest, ActionResponse<AppUser>>

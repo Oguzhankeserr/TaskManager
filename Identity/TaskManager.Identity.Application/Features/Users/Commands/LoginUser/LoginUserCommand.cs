@@ -34,14 +34,16 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.LoginUser
 
             public async Task<ActionResponse<TokenDto>> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
             {
-                AppUser user = await _userManager.FindByNameAsync(request.UserNameOrEmail);
+                ActionResponse<TokenDto> response = new();
+            response.IsSuccessful = false;
+            AppUser user = await _userManager.FindByNameAsync(request.UserNameOrEmail);
                 if (user == null)
                 {
                     user = await _userManager.FindByEmailAsync(request.UserNameOrEmail);
                 }
                 if (user == null)
                 {
-                    //throw new NotFoundUserException("User name or Email incorrect");
+                response.Message = "User name or email incorrect.";
                 }
 
                 SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
@@ -52,9 +54,10 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.LoginUser
                 }
                 else
                 {
-                    //throw new NotFoundUserException("password incorrect");
+                response.Message = "password incorrect.";
                 }
-                return null;
+                response.IsSuccessful = true;
+                return response;
 
             }
         }
