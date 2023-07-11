@@ -40,6 +40,7 @@ namespace TaskManager.Business.Application.Features
             task.UserUpdatedDate = createTaskRequest.UserUpdatedDate;
             task.EndDate = createTaskRequest.EndDate;
             task.CreatedDate = task.UpdatedDate = DateTime.UtcNow;
+            task.Status = true;
            // task.CreatedByUser = task.UpdatedByUser //admin 
 
             await _businessDbContext.Tasks.AddAsync(task);
