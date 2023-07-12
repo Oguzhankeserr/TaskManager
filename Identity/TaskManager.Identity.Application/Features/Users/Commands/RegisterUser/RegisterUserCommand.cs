@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +23,14 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
     public class RegisterUserCommand : IRequestHandler<RegisterUserCommandRequest, RegisterUserCommandResponse>
     {
         readonly UserManager<AppUser> _userManager;
+        //readonly RoleManager<AppRole> _roleManager;
 
-        public RegisterUserCommand(UserManager<AppUser> userManager)
+        public RegisterUserCommand(UserManager<AppUser> userManager
+            //,RoleManager<AppRole> roleManager
+            )
         {
             _userManager = userManager;
+            //_roleManager = roleManager;
         }
         public async Task<RegisterUserCommandResponse> Handle(RegisterUserCommandRequest request, CancellationToken cancellationToken)
         {
@@ -36,6 +42,17 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
                 Surname = request.Surname,
                 Email = request.Email,
             }, request.Password);
+            //IdentityResult results = await _roleManager.CreateAsync(new()
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    Name = request.UserName
+            //});
+
+
+            //IdentityResult resultrole = await _roleManager.CreateAsync(new()
+            //{
+            //    Role = request.Name
+            //});
 
             RegisterUserCommandResponse response = new()
             {

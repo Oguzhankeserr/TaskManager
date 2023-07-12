@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager.Identity.Infrastructure.Context;
 using TaskManager.Identity.Infrastructure.Persistence;
 using TaskManager.Identity.Application;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +16,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
+
+//builder.Services.AddAuthentication("Admin");
+
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    });
+
 var app = builder.Build();
 
 

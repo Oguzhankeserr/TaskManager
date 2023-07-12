@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
 using TaskManager.Business.Application.Features;
+using TaskManager.Business.Application.Features.Task;
 using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
@@ -29,10 +31,21 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResponse<List<Column>>> GetAllProjectColumns(GetProjectColumnsCommandRequest getProjectColumnsRequest)
+        public async Task<ActionResponse<List<Domain.Entities.Task>>> GetTask(GetTaskCommandRequest getTaskRequest)
         { 
-            ActionResponse<List<Column>> response =await _mediator.Send(getProjectColumnsRequest);
-            return response;
+           return await _mediator.Send(getTaskRequest);
+        }
+
+        [HttpPost]
+        public async Task<ActionResponse<Domain.Entities.Task>>UpdateTaks(UpdateTaskCommandRequest updateTaskRequest)
+        {
+            return await _mediator.Send(updateTaskRequest);
+        }
+
+        [HttpPost]
+        public async Task<ActionResponse<Domain.Entities.Task>>DeleteTask(DeleteTaskCommandRequest deleteTaskRequest)
+        {
+            return await _mediator.Send(deleteTaskRequest);
         }
     }
 }

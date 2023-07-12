@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +14,7 @@ namespace TaskManager.Identity.Api.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
+    //[Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
         private IMediator _mediator;

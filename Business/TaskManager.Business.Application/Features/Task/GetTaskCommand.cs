@@ -32,7 +32,7 @@ namespace TaskManager.Business.Application.Features.Task
 
             if (task.Count == 0) 
             {
-                response.Message = "No columns found in project.";
+                response.Message = "No tasks found in project.";
 
             }
             response.Data = task;
