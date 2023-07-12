@@ -27,5 +27,12 @@ namespace TaskManager.Business.Api.Controllers
             ActionResponse<Domain.Entities.Task> response = await _mediator.Send(createTaskRequest);
             return response;
         }
+
+        [HttpGet]
+        public async Task<ActionResponse<List<Column>>> GetAllProjectColumns(GetProjectColumnsCommandRequest getProjectColumnsRequest)
+        { 
+            ActionResponse<List<Column>> response =await _mediator.Send(getProjectColumnsRequest);
+            return response;
+        }
     }
 }
