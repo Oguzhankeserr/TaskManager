@@ -10,12 +10,12 @@ using TaskManager.CommonModels;
 
 namespace TaskManager.Business.Application.Features.Task
 {
-    public class GetTaskCommandRequest : IRequest<ActionResponse<List<Domain.Entities.Column>>>
+    public class GetTaskCommandRequest : IRequest<ActionResponse<List<Domain.Entities.Task>>>
     {
         public int ProjectId { get; set; }
     }
 
-    public class GetTaskCommand : IRequestHandler<GetTaskCommandRequest, ActionResponse<List<Domain.Entities.Column>>>
+    public class GetTaskCommand : IRequestHandler<GetTaskCommandRequest, ActionResponse<List<Domain.Entities.Task>>>
     {
         readonly BusinessDbContext _businessDbContext;
 
@@ -24,21 +24,21 @@ namespace TaskManager.Business.Application.Features.Task
             _businessDbContext = businessDbContext;
         }
 
-        public async Task<ActionResponse<List<Domain.Entities.Column>>> Handle(GetTaskCommandRequest getTaskCommandRequest, CancellationToken cancellationToken)
+        public async Task<ActionResponse<List<Domain.Entities.Task>>> Handle(GetTaskCommandRequest getTaskCommandRequest, CancellationToken cancellationToken)
         {
-            ActionResponse<List<Domain.Entities.Column>> response = new();
+            ActionResponse<List<Domain.Entities.Task>> response = new();
             response.IsSuccessful = false;
-            List<Domain.Entities.Column> columns = _businessDbContext.Columns.Where(p => p.ProjectId == getTaskCommandRequest.ProjectId && p.Status == true).ToList();
+            List<Domain.Entities.Task> task = _businessDbContext.Tasks.Where(p => p.ProjectId == getTaskCommandRequest.ProjectId && p.Status == true).ToList();
 
-            if (columns.Count == 0) 
+            if (task.Count == 0) 
             {
                 response.Message = "No columns found in project.";
 
             }
-            response.Data = columns;
+            response.Data = task;
             response.IsSuccessful = true;
             return response;
-            //son
+            
         }
         
     }
