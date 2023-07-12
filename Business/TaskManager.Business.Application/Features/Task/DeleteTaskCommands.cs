@@ -29,7 +29,7 @@ namespace TaskManager.Business.Application.Features.Task
             ActionResponse<Domain.Entities.Task> response = new();
             response.IsSuccessful = false;
 
-            Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(c => c.Id == DeleteTaskRequest.Id);
+            Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(c => c.Id == DeleteTaskCommandRequest.Id);
             if (task != null && task.Status = true) 
             {
                 task.Status = false;
