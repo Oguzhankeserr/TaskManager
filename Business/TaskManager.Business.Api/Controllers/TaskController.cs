@@ -30,10 +30,16 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
+        //[HttpGet]
+        //public async Task<ActionResponse<List<Domain.Entities.Task>>> GetTask(GetTaskCommandRequest getTaskRequest)
+        //{ 
+        //   return await _mediator.Send(getTaskRequest);
+        //}
+
         [HttpGet]
-        public async Task<ActionResponse<List<Domain.Entities.Task>>> GetTask(GetTaskCommandRequest getTaskRequest)
-        { 
-           return await _mediator.Send(getTaskRequest);
+        public async Task<ActionResponse<Domain.Entities.Task>>GetTaskById([FromQuery] GetTaskByIdCommandRequest getTaskByIdRequest)
+        {
+            return await _mediator.Send(getTaskByIdRequest);
         }
 
         [HttpPost]
