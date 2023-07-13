@@ -21,10 +21,10 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.GetUser
     {
         readonly UserManager<AppUser> _userManager;
 
-        //public GetUserCommand(UserManager<AppUser> userManager)
-        //{
-        //    _userManager = userManager;
-        //}
+        public GetUserCommand(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         public async Task<ActionResponse<AppUser>> Handle(GetUserCommandRequest request, CancellationToken cancellationToken)
         {

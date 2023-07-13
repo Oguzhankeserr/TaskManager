@@ -38,7 +38,7 @@ namespace TaskManager.Identity.Api.Controllers
             return Ok(token);
         }
         [HttpGet]
-        public async Task<IActionResult> GetUserByIdAsync([FromBody] GetUserCommandRequest getUserCommandRequest) => Ok(await _mediator.Send(getUserCommandRequest));
+        public async Task<IActionResult> GetUserByIdAsync([FromQuery] GetUserCommandRequest getUserCommandRequest) => Ok(await _mediator.Send(getUserCommandRequest));
        
     } 
 }
