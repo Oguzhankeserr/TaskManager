@@ -49,6 +49,12 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResponse<Domain.Entities.Task>>UpdateTaskColumnId(UpdateTaskColumnIdCommandRequest updateTaskColumnIdRequest)
+        {
+            return await _mediator.Send(updateTaskColumnIdRequest);
+        }
+
+        [HttpPost]
         public async Task<ActionResponse<Domain.Entities.Task>>DeleteTask(DeleteTaskCommandRequest deleteTaskRequest)
         {
             return await _mediator.Send(deleteTaskRequest);

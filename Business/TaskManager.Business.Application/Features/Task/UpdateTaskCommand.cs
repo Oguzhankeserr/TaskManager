@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,9 @@ namespace TaskManager.Business.Application.Features
 {
     public class UpdateTaskCommandRequest : IRequest<ActionResponse<Domain.Entities.Task>>
     {
-        public int Id { get; set; }
+        public int Id { get; set; } 
+        public string Name{ get; set; }
+        public int Priority { get; set; }
     }
 
     public class UpdateTaskCommand : IRequestHandler<UpdateTaskCommandRequest, ActionResponse<Domain.Entities.Task>>
@@ -26,6 +29,21 @@ namespace TaskManager.Business.Application.Features
         public async Task<ActionResponse<Domain.Entities.Task>> Handle(UpdateTaskCommandRequest updateTaskRequest, CancellationToken cancellationToken)
         {
             ActionResponse<Domain.Entities.Task> response = new();
+            response.IsSuccessful = false;
+
+            Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(d => d.Id == updateTaskRequest.Id);
+            if (task != null && task.Status == true ) 
+            {
+                task.Name = updateTaskRequest.Name;
+                task.Priority = updateTaskRequest.Priority;
+
+                task.UpdatedDate = DateTime.UtcNow;
+
+                await _businessDbContext.SaveChangesAsync();
+
+                response.Data = task;
+                response.IsSuccessful = true;
+            }
 
             return response;
         }
