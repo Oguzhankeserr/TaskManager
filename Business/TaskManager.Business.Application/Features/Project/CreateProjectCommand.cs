@@ -30,6 +30,7 @@ namespace TaskManager.Business.Application.Features
             response.IsSuccessful = false;
 
             Project project = new();
+
             project.Name = createProjectRequest.Name;
             project.Status = true;
             project.CreatedDate = project.UpdatedDate = DateTime.UtcNow; //database get local time but response takes utc (wrong time)

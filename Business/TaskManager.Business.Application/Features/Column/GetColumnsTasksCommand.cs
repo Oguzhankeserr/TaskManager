@@ -44,6 +44,7 @@ namespace TaskManager.Business.Application.Features
 
                     col.ProjectId = column.ProjectId;
                     col.Name = column.Name;
+                    col.Id = column.Id;
 
                     tasks = _businessDbContext.Tasks.Where(t => t.ProjectId == columnsTasksRequest.ProjectId && t.ColumnId == column.Id && t.Status == true).ToList();
                     foreach(var task in tasks) 

@@ -40,13 +40,13 @@ namespace TaskManager.Business.Api.Controllers
             return await _mediator.Send(deleteColumnRequest);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResponse<List<Column>>> GetAllProjectColumns(GetProjectColumnsCommandRequest getProjectColumnsRequest)
         {
             return await _mediator.Send(getProjectColumnsRequest);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResponse<List<ColumnTaskDto>>> GetProjectColumnsTasks(GetColumnsTasksCommandRequest columnsTasksRequest)
         {
             return await _mediator.Send(columnsTasksRequest);
