@@ -7,65 +7,75 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.CommonModels;
+using TaskManager.Identity.Domain.Dtos;
 using TaskManager.Identity.Domain.Entities;
 
 namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
 {
-    public class RegisterUserCommandRequest : IRequest<RegisterUserCommandResponse>
+    public class RegisterUserCommandRequest : IRequest<ActionResponse<UserDto>>
     {
         public string UserName { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string Role { get; set; }
     }
 
-    public class RegisterUserCommand : IRequestHandler<RegisterUserCommandRequest, RegisterUserCommandResponse>
+    public class RegisterUserCommand : IRequestHandler<RegisterUserCommandRequest, ActionResponse<UserDto>>
     {
         readonly UserManager<AppUser> _userManager;
-        //readonly RoleManager<AppRole> _roleManager;
+        readonly RoleManager<AppRole> _roleManager;
 
-        public RegisterUserCommand(UserManager<AppUser> userManager
-            //,RoleManager<AppRole> roleManager
-            )
+        public RegisterUserCommand(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
-            //_roleManager = roleManager;
+            _roleManager = roleManager;
         }
-        public async Task<RegisterUserCommandResponse> Handle(RegisterUserCommandRequest request, CancellationToken cancellationToken)
+
+        public async Task<ActionResponse<UserDto>> Handle(RegisterUserCommandRequest registerRequest, CancellationToken cancellationToken)
         {
-            IdentityResult result = await _userManager.CreateAsync(new()
+            ActionResponse<UserDto> response = new();
+            UserDto userDto = new();
+            response.IsSuccessful = false;
+
+            var roleExists = await _roleManager.RoleExistsAsync(registerRequest.Role);
+
+            if (roleExists)
             {
-                Id = Guid.NewGuid().ToString(),
-                UserName = request.UserName,
-                Name = request.Name,
-                Surname = request.Surname,
-                Email = request.Email,
-            }, request.Password);
-            //IdentityResult results = await _roleManager.CreateAsync(new()
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    Name = request.UserName
-            //});
+                var user = new AppUser
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = registerRequest.UserName,
+                    Name = registerRequest.Name,
+                    Surname = registerRequest.Surname,
+                    Email = registerRequest.Email,
+                };
 
+                IdentityResult result = await _userManager.CreateAsync(user, registerRequest.Password);
 
-            //IdentityResult resultrole = await _roleManager.CreateAsync(new()
-            //{
-            //    Role = request.Name
-            //});
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, registerRequest.Role);
+                    userDto.Username = registerRequest.UserName;
+                    userDto.Id = user.Id;
+                    userDto.Role = registerRequest.Role;
+                    response.Data = userDto;
+                    response.IsSuccessful = true;
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                        response.Message += $"{error.Code} - {error.Description}\n";
 
-            RegisterUserCommandResponse response = new()
-            {
-                IsSuccessful = result.Succeeded,
-            };
-
-            if (result.Succeeded)
-                response.Message = "User created.";
+                }
+            }
             else
             {
-                foreach (var error in result.Errors)
-                    response.Message += $"{error.Code} - {error.Description}\n";
+                response.Message = "Role doesn't exist";
             }
+            
             return response;
         }
     }

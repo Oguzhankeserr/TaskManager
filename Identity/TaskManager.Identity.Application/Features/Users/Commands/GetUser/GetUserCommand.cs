@@ -30,14 +30,15 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.GetUser
         {
             ActionResponse<AppUser> response = new();
             AppUser user = await _userManager.FindByIdAsync(request.Id.ToString());
-            if (user == null)
+            response.IsSuccessful = false;
+            if (user != null)
             {
-                response.IsSuccessful = false;
-                response.Message = "User Not Found";
+                response.IsSuccessful = true;
+                response.Data = user;
             }
-            response.IsSuccessful = true;
-            response.Data = user;
-
+            else
+                response.Message = "User Not Found";
+           
             return response;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +17,10 @@ namespace TaskManager.Identity.Infrastructure.Persistence
     {
         public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<TaskManagerDbContext>(options => options.UseNpgsql
-                (configuration.GetConnectionString("TaskManagerIdentityConnection")));
+            //services.AddDbContext<TaskManagerDbContext>(options => options.UseNpgsql
+            //    (configuration.GetConnectionString("TaskManagerIdentityConnection")));
+
+            services.AddDbContextPool<TaskManagerDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("TaskManagerIdentityConnection")));
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {

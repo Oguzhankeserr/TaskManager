@@ -19,13 +19,18 @@ namespace TaskManager.Identity.Application.Features.Token.Commands
     {
         public  AppUser User { get; set; }
     }
+
     public class TokenCommand : IRequestHandler<TokenCommandRequest, ActionResponse<TokenDto>>
     {
         readonly IConfiguration _config;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public TokenCommand (IConfiguration configuration)
+        public TokenCommand(IConfiguration config, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
-            _config = configuration;
+            _config = config;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<ActionResponse<TokenDto>> Handle(TokenCommandRequest tokenCommandRequest, CancellationToken cancellationToken)
@@ -35,13 +40,21 @@ namespace TaskManager.Identity.Application.Features.Token.Commands
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_config["Token:SecurityKey"]));
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var roles = await _userManager.GetRolesAsync(tokenCommandRequest.User);
+
+            var claims = new List<Claim>
             {
                 new Claim("UserId", tokenCommandRequest.User.Id),
                 new Claim("UserName", tokenCommandRequest.User.Name),
                 new Claim("UserSurname", tokenCommandRequest.User.Surname),
                 new Claim("Email", tokenCommandRequest.User.Email),
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
             var date = DateTime.UtcNow;
             token.Expiration = date.AddDays(1);
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskManager.Identity.Infrastructure.Context;
@@ -11,9 +12,11 @@ using TaskManager.Identity.Infrastructure.Context;
 namespace TaskManager.Identity.Infrastructure.Migrations
 {
     [DbContext(typeof(TaskManagerDbContext))]
-    partial class TaskManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230717093417_mig3")]
+    partial class mig3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,14 +169,14 @@ namespace TaskManager.Identity.Infrastructure.Migrations
                             Id = "6a2c4fe5-5b10-45b6-a1f6-7cfecc629d3f",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            NormalizedName = "Admin"
                         },
                         new
                         {
                             Id = "336e1648-5384-4d2c-b886-0281db620ccb",
                             ConcurrencyStamp = "2",
                             Name = "User",
-                            NormalizedName = "USER"
+                            NormalizedName = "User"
                         });
                 });
 
@@ -253,14 +256,12 @@ namespace TaskManager.Identity.Infrastructure.Migrations
                         {
                             Id = "94c328af-952d-42a5-ae86-4f0fe6d84d74",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "63d1cda0-bf3e-455a-ba5e-71115b957847",
+                            ConcurrencyStamp = "c925ada8-0db8-44a7-b2be-1f209da39069",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "First",
-                            NormalizedEmail = "ADMIN@GMAIL.COM",
-                            NormalizedUserName = "FIRSTADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOKi/uxmyVzJVg3pJkPvW56v7p1YOy28pg+Y88DJWbwpKfK5uaMDtsSpeBBPW2qCDA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE1IedHyPA9v9OZiFkt66idUnW5UBBoNS21uQamq4IVgNuZNTWLGIARER4SfglVTUQ==",
                             PhoneNumberConfirmed = false,
                             Surname = "Admin",
                             TwoFactorEnabled = false,

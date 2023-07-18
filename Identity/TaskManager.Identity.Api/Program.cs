@@ -9,26 +9,33 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
-
-//builder.Services.AddAuthentication("Admin");
-
-
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
     {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.TokenValidationParameters = new()
+        {
+            ValidateAudience = true, //who will use the token  www.site.com
+            ValidateIssuer = true, //who is giving the token   www.myapi.com
+            ValidateLifetime = true, //checking the token life time
+            ValidateIssuerSigningKey = true, //validate that this is my key
+
+            ValidAudience = builder.Configuration["Token:Audience"],
+            ValidIssuer = builder.Configuration["Token:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"]))
+        };
     });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -40,12 +47,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+
 app.UseCors(options =>
            options.WithOrigins("http://localhost:4200")
            .AllowAnyMethod()
            .AllowAnyHeader());
 
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
 InfrastructureServiceRegistration.Migration(app.Services.CreateScope());
 
