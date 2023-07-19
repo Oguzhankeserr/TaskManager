@@ -24,6 +24,7 @@ namespace TaskManager.Identity.Api.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResponse<UserDto>> RegisterUser(RegisterUserCommandRequest registerUserCommandRequest)
         {
@@ -37,17 +38,11 @@ namespace TaskManager.Identity.Api.Controllers
             return Ok(token);
         }
 
-        [Authorize(Roles = "x")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetUserById([FromBody] GetUserCommandRequest getUserCommandRequest) => Ok(await _mediator.Send(getUserCommandRequest));
 
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> GetUserByIdB([FromBody] GetUserCommandRequest getUserCommandRequest)
-        {
-            ActionResponse<AppUser> user = await _mediator.Send(getUserCommandRequest);
-            return Ok(user);
-        }
+       
 
 
     } 
