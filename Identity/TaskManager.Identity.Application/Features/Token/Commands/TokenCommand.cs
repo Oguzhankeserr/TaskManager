@@ -45,6 +45,7 @@ namespace TaskManager.Identity.Application.Features.Token.Commands
             var claims = new List<Claim>
             {
                 new Claim("UserId", tokenCommandRequest.User.Id),
+                new Claim("Username", tokenCommandRequest.User.UserName),
                 new Claim("UserName", tokenCommandRequest.User.Name),
                 new Claim("UserSurname", tokenCommandRequest.User.Surname),
                 new Claim("Email", tokenCommandRequest.User.Email),

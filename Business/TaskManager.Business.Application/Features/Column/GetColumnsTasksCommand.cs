@@ -13,7 +13,7 @@ namespace TaskManager.Business.Application.Features
 {
     public class GetColumnsTasksCommandRequest : IRequest<ActionResponse<List<ColumnTaskDto>>>
     {
-        public int ProjectId { get; set; }
+        public int Id { get; set; }
     }
 
     public class GetColumnsTasksCommand : IRequestHandler<GetColumnsTasksCommandRequest, ActionResponse<List<ColumnTaskDto>>>
@@ -31,7 +31,7 @@ namespace TaskManager.Business.Application.Features
             ActionResponse<List<ColumnTaskDto>> response = new();
             response.IsSuccessful = false;
 
-            List<Domain.Entities.Column> columns = _businessDbContext.Columns.Where(c => c.ProjectId == columnsTasksRequest.ProjectId && c.Status == true).ToList();
+            List<Domain.Entities.Column> columns = _businessDbContext.Columns.Where(c => c.ProjectId == columnsTasksRequest.Id && c.Status == true).ToList();
             if (columns.Count > 0)
             {
                 List<ColumnTaskDto> columnTaskDtos = new();
@@ -46,7 +46,7 @@ namespace TaskManager.Business.Application.Features
                     col.Name = column.Name;
                     col.Id = column.Id;
 
-                    tasks = _businessDbContext.Tasks.Where(t => t.ProjectId == columnsTasksRequest.ProjectId && t.ColumnId == column.Id && t.Status == true).ToList();
+                    tasks = _businessDbContext.Tasks.Where(t => t.ProjectId == columnsTasksRequest.Id && t.ColumnId == column.Id && t.Status == true).ToList();
                     foreach(var task in tasks) 
                     {
                         taskT.Id = task.Id;

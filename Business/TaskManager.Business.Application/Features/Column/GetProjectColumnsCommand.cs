@@ -11,7 +11,7 @@ namespace TaskManager.Business.Application.Features
 {
     public class GetProjectColumnsCommandRequest : IRequest<ActionResponse<List<Domain.Entities.Column>>>
     {
-        public int ProjectId { get; set; }
+        public int Id { get; set; }
     }
     public class GetProjectColumnsCommand : IRequestHandler<GetProjectColumnsCommandRequest, ActionResponse<List<Domain.Entities.Column>>>
     {
@@ -26,7 +26,7 @@ namespace TaskManager.Business.Application.Features
         {
             ActionResponse<List<Domain.Entities.Column>> response = new();
             response.IsSuccessful = false;
-            List<Domain.Entities.Column> columns = _businessDbContext.Columns.Where(p=>p.ProjectId == getProjectColumnsRequest.ProjectId && p.Status == true).ToList();
+            List<Domain.Entities.Column> columns = _businessDbContext.Columns.Where(p=>p.ProjectId == getProjectColumnsRequest.Id && p.Status == true).ToList();
             if(columns.Count == 0) 
             {
                 response.Message = "No columns found in project.";
@@ -36,5 +36,6 @@ namespace TaskManager.Business.Application.Features
             return response;
             
         }
+        // todo dto
     }
 }
