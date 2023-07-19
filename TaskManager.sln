@@ -27,6 +27,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Business.Application", "Business\TaskManager.Business.Application\TaskManager.Business.Application.csproj", "{FDD90613-9883-4916-95EC-FD03C8156B82}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Business.Api", "Business\TaskManager.Business.Api\TaskManager.Business.Api.csproj", "{525D3E9D-278C-4286-9DDE-F57801903657}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7} = {C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}
+		{F0D0B0FF-88DB-40F4-BC67-44F7CFE746C1} = {F0D0B0FF-88DB-40F4-BC67-44F7CFE746C1}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonModels", "CommonModels", "{CFB38D3E-A801-4C31-AFB2-A268B6BD878D}"
 EndProject

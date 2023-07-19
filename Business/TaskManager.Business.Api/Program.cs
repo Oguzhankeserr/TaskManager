@@ -1,5 +1,9 @@
 using TaskManager.Business.Application;
+using TaskManager.Business.Domain.UnitOfWork;
+using TaskManager.Business.Domain;
 using TaskManager.Business.Infrastructure;
+using TaskManager.Business.Infrastructure.UnitOfWork;
+using TaskManager.Business.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddBusinessInfrastructureServices(builder.Configuration);
@@ -12,6 +16,7 @@ builder.Services.AddApplicationBusinessServices();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
