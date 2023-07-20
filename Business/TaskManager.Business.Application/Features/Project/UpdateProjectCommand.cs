@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Business.Domain;
 using TaskManager.Business.Domain.Entities;
+using TaskManager.Business.Domain.UnitOfWork;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
@@ -21,9 +23,14 @@ namespace TaskManager.Business.Application.Features
     {
         readonly BusinessDbContext _businessDbContext;
 
-        public UpdateProjectCommand(BusinessDbContext businessDbContext)
+        readonly IRepository<Project> _repository;
+        readonly IUnitOfWork _unitOfWork;
+
+        public UpdateProjectCommand(BusinessDbContext businessDbContext, IRepository<Project> repository, IUnitOfWork unitOfWork )
         {
             _businessDbContext = businessDbContext;
+            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ActionResponse<Project>> Handle(UpdateProjectCommandRequest updateProjectRequest, CancellationToken cancellationToken)
@@ -37,7 +44,9 @@ namespace TaskManager.Business.Application.Features
                 project.Name = updateProjectRequest.Name;
                 project.UpdatedDate = DateTime.UtcNow;
 
-                await _businessDbContext.SaveChangesAsync();
+                //await _businessDbContext.SaveChangesAsync();
+                _repository.Update(project);
+                _unitOfWork.Commit();
 
                 project.UpdatedDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc); // for response
                 response.Data = project;

@@ -48,7 +48,6 @@ namespace TaskManager.Business.Application.Features
             //await _businessDbContext.SaveChangesAsync();
 
             await _repository.AddAsync(project);
-
             await _uow.CommitAsync();
 
             project.CreatedDate = project.UpdatedDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc); // for response gets local time

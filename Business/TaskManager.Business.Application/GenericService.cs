@@ -46,5 +46,83 @@ namespace TaskManager.Business.Application
 
         }
 
+        public void Update(T entity)
+        {
+            try
+            {
+                _repository.Update(entity);
+                _unitOfWork.CommitAsync();
+            }
+            catch 
+            {
+                _unitOfWork.RollbackAsync();  
+            }
+        
+        }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            try
+            {
+                _repository.UpdateRange(entities);
+                _unitOfWork.CommitAsync();  
+            }
+            catch 
+            {
+                _unitOfWork.RollbackAsync();
+            }
+        }
+
+        public void Remove(T entity)
+        {
+            try
+            {
+              _repository.Remove(entity);
+              _unitOfWork.CommitAsync();
+            }
+            catch 
+            {
+                _unitOfWork.RollbackAsync();
+            }
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            try
+            {
+               _repository.RemoveRange(entities);
+               _unitOfWork.CommitAsync();
+            }
+            catch 
+            {
+                _unitOfWork.RollbackAsync();
+            }
+        }
+
+        public void GetAll() // Kontrol edilecek 
+        {
+            try
+            {
+                _repository.GetAll();
+                _unitOfWork.Rollback();
+            }
+            catch 
+            {
+                _unitOfWork.RollbackAsync();
+            }
+        }
+        public async Task GetAllAsync()
+        {
+            try
+            {
+                await _repository.GetAllAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch 
+            {
+                await _unitOfWork.RollbackAsync();
+            }
+        }
+
     }
 }
