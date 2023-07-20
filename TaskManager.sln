@@ -36,6 +36,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonModels", "CommonModel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.CommonModels", "CommonModels\TaskManager.CommonModels\TaskManager.CommonModels.csproj", "{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{450CA777-EFEC-4FDF-8461-5E2DAFD6A3F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Gateway.Api", "Gateway\TaskManager.Gateway.Api\TaskManager.Gateway.Api.csproj", "{04358161-8751-42F4-98C6-BE908331E686}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +82,10 @@ Global
 		{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04358161-8751-42F4-98C6-BE908331E686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04358161-8751-42F4-98C6-BE908331E686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04358161-8751-42F4-98C6-BE908331E686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04358161-8751-42F4-98C6-BE908331E686}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +100,7 @@ Global
 		{FDD90613-9883-4916-95EC-FD03C8156B82} = {1D041DD2-1052-4A76-81B2-1EFA51B60276}
 		{525D3E9D-278C-4286-9DDE-F57801903657} = {1D041DD2-1052-4A76-81B2-1EFA51B60276}
 		{C12C21D1-97DC-4F4B-8EFB-95E0F297F3E7} = {CFB38D3E-A801-4C31-AFB2-A268B6BD878D}
+		{04358161-8751-42F4-98C6-BE908331E686} = {450CA777-EFEC-4FDF-8461-5E2DAFD6A3F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A4242AB-9260-47B0-8E11-475A0D8EE5A9}
