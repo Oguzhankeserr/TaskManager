@@ -39,7 +39,7 @@ namespace TaskManager.Business.Application.Features
                 {
                     ColumnTaskDto col = new();
                     List<Domain.Entities.Task> tasks = new();
-                    TaskDto taskT = new();
+                   
                     List<TaskDto> taskDtos= new();
 
                     col.ProjectId = column.ProjectId;
@@ -49,6 +49,7 @@ namespace TaskManager.Business.Application.Features
                     tasks = _businessDbContext.Tasks.Where(t => t.ProjectId == columnsTasksRequest.Id && t.ColumnId == column.Id && t.Status == true).ToList();
                     foreach(var task in tasks) 
                     {
+                        TaskDto taskT = new();
                         taskT.Id = task.Id;
                         taskT.Name = task.Name;
                         taskT.Priority = task.Priority;
