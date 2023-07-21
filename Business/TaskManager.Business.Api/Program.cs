@@ -10,23 +10,46 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddBusinessInfrastructureServices(builder.Configuration);
 
 builder.Services.AddControllers();
 
-builder.Services.AddApplicationBusinessServices();
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new()
+        {
+            ValidateAudience = true, 
+            ValidateIssuer = true, 
+            ValidateLifetime = true, 
+            ValidateIssuerSigningKey = true, 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            ValidAudience = builder.Configuration["Token:Audience"],
+            ValidIssuer = builder.Configuration["Token:Issuer"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"]))
+        };
+    });
+builder.Services.AddBusinessInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationBusinessServices();
+
 //builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+//app.UseCors(options =>
+//           options.WithOrigins("http://localhost:4200")
+//           .AllowAnyMethod()
+//           .AllowAnyHeader());
 
+//app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 InfrastructureBusinessServiceRegistration.Migration(app.Services.CreateScope());

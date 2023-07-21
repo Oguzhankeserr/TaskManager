@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace TaskManager.Business.Api.Controllers
             _businessDbContext = businessDbContext;
         }
 
-        //todo [Authorize] for admin
+        
         [HttpPost]
         public async Task<ActionResponse<Project>> CreateProject(CreateProjectCommandRequest createProjectRequest)
         {
@@ -30,6 +31,7 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResponse<Project>> UpdateProject(UpdateProjectCommandRequest updateProjectRequest)
         {
@@ -51,7 +53,7 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
-
+        [Authorize]
         [HttpGet]  //admin için özelleştirme gerekli mi? Projenin adminleri?
         public async Task<ActionResponse<List<Project>>> GetAllProjects()
         {
