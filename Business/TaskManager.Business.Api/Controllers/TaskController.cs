@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
 using TaskManager.Business.Application.Features;
 using TaskManager.Business.Application.Features.Task;
+using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
@@ -30,11 +31,11 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
-        //[HttpGet]
-        //public async Task<ActionResponse<List<Domain.Entities.Task>>> GetTask(GetTaskCommandRequest getTaskRequest)
-        //{ 
-        //   return await _mediator.Send(getTaskRequest);
-        //}
+        [HttpPost]
+        public async Task<ActionResponse<List<TaskListDto>>> GetAllProjectTask(GetAllTaskCommandRequest getAllTaskRequest)
+        {
+            return await _mediator.Send(getAllTaskRequest);
+        }
 
         [HttpGet]
         public async Task<ActionResponse<Domain.Entities.Task>>GetTaskById([FromQuery] GetTaskByIdCommandRequest getTaskByIdRequest)

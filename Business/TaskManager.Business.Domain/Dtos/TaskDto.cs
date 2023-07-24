@@ -13,4 +13,18 @@ namespace TaskManager.Business.Domain.Dtos
         public int ColumnId { get; set; }
         public int Priority { get; set; }
     }
+
+    public class TaskListDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int ColumnId { get; set; }
+        public int Priority { get; set; }
+        public int AssigneeId { get; set;}
+        public int ReporterId { get; set; }
+        public DateTime DueDate { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+
+    }
 }
