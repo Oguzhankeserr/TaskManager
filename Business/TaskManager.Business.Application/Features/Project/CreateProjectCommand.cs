@@ -9,6 +9,7 @@ using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Domain.UnitOfWork;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
+using TaskManager.CommonModels.Repositories;
 
 namespace TaskManager.Business.Application.Features
 {
@@ -22,12 +23,14 @@ namespace TaskManager.Business.Application.Features
         readonly BusinessDbContext _businessDbContext;
         readonly IRepository<Project> _repository;
         readonly IUnitOfWork _uow;
+        readonly IUserInfoRepository _userInfoRepository;
 
-        public CreateProjectCommand(BusinessDbContext businessDbContext, IRepository<Project> repository, IUnitOfWork uow)
+        public CreateProjectCommand(BusinessDbContext businessDbContext, IRepository<Project> repository, IUnitOfWork uow, IUserInfoRepository userInfoRepository)
         {
             _businessDbContext = businessDbContext;
             _repository = repository;
             _uow = uow;
+            _userInfoRepository = userInfoRepository;
         }
 
         public async Task<ActionResponse<Project>> Handle(CreateProjectCommandRequest createProjectRequest, CancellationToken cancellationToken)
@@ -42,7 +45,7 @@ namespace TaskManager.Business.Application.Features
             project.CreatedDate = project.UpdatedDate = DateTime.UtcNow; //database get local time but response takes utc (wrong time)
 
             //todo get token id 
-            //project.CreatedByUser
+            project.CreatedByUser = _userInfoRepository.User.UserId;
 
             //await _businessDbContext.Projects.AddAsync(project);
             //await _businessDbContext.SaveChangesAsync();

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
+using TaskManager.CommonModels.Repositories;
 
 namespace TaskManager.Business.Application.Features
 {
@@ -19,10 +20,12 @@ namespace TaskManager.Business.Application.Features
     public class CreateColumnCommand : IRequestHandler<CreateColumnCommandRequest, ActionResponse<Domain.Entities.Column>>
     {
         readonly BusinessDbContext _businessDbContext;
+        readonly IUserInfoRepository _userInfoRepository;
 
-        public CreateColumnCommand(BusinessDbContext businessDbContext)
+        public CreateColumnCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository)
         {
             _businessDbContext = businessDbContext;
+            _userInfoRepository = userInfoRepository;
         }
 
         public async Task<ActionResponse<Domain.Entities.Column>> Handle(CreateColumnCommandRequest createColumnRequest, CancellationToken cancellationToken)
@@ -35,7 +38,7 @@ namespace TaskManager.Business.Application.Features
             column.ProjectId = createColumnRequest.ProjectId;
             column.Status = true;
             column.CreatedDate = column.UpdatedDate = DateTime.UtcNow;
-            //column.CreatedByUser = column.UpdatedByUser = // todo
+            column.CreatedByUser = column.UpdatedByUser = _userInfoRepository.User.UserId;
 
 			await _businessDbContext.Columns.AddAsync(column);
 			await _businessDbContext.SaveChangesAsync();

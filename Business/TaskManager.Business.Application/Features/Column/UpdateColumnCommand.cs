@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
+using TaskManager.CommonModels.Repositories;
 
 namespace TaskManager.Business.Application.Features.Column
 {
@@ -19,10 +20,12 @@ namespace TaskManager.Business.Application.Features.Column
     public class UpdateColumnCommand : IRequestHandler<UpdateColumnCommandRequest, ActionResponse<Domain.Entities.Column>>
     {
         readonly BusinessDbContext _businessDbContext;
+        readonly IUserInfoRepository _userInfoRepository;
 
-        public UpdateColumnCommand(BusinessDbContext businessDbContext)
+        public UpdateColumnCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository)
         {
             _businessDbContext = businessDbContext;
+            _userInfoRepository = userInfoRepository;
         }
 
         public async Task<ActionResponse<Domain.Entities.Column>> Handle(UpdateColumnCommandRequest updateColumnRequest, CancellationToken cancellationToken)
@@ -36,7 +39,7 @@ namespace TaskManager.Business.Application.Features.Column
             {
                 column.Name = updateColumnRequest.Name;
                 column.UpdatedDate = DateTime.UtcNow;
-                //column.UpdatedByUser = //todo
+                column.UpdatedByUser = _userInfoRepository.User.UserId;
                 await _businessDbContext.SaveChangesAsync();
                 response.Data = column;
                 response.IsSuccessful = true;

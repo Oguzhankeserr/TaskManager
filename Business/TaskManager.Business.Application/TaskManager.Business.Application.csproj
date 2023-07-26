@@ -18,4 +18,8 @@
     <ProjectReference Include="..\TaskManager.Business.Infrastructure\TaskManager.Business.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\User\" />
+  </ItemGroup>
+
 </Project>
