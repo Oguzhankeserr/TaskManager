@@ -37,14 +37,14 @@ namespace TaskManager.Business.Api.Controllers
             return await _mediator.Send(getAllTaskRequest);
         }
 
-        [HttpGet]
-        public async Task<ActionResponse<Domain.Entities.Task>>GetTaskById([FromQuery] GetTaskByIdCommandRequest getTaskByIdRequest)
+        [HttpPost]
+        public async Task<ActionResponse<Domain.Entities.Task>>GetTaskById(GetTaskByIdCommandRequest getTaskByIdRequest)
         {
-            return await _mediator.Send(getTaskByIdRequest);
+            return await _mediator.Send(getTaskByIdRequest); 
         }
 
         [HttpPost]
-        public async Task<ActionResponse<Domain.Entities.Task>>UpdateTaks(UpdateTaskCommandRequest updateTaskRequest)
+        public async Task<ActionResponse<Domain.Entities.Task>>UpdateTask(UpdateTaskCommandRequest updateTaskRequest)
         {
             return await _mediator.Send(updateTaskRequest);
         }
