@@ -11,6 +11,10 @@ using TaskManager.Business.Domain;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.Business.Infrastructure.UnitOfWork;
 using TaskManager.Business.Domain.Entities;
+using TaskManager.Business.Domain.Abstractions.Storage;
+using TaskManager.Business.Infrastructure.Services.Storage;
+using TaskManager.Business.Infrastructure.Services.Storage.Local;
+using TaskManager.Business.Infrastructure.Enums;
 
 namespace TaskManager.Business.Infrastructure
 {
@@ -25,6 +29,29 @@ namespace TaskManager.Business.Infrastructure
 
             services.AddScoped<IUnitOfWork, Infrastructure.UnitOfWork.UnitOfWork>();
 
+            services.AddScoped<IStorageService, StorageService>();
+            
+        }
+
+        public static void AddStorage<T>(this IServiceCollection services) where T : class, IStorage
+        {
+            services.AddScoped<IStorage, T>();
+        }
+        public static void AddStorage<T>(this IServiceCollection serviceCollection, StorageType storageType) //Burayı kaldırabilirim daha sonra bakacağım
+        {
+            switch (storageType)
+            {
+                case StorageType.Local:
+                    serviceCollection.AddScoped<IStorage, LocalStorage>();
+                    break;
+                case StorageType.Azure:
+                    break;
+                case StorageType.AWS:
+                    break;
+                default:
+                    serviceCollection.AddScoped<IStorage, LocalStorage>();
+                    break;
+            }
         }
 
         public static void Migration(IServiceScope scope)

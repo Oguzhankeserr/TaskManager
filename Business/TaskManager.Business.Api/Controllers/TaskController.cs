@@ -25,7 +25,7 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResponse<Domain.Entities.Task>> CreateTask(CreateTaskCommandRequest createTaskRequest)
+        public async Task<ActionResponse<Domain.Entities.Task>> CreateTask(CreateTaskCommandRequest createTaskRequest)//[FromForm] silinecek
         {
             ActionResponse<Domain.Entities.Task> response = await _mediator.Send(createTaskRequest);
             return response;

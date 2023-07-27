@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskManager.Business.Infrastructure.Context;
@@ -11,9 +12,11 @@ using TaskManager.Business.Infrastructure.Context;
 namespace TaskManager.Business.Infrastructure.Migrations
 {
     [DbContext(typeof(BusinessDbContext))]
-    partial class BusinessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230727114311_mig_7")]
+    partial class mig_7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,10 +74,6 @@ namespace TaskManager.Business.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -96,10 +95,6 @@ namespace TaskManager.Business.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Files");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("File");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("TaskManager.Business.Domain.Entities.Project", b =>
@@ -214,16 +209,6 @@ namespace TaskManager.Business.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tasks");
-                });
-
-            modelBuilder.Entity("TaskManager.Business.Domain.Entities.TaskFile", b =>
-                {
-                    b.HasBaseType("TaskManager.Business.Domain.Entities.File");
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("TaskFile");
                 });
 #pragma warning restore 612, 618
         }

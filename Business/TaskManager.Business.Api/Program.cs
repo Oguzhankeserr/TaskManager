@@ -7,6 +7,7 @@ using TaskManager.Business.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TaskManager.Business.Infrastructure.Services.Storage.Local;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ builder.Services.AddAuthentication(x =>
     });
 builder.Services.AddBusinessInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationBusinessServices();
+
+builder.Services.AddStorage<LocalStorage>();
 
 //builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();

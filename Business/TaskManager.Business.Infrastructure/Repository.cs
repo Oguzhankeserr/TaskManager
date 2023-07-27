@@ -78,5 +78,13 @@ namespace TaskManager.Business.Infrastructure
 
             public void UpdateRange(IEnumerable<T> entities)
                 => _businessDbContext.UpdateRange(entities);
+
+        Task IRepository<T>.AddRangeAsync(List<Domain.Entities.TaskFile> taskFiles)
+         => _businessDbContext.AddRangeAsync(taskFiles);
+
+        Task<T> IRepository<T>.GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }   
 }

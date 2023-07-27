@@ -15,7 +15,8 @@ namespace TaskManager.Business.Infrastructure.Context
         public DbSet<Project> Projects { get; set; }
         public DbSet<Domain.Entities.Task> Tasks { get; set;}
         public DbSet<ProjectUser> ProjectUsers { get; set; }
-
+        public DbSet<Domain.Entities.File> Files { get; set; }
+        public DbSet<TaskFile> TaskFiles { get; set; }
 
     }
 }

@@ -22,6 +22,9 @@ namespace TaskManager.Business.Domain
         Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken = default);
         Task AddAsync(T entity, CancellationToken cancellationToken = default);
-        Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+        //Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+        Task<T> GetByIdAsync(int id);
+         //Task<bool> AddRangeAsync(List<T> model);
+        Task AddRangeAsync(List<Entities.TaskFile> taskFiles);
     }
 }

@@ -25,4 +25,8 @@
     <ProjectReference Include="..\TaskManager.Business.Domain\TaskManager.Business.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Storage\Azure\" />
+  </ItemGroup>
+
 </Project>
