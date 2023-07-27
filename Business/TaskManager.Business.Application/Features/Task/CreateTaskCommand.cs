@@ -17,6 +17,9 @@ namespace TaskManager.Business.Application.Features
         public int Priority { get; set; }
         public DateTime UserUpdatedDate { get; set; }
         public DateTime EndDate { get; set; }
+        public string AssigneeId { get; set; }
+        public string Reporter { get; set; }
+        
     }
 
     public class CreateTaskCommand : IRequestHandler<CreateTaskCommandRequest, ActionResponse<Domain.Entities.Task>>
@@ -42,6 +45,8 @@ namespace TaskManager.Business.Application.Features
             task.CreatedDate = task.UpdatedDate = DateTime.UtcNow;
             task.Status = true;
             task.CreatedByUser = task.UpdatedByUser; //admin 
+            task.AssigneeId= createTaskRequest.AssigneeId;
+            task.ReporterId = task.ReporterId;
 
             await _businessDbContext.Tasks.AddAsync(task);
             await _businessDbContext.SaveChangesAsync();

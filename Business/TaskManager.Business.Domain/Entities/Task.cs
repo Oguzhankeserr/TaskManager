@@ -16,5 +16,8 @@ namespace TaskManager.Business.Domain.Entities
         // in base entity there is another updated date which related with admin's update.
         public DateTime EndDate { get; set; }
         public bool Status { get; set; }
+        public string AssigneeId { get; set; }
+        public string ReporterId { get; set; }
+        //public string AssignedTime { get; set; }
     }
 }

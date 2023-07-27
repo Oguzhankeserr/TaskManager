@@ -35,11 +35,12 @@ namespace TaskManager.Business.Api.Controllers
             return await _mediator.Send(deleteUserRequest);
         }
 
-        //[HttpPost] //according to admin
-        //public async Task<ActionResponse<ProjectUserDto>> GetAllProjectUsers(GetAllProjectUsersCommandRequest getAllProjectsRequest)
-        //{
-        //    return await _mediator.Send(getAllProjectsRequest);
-        //}
+        [Authorize]
+        [HttpPost] 
+        public async Task<ActionResponse<List<UserDto>>> GetAllProjectUsers(GetAllProjectUsersCommandRequest getAllProjectsRequest)
+        {
+            return await _mediator.Send(getAllProjectsRequest);
+        }
 
 
     }

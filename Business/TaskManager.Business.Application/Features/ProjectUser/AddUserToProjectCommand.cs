@@ -14,6 +14,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser
     {
         public int ProjectId { get; set; }
         public string UserId { get; set; }
+        public string Username { get; set; }
     }
 
 
@@ -40,6 +41,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser
                 {
                     ProjectId = addUserRequest.ProjectId,
                     UserId = addUserRequest.UserId,
+                    Username = addUserRequest.Username,
                     Status = true
                 };
 
