@@ -60,6 +60,8 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
                     await _userManager.AddToRoleAsync(user, registerRequest.Role);
                     userDto.Username = registerRequest.UserName;
                     userDto.Id = user.Id;
+                    userDto.Surname = user.Surname;
+                    userDto.Name = registerRequest.Name;
                     userDto.Role = registerRequest.Role;
                     userDto.Email = registerRequest.Email;
                     response.Data = userDto;

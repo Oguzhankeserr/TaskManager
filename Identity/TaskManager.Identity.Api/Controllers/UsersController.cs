@@ -48,7 +48,7 @@ namespace TaskManager.Identity.Api.Controllers
 
 
 
-   
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResponse<List<UserDto>>> GetAllUsers()
         {
@@ -62,6 +62,8 @@ namespace TaskManager.Identity.Api.Controllers
             {
                 UserDto userDto = new();
                 userDto.Id = user.Id;
+                userDto.Name= user.Name;
+                userDto.Username = user.Surname;
                 userDto.Username = user.UserName;
                 userDto.Email = user.Email;
                 users.Add(userDto);
