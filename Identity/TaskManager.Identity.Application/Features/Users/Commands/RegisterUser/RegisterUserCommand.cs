@@ -61,6 +61,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
                     userDto.Username = registerRequest.UserName;
                     userDto.Id = user.Id;
                     userDto.Role = registerRequest.Role;
+                    userDto.Email = registerRequest.Email;
                     response.Data = userDto;
                     response.IsSuccessful = true;
                 }
