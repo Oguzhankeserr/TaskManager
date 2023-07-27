@@ -34,7 +34,14 @@ namespace TaskManager.Business.Application.Features
             Domain.Entities.ProjectUser projectUser = _businessDbContext.ProjectUsers.FirstOrDefault(p => 
             p.UserId== deleteUserRequest.UserId && p.ProjectId == deleteUserRequest.ProjectId);
 
-            if(projectUser != null)
+            if (projectUser != null && projectUser.Status == false)
+            {
+                response.Message = "User already deleted from the project.";
+                response.IsSuccessful = true;
+                return response;
+
+            }
+            else if (projectUser != null)
             {
                 projectUser.Status = false;
                 await _businessDbContext.SaveChangesAsync();

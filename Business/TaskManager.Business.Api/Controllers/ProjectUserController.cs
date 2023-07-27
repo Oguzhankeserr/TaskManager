@@ -26,6 +26,7 @@ namespace TaskManager.Business.Api.Controllers
         public async Task<ActionResponse<ProjectUserDto>> AddUserToProject(AddUserToProjectCommandRequest addUserRequest)
         {
             return await _mediator.Send(addUserRequest);
+           
         }
 
         [HttpPost]

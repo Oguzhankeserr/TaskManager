@@ -14,7 +14,6 @@ namespace TaskManager.Business.Application.Features.ProjectUser
     {
         public int ProjectId { get; set; }
         public string UserId { get; set; }
-        //public int UserRole { get; set; }
     }
 
 
@@ -32,19 +31,31 @@ namespace TaskManager.Business.Application.Features.ProjectUser
             ActionResponse<ProjectUserDto> response = new();
             response.IsSuccessful = false;
 
-            Domain.Entities.ProjectUser projectUser = new()
+            Domain.Entities.ProjectUser checkUser = _businessDbContext.ProjectUsers.Where(p =>
+             p.ProjectId == addUserRequest.ProjectId && p.UserId == addUserRequest.UserId && p.Status == true).FirstOrDefault();
+
+            if (checkUser == null)
             {
-                ProjectId = addUserRequest.ProjectId,
-                UserId = addUserRequest.UserId,
-                Status = true
-            };
+                Domain.Entities.ProjectUser projectUser = new()
+                {
+                    ProjectId = addUserRequest.ProjectId,
+                    UserId = addUserRequest.UserId,
+                    Status = true
+                };
 
-            await _businessDbContext.AddRangeAsync(projectUser);
-            await _businessDbContext.SaveChangesAsync();
-            response.Message = "User added successfully";
-            response.IsSuccessful = true;
+                await _businessDbContext.AddRangeAsync(projectUser);
+                await _businessDbContext.SaveChangesAsync();
+                response.Message = "User added successfully";
+                response.IsSuccessful = true;
+                return response;
+            }
+            else
+            {
+                response.Message = "User already in the project.";
+                response.IsSuccessful = true;
+                return response;
 
-            return response;
+            }
         }
     }
 }
