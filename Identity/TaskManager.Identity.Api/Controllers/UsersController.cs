@@ -63,7 +63,7 @@ namespace TaskManager.Identity.Api.Controllers
                 UserDto userDto = new();
                 userDto.Id = user.Id;
                 userDto.Name= user.Name;
-                userDto.Username = user.Surname;
+                userDto.Surname = user.Surname;
                 userDto.Username = user.UserName;
                 userDto.Email = user.Email;
                 users.Add(userDto);

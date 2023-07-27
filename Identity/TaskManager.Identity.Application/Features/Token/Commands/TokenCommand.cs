@@ -57,7 +57,7 @@ namespace TaskManager.Identity.Application.Features.Token.Commands
             }
 
             var date = DateTime.UtcNow;
-            token.Expiration = date.AddDays(1);
+            token.Expiration = date.AddDays(6);
 
 
             JwtSecurityToken tokenSecurityToken = new(
