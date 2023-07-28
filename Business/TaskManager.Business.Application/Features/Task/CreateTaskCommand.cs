@@ -25,7 +25,7 @@ namespace TaskManager.Business.Application.Features
         public DateTime UserUpdatedDate { get; set; }
         public DateTime EndDate { get; set; }
         public string AssigneeId { get; set; }
-        public string Reporter { get; set; }
+        public string ReporterId { get; set; }
 
     }
 
@@ -67,8 +67,8 @@ namespace TaskManager.Business.Application.Features
             task.CreatedDate = task.UpdatedDate = DateTime.UtcNow;
             task.Status = true;
             task.CreatedByUser = task.UpdatedByUser; //admin 
-            task.AssigneeId = "";
-            task.ReporterId =  "";
+            task.AssigneeId = createTaskRequest.AssigneeId;
+            task.ReporterId = createTaskRequest.ReporterId;
 
             await _businessDbContext.Tasks.AddAsync(task);
             await _businessDbContext.SaveChangesAsync();

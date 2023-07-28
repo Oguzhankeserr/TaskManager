@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.Domain.Dtos;
+using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
@@ -13,8 +14,8 @@ namespace TaskManager.Business.Application.Features.ProjectUser
     public class AddUserToProjectCommandRequest : IRequest<ActionResponse<ProjectUserDto>>
     {
         public int ProjectId { get; set; }
-        public string UserId { get; set; }
-        public string Username { get; set; }
+        public List<AddUserToProject> Users { get; set; }
+        
     }
 
 
@@ -32,32 +33,34 @@ namespace TaskManager.Business.Application.Features.ProjectUser
             ActionResponse<ProjectUserDto> response = new();
             response.IsSuccessful = false;
 
-            Domain.Entities.ProjectUser checkUser = _businessDbContext.ProjectUsers.Where(p =>
-             p.ProjectId == addUserRequest.ProjectId && p.UserId == addUserRequest.UserId && p.Status == true).FirstOrDefault();
+            List<Domain.Entities.ProjectUser> addedUsers = new();
 
-            if (checkUser == null)
+            foreach (var user in addUserRequest.Users)
             {
-                Domain.Entities.ProjectUser projectUser = new()
+                Domain.Entities.ProjectUser checkUser = _businessDbContext.ProjectUsers.Where(p =>
+                    p.ProjectId == addUserRequest.ProjectId && p.UserId == user.UserId && p.Status == true).FirstOrDefault();
+
+                if (checkUser == null)
                 {
-                    ProjectId = addUserRequest.ProjectId,
-                    UserId = addUserRequest.UserId,
-                    Username = addUserRequest.Username,
-                    Status = true
-                };
+                    Domain.Entities.ProjectUser projectUser = new()
+                    {
+                        ProjectId = addUserRequest.ProjectId,
+                        UserId = user.UserId,
+                        Username = user.Username,
+                        Status = true
+                    };
 
-                await _businessDbContext.AddRangeAsync(projectUser);
-                await _businessDbContext.SaveChangesAsync();
-                response.Message = "User added successfully";
-                response.IsSuccessful = true;
-                return response;
+                    await _businessDbContext.ProjectUsers.AddAsync(projectUser);
+                    addedUsers.Add(projectUser);
+                }
+                else
+                {
+                    response.Message = "User already in the project.";
+                }
             }
-            else
-            {
-                response.Message = "User already in the project.";
-                response.IsSuccessful = true;
-                return response;
-
-            }
+            await _businessDbContext.SaveChangesAsync();
+            return response;
+           
         }
     }
 }

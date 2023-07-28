@@ -23,6 +23,7 @@ namespace TaskManager.CommonModels.Repositories
                 var user = new UserInfo()
                 {
                     UserId = new Guid(_httpContextAccessor.HttpContext.User.FindFirst("UserId")?.Value ?? ""),
+                    Username = _httpContextAccessor.HttpContext.User.FindFirst("Username")?.Value ?? ""
                 };
                 return user;
             }
