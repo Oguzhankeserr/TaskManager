@@ -19,9 +19,9 @@ namespace TaskManager.Business.Application.Features
         public int ProjectId { get; set; }
         public int ColumnId { get; set; }
         public int Priority { get; set; }
-        public string TaskId { get; set; }
+        //public string TaskId { get; set; }
         //[FromForm(Name = "Files")] //Burası da denedikten sonra silinecek
-        public IFormFile? Files { get; set; }
+        //public IFormFile? Files { get; set; }
         public DateTime UserUpdatedDate { get; set; }
         public DateTime EndDate { get; set; }
         public string AssigneeId { get; set; }
@@ -50,14 +50,14 @@ namespace TaskManager.Business.Application.Features
             task.Name = createTaskRequest.Name;
 
 
-            var fileUpload = _mediator.Send(new UploadTaskFileCommandRequest() { TaskId = Convert.ToInt32(createTaskRequest.TaskId), Files = createTaskRequest.Files }).Result;
+            //var fileUpload = _mediator.Send(new UploadTaskFileCommandRequest() { TaskId = Convert.ToInt32(createTaskRequest.TaskId), Files = createTaskRequest.Files }).Result;
 
-            if (!fileUpload.IsSuccessful)
-            {
-                response.IsSuccessful = false;
-                response.Message = fileUpload.Message;
-                return response;
-            }
+            //if (!fileUpload.IsSuccessful)
+            //{
+            //    response.IsSuccessful = false;
+            //    response.Message = fileUpload.Message;
+            //    return response;
+            //}
 
             task.ProjectId = createTaskRequest.ProjectId;
             task.ColumnId = createTaskRequest.ColumnId;

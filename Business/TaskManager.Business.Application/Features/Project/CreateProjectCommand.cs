@@ -65,7 +65,7 @@ namespace TaskManager.Business.Application.Features
             {
                 new AddUserToProject
                 {
-                    UserId = _userInfoRepository.User.UserId.ToString(),
+                    Id = _userInfoRepository.User.UserId.ToString(),
                     Username = _userInfoRepository.User.Username
                 }
             }

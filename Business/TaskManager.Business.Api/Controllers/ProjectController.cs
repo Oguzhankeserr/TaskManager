@@ -86,7 +86,8 @@ namespace TaskManager.Business.Api.Controllers
                     (projectUser, project) => new ProjectDto
                     {
                         Id = project.Id,
-                        Name = project.Name
+                        Name = project.Name,
+                        CreatedDate = project.CreatedDate,
                     }
                 )
                 .ToListAsync();
