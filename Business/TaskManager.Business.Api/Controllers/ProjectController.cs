@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Claims;
 using TaskManager.Business.Application.Features;
 using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Domain.Entities;
@@ -28,8 +30,8 @@ namespace TaskManager.Business.Api.Controllers
         [HttpPost]
         public async Task<ActionResponse<Project>> CreateProject(CreateProjectCommandRequest createProjectRequest)
         {
-            ActionResponse<Project> response = await _mediator.Send(createProjectRequest);
-            return response;
+            return await _mediator.Send(createProjectRequest);
+           
         }
 
         [Authorize(Roles = "Admin")]
@@ -55,14 +57,43 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [Authorize]
-        [HttpGet]  //admin için özelleştirme gerekli mi? Projenin adminleri?
-        public async Task<ActionResponse<List<Project>>> GetAllProjects()
+        [HttpGet]  
+        public async Task<ActionResponse<List<ProjectDto>>> GetAllProjects()
         {
-            List<Project> projects = _businessDbContext.Projects.Where(x => x.Status == true).ToList();
-            ActionResponse<List<Project>> projectResponse = new();
-            projectResponse.Data = projects;
-            projectResponse.IsSuccessful = true;
-            return projectResponse;
+            ActionResponse<List<ProjectDto>> response = new();
+            response.IsSuccessful = false;
+
+            //string userId = User.FindFirstValue("UserId");
+            //List<ProjectUser> userProjects = _businessDbContext.ProjectUsers.Where(p => p.UserId == userId && p.Status == true).ToList();
+            //List<ProjectDto> projects = new();
+            //foreach (var userProject in userProjects) 
+            //{
+            //    ProjectDto projectDto = new();
+            //    var project = _businessDbContext.Projects.FirstOrDefault(x => x.Status == true && x.Id == userProject.ProjectId);
+            //    projectDto.Id= project.Id;
+            //    projectDto.Name = project.Name;
+            //    projects.Add(projectDto);
+            //}
+
+            string userId = User.FindFirstValue("UserId");
+
+            List<ProjectDto> projects = await _businessDbContext.ProjectUsers
+                .Where(p => p.UserId == userId && p.Status == true)
+                .Join(
+                    _businessDbContext.Projects.Where(pr => pr.Status == true),
+                    projectUser => projectUser.ProjectId,
+                    project => project.Id,
+                    (projectUser, project) => new ProjectDto
+                    {
+                        Id = project.Id,
+                        Name = project.Name
+                    }
+                )
+                .ToListAsync();
+            
+            response.Data = projects;
+            response.IsSuccessful = true;
+            return response;
         }
 
        
