@@ -38,14 +38,14 @@ namespace TaskManager.Business.Application.Features.ProjectUser
             foreach (var user in addUserRequest.Users)
             {
                 Domain.Entities.ProjectUser checkUser = _businessDbContext.ProjectUsers.Where(p =>
-                    p.ProjectId == addUserRequest.ProjectId && p.UserId == user.UserId && p.Status == true).FirstOrDefault();
+                    p.ProjectId == addUserRequest.ProjectId && p.UserId == user.Id && p.Status == true).FirstOrDefault();
 
                 if (checkUser == null)
                 {
                     Domain.Entities.ProjectUser projectUser = new()
                     {
                         ProjectId = addUserRequest.ProjectId,
-                        UserId = user.UserId,
+                        UserId = user.Id,
                         Username = user.Username,
                         Status = true
                     };

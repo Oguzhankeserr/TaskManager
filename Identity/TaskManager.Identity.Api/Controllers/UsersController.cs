@@ -28,7 +28,7 @@ namespace TaskManager.Identity.Api.Controllers
             _taskManagerDbContext = taskManagerDbContext;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResponse<UserDto>> RegisterUser(RegisterUserCommandRequest registerUserCommandRequest)
         {
