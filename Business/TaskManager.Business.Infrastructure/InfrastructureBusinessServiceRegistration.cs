@@ -31,6 +31,7 @@ namespace TaskManager.Business.Infrastructure
             services.AddScoped<IUnitOfWork, Infrastructure.UnitOfWork.UnitOfWork>();
 
             services.AddScoped<IStorageService, StorageService>();
+
             
         }
 

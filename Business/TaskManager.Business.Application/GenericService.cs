@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.Domain.UnitOfWork;
 using TaskManager.Business.Domain;
+using MediatR;
 
 namespace TaskManager.Business.Application
 {
@@ -12,11 +13,13 @@ namespace TaskManager.Business.Application
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<T> _repository;
+        private readonly IMediator _mediator;
 
-        public GenericService(IUnitOfWork unitOfWork, IRepository<T> repository)
+        public GenericService(IUnitOfWork unitOfWork, IRepository<T> repository, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _mediator = mediator;
         }
 
         public void Add(T entity)

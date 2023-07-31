@@ -24,18 +24,16 @@ namespace TaskManager.Business.Application.Features
     public class CreateProjectCommand : IRequestHandler<CreateProjectCommandRequest, ActionResponse<Project>>
     {
         readonly BusinessDbContext _businessDbContext;
-        readonly IRepository<Project> _repository;
-        readonly IUnitOfWork _uow;
         readonly IUserInfoRepository _userInfoRepository;
         readonly IMediator _mediator;
+        GenericService<Project> _genericService;
 
-        public CreateProjectCommand(BusinessDbContext businessDbContext, IRepository<Project> repository, IUnitOfWork uow, IUserInfoRepository userInfoRepository, IMediator mediator)
+        public CreateProjectCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository, IMediator mediator, GenericService<Project> genericService)
         {
             _businessDbContext = businessDbContext;
-            _repository = repository;
-            _uow = uow;
             _userInfoRepository = userInfoRepository;
             _mediator = mediator;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<Project>> Handle(CreateProjectCommandRequest createProjectRequest, CancellationToken cancellationToken)
@@ -52,11 +50,9 @@ namespace TaskManager.Business.Application.Features
             //todo get token id 
             project.CreatedByUser = _userInfoRepository.User.UserId;
 
-            //await _businessDbContext.Projects.AddAsync(project);
-            //await _businessDbContext.SaveChangesAsync();
-
-            await _repository.AddAsync(project);
-            await _uow.CommitAsync();
+            //await _repository.AddAsync(project);
+            //await _uow.CommitAsync();
+             _genericService.AddAsync(project);
 
             var addUserRequest = new AddUserToProjectCommandRequest
             {

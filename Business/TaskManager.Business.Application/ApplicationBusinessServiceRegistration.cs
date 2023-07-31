@@ -20,6 +20,7 @@ namespace TaskManager.Business.Application
 
             services.AddScoped<IUserInfoRepository, UserInfoRepository>();
             services.AddScoped<IRepository<Project>, Repository<Project>>();
+            services.AddScoped<GenericService<Project>>();
 
         }
     }
