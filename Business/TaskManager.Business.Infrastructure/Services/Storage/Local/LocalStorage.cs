@@ -10,7 +10,7 @@ using TaskManager.Business.Domain.Abstractions.Storage.Local;
 
 namespace TaskManager.Business.Infrastructure.Services.Storage.Local
 {
-    public class LocalStorage : ILocalStorage
+    public class LocalStorage : Storage, ILocalStorage
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         public LocalStorage(IWebHostEnvironment webHostEnvironment)
@@ -19,8 +19,7 @@ namespace TaskManager.Business.Infrastructure.Services.Storage.Local
         }
         public async Task DeleteAsync(string path, string fileName)
          => File.Delete($"{path}\\{fileName}");
-            //=> File.Delete($"{path}\\{fileName}");
-
+           
         public List<string> GetFiles(string path)
         {
             DirectoryInfo directory = new(path);
@@ -46,46 +45,51 @@ namespace TaskManager.Business.Infrastructure.Services.Storage.Local
             }
         }
 
-
-        public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string pathOrContainerName, IFormFile? file)
+        public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string path, List<IFormFile>? files)
         {
-            if (file == null || file.Length == 0)
-            {
-                throw new ArgumentNullException(nameof(file), "No file uploaded or file is empty.");
-            }
-
-            string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, pathOrContainerName);
+            string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, path);
             if (!Directory.Exists(uploadPath))
                 Directory.CreateDirectory(uploadPath);
 
+
             List<(string fileName, string path)> datas = new();
+            foreach (IFormFile file in files)
+            {
+                //string fileNewName = await FileRenameAsync(uploadPath, file.Name, HasFile);
 
-            await CopyFileAsync($"{uploadPath}\\{file.FileName}", file);
-            datas.Add((file.FileName, $"{pathOrContainerName}\\{file.FileName}"));
+                //await CopyFileAsync($"{uploadPath}\\{file.Name}", file);
+                //datas.Add((file.Name, $"{path}\\{file.Name}"));
 
+                string fileNewName = await FileRenameAsync(uploadPath, file.FileName, HasFile);
+
+                await CopyFileAsync($"{uploadPath}\\{fileNewName}", file);
+                datas.Add((fileNewName, $"{path}\\{fileNewName}"));
+            }
             return datas;
         }
 
 
 
-
-        //public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string path, IFormFileCollection files)
+        //public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string pathOrContainerName, IFormFile? file)
         //{
-        //    string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, path);
+        //    if (file == null || file.Length == 0)
+        //    {
+        //        throw new ArgumentNullException(nameof(file), "No file uploaded or file is empty.");
+        //    }
+
+        //    string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, pathOrContainerName);
         //    if (!Directory.Exists(uploadPath))
         //        Directory.CreateDirectory(uploadPath);
 
-
         //    List<(string fileName, string path)> datas = new();
-        //    foreach (IFormFile file in files)
-        //    {
-        //        //string fileNewName = await FileRenameAsync(uploadPath, file.Name, HasFile);
 
-        //        await CopyFileAsync($"{uploadPath}\\{file.Name}", file);
-        //        datas.Add((file.Name, $"{path}\\{file.Name}"));
-        //    }
+        //    await CopyFileAsync($"{uploadPath}\\{file.FileName}", file);
+        //    datas.Add((file.FileName, $"{pathOrContainerName}\\{file.FileName}"));
+
         //    return datas;
         //}
+
+
 
 
 

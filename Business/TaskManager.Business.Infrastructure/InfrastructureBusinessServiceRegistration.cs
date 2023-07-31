@@ -15,6 +15,7 @@ using TaskManager.Business.Domain.Abstractions.Storage;
 using TaskManager.Business.Infrastructure.Services.Storage;
 using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Enums;
+using TaskManager.Business.Infrastructure.Services.Storage.Azure;
 
 namespace TaskManager.Business.Infrastructure
 {
@@ -33,7 +34,7 @@ namespace TaskManager.Business.Infrastructure
             
         }
 
-        public static void AddStorage<T>(this IServiceCollection services) where T : class, IStorage
+        public static void AddStorage<T>(this IServiceCollection services) where T : Storage, IStorage
         {
             services.AddScoped<IStorage, T>();
         }
@@ -45,6 +46,7 @@ namespace TaskManager.Business.Infrastructure
                     serviceCollection.AddScoped<IStorage, LocalStorage>();
                     break;
                 case StorageType.Azure:
+                    serviceCollection.AddScoped<IStorage, AzureStorage>();
                     break;
                 case StorageType.AWS:
                     break;
