@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc.Razor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,19 @@ namespace TaskManager.Business.Application.Features
         readonly BusinessDbContext _businessDbContext;
         readonly IUserInfoRepository _userInfoRepository;
         readonly IMediator _mediator;
+        readonly IRepository<Project> _repository;
+        readonly IUnitOfWork _uow;
         GenericService<Project> _genericService;
 
-        public CreateProjectCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository, IMediator mediator, GenericService<Project> genericService)
+        public CreateProjectCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository, IMediator mediator, GenericService<Project> genericService, IUnitOfWork uow, IRepository<Project> repository)
         {
             _businessDbContext = businessDbContext;
             _userInfoRepository = userInfoRepository;
             _mediator = mediator;
             _genericService = genericService;
+            _uow = uow;
+            _repository = repository;
+
         }
 
         public async Task<ActionResponse<Project>> Handle(CreateProjectCommandRequest createProjectRequest, CancellationToken cancellationToken)
@@ -50,9 +56,9 @@ namespace TaskManager.Business.Application.Features
             //todo get token id 
             project.CreatedByUser = _userInfoRepository.User.UserId;
 
-            //await _repository.AddAsync(project);
-            //await _uow.CommitAsync();
-             _genericService.AddAsync(project);
+            await _repository.AddAsync(project);
+            await _uow.CommitAsync();
+            //_genericService.AddAsync(project);
 
             var addUserRequest = new AddUserToProjectCommandRequest
             {
