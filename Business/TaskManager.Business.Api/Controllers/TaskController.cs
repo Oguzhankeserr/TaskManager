@@ -60,5 +60,11 @@ namespace TaskManager.Business.Api.Controllers
         {
             return await _mediator.Send(deleteTaskRequest);
         }
+
+        [HttpPost]
+        public async Task<ActionResponse<List<TaskUserDto>>> GetAllTaskForUser(GetAllTaskForUserCommandRequest getAllTaskForUserRequest)
+        {
+            return await _mediator.Send(getAllTaskForUserRequest);
+        }
     }
 }
