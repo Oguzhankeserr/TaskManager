@@ -50,14 +50,6 @@ namespace TaskManager.Business.Application.Features
             task.Name = createTaskRequest.Name;
 
 
-            //var fileUpload = _mediator.Send(new UploadTaskFileCommandRequest() { TaskId = Convert.ToInt32(createTaskRequest.TaskId), Files = createTaskRequest.Files }).Result;
-
-            //if (!fileUpload.IsSuccessful)
-            //{
-            //    response.IsSuccessful = false;
-            //    response.Message = fileUpload.Message;
-            //    return response;
-            //}
 
             task.ProjectId = createTaskRequest.ProjectId;
             task.ColumnId = createTaskRequest.ColumnId;
@@ -69,6 +61,15 @@ namespace TaskManager.Business.Application.Features
             task.CreatedByUser = task.UpdatedByUser; //admin 
             task.AssigneeId = createTaskRequest.AssigneeId;
             task.ReporterId = createTaskRequest.ReporterId;
+
+            //var fileUpload = _mediator.Send(new UploadTaskFileCommandRequest() { TaskId = Convert.ToInt32(createTaskRequest.TaskId), Files = createTaskRequest.Files }).Result;
+
+            //if (!fileUpload.IsSuccessful)
+            //{
+            //    response.IsSuccessful = false;
+            //    response.Message = fileUpload.Message;
+            //    return response;
+            //}
 
             await _businessDbContext.Tasks.AddAsync(task);
             await _businessDbContext.SaveChangesAsync();

@@ -51,8 +51,8 @@ namespace TaskManager.Business.Application.Features.Task
                     taskListDto.CreatedDate = task.CreatedDate;
                     taskListDto.UpdatedDate = task.UpdatedDate;
                     taskListDto.DueDate = task.EndDate;
-                    //taskListDto.AssigneeId =
-                    //taskListDto.ReporterId =
+                    taskListDto.AssigneeId = task.AssigneeId;
+                    taskListDto.ReporterId = task.ReporterId;
                     taskList.Add(taskListDto);
                 }
 

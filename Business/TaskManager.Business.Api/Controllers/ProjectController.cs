@@ -26,11 +26,14 @@ namespace TaskManager.Business.Api.Controllers
             _businessDbContext = businessDbContext;
         }
 
-        
+        [Authorize]
         [HttpPost]
         public async Task<ActionResponse<Project>> CreateProject(CreateProjectCommandRequest createProjectRequest)
+
         {
-            return await _mediator.Send(createProjectRequest);
+
+            ActionResponse<Project> response = await _mediator.Send(createProjectRequest);
+            return response;
            
         }
 
@@ -57,6 +60,7 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         
+
         [HttpGet]  
         public async Task<ActionResponse<List<ProjectDto>>> GetAllProjects()
         {

@@ -41,7 +41,7 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResponse<List<Column>>> GetAllProjectColumns(GetProjectColumnsCommandRequest getProjectColumnsRequest)
+        public async Task<ActionResponse<List<ColumnDto>>> GetAllProjectColumns(GetProjectColumnsCommandRequest getProjectColumnsRequest)
         {
             return await _mediator.Send(getProjectColumnsRequest);
         }

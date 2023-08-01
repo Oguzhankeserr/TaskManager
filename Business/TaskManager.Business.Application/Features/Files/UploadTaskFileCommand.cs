@@ -18,7 +18,7 @@ namespace TaskManager.Business.Application.Features.Files
     public class UploadTaskFileCommandRequest : IRequest<ActionResponse<TaskFile>>
     {
         public int TaskId { get; set; }
-        public IFormFile? Files { get; set; }
+        public List<IFormFile>? Files { get; set; }
     }
     public class UploadTaskFileCommand : IRequestHandler<UploadTaskFileCommandRequest,ActionResponse<TaskFile>>
     {
@@ -37,7 +37,7 @@ namespace TaskManager.Business.Application.Features.Files
             response.IsSuccessful = true;
             try
             {
-                List<(string fileName, string pathOrContainerName)> result = await _storageService.UploadAsync("photo-images", request.Files);
+                List<(string fileName, string pathOrContainerName)> result = await _storageService.UploadAsync("files", request.Files);
 
                 foreach (var item in result)
                 {

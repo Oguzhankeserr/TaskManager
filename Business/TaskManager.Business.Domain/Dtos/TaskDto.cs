@@ -20,8 +20,8 @@ namespace TaskManager.Business.Domain.Dtos
         public string Name { get; set; }
         public int ColumnId { get; set; }
         public int Priority { get; set; }
-        public int AssigneeId { get; set;}
-        public int ReporterId { get; set; }
+        public string AssigneeId { get; set;}
+        public string ReporterId { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
