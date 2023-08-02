@@ -59,8 +59,7 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
-        
-
+        [Authorize]
         [HttpGet]  
         public async Task<ActionResponse<List<ProjectDto>>> GetAllProjects()
         {

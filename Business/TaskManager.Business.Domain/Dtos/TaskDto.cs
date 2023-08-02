@@ -27,16 +27,4 @@ namespace TaskManager.Business.Domain.Dtos
         public DateTime UpdatedDate { get; set; }
 
     }
-
-    public class TaskUserDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int ProjectId { get; set; }
-        public int Priority { get; set; }
-        public string AssigneeId { get; set;}
-
-        //public int AssigneeId { get; set; }
-        //public int ReporterId { get; set; }
-    }
 }
