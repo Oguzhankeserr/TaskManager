@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace TaskManager.Business.Infrastructure.Context
         public DbSet<ProjectUser> ProjectUsers { get; set; }
         public DbSet<Domain.Entities.File> Files { get; set; }
         public DbSet<TaskFile> TaskFiles { get; set; }
+        public DbSet<ProjectFile> ProjectFiles { get; set; }
+        public DbSet<UserFile> UserFiles { get; set; }
 
     }
 }

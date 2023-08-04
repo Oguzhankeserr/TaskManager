@@ -36,6 +36,7 @@ builder.Services.AddAuthentication(x =>
         };
     });
 builder.Services.AddBusinessInfrastructureServices(builder.Configuration);
+
 builder.Services.AddApplicationBusinessServices();
 
 builder.Services.AddStorage<LocalStorage>();

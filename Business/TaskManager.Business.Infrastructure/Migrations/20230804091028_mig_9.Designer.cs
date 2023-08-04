@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskManager.Business.Infrastructure.Context;
@@ -11,9 +12,11 @@ using TaskManager.Business.Infrastructure.Context;
 namespace TaskManager.Business.Infrastructure.Migrations
 {
     [DbContext(typeof(BusinessDbContext))]
-    partial class BusinessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230804091028_mig_9")]
+    partial class mig_9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,16 +237,6 @@ namespace TaskManager.Business.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasDiscriminator().HasValue("TaskFile");
-                });
-
-            modelBuilder.Entity("TaskManager.Business.Domain.Entities.UserFile", b =>
-                {
-                    b.HasBaseType("TaskManager.Business.Domain.Entities.File");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("UserFile");
                 });
 #pragma warning restore 612, 618
         }
