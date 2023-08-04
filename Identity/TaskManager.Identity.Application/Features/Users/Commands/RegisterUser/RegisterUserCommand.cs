@@ -1,15 +1,22 @@
-﻿using MediatR;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.CommonModels;
+using TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ;
 using TaskManager.Identity.Domain.Dtos;
 using TaskManager.Identity.Domain.Entities;
+
 
 namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
 {
@@ -25,19 +32,27 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
 
     public class RegisterUserCommand : IRequestHandler<RegisterUserCommandRequest, ActionResponse<UserDto>>
     {
+
+
         readonly UserManager<AppUser> _userManager;
         readonly RoleManager<AppRole> _roleManager;
+		private readonly IRabbitMQService _rabbitMQService;
+		private readonly IServiceProvider _serviceProvider; // Inject IServiceProvider here
 
-        public RegisterUserCommand(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+
+		public RegisterUserCommand(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IRabbitMQService rabbitMQService, IServiceProvider serviceProvider)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-        }
+			_rabbitMQService = rabbitMQService;
+			_serviceProvider = serviceProvider; // Injected IServiceProvider
 
-        public async Task<ActionResponse<UserDto>> Handle(RegisterUserCommandRequest registerRequest, CancellationToken cancellationToken)
+		}
+
+		public async Task<ActionResponse<UserDto>> Handle(RegisterUserCommandRequest registerRequest, CancellationToken cancellationToken)
         {
             ActionResponse<UserDto> response = new();
-            UserDto userDto = new();
+            TaskManager.Identity.Domain.Dtos.UserDto userDto = new();
             response.IsSuccessful = false;
 
             var roleExists = await _roleManager.RoleExistsAsync(registerRequest.Role);
@@ -54,7 +69,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(user, registerRequest.Password);
-
+                
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, registerRequest.Role);
@@ -66,8 +81,11 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
                     userDto.Email = registerRequest.Email;
                     response.Data = userDto;
                     response.IsSuccessful = true;
-                }
-                else
+
+					await _rabbitMQService.PublishUserRegistrationToRabbitMQ(userDto);
+
+				}
+				else
                 {
                     foreach (var error in result.Errors)
                         response.Message += $"{error.Code} - {error.Description}\n";
@@ -81,5 +99,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
             
             return response;
         }
-    }
-}
+
+		}
+	}
+

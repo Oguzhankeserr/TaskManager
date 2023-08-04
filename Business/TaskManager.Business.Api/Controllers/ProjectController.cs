@@ -52,7 +52,7 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResponse<Project>> GetProject(GetProjectCommandRequest getProjectRequest)
         {
             ActionResponse<Project> response = await _mediator.Send(getProjectRequest);

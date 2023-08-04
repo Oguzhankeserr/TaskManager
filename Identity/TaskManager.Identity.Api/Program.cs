@@ -6,8 +6,15 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using RabbitMQ.Client;
+using Microsoft.AspNet.Identity;
+using TaskManager.Identity.Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
+using TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 builder.Services.AddControllers();
 
@@ -35,9 +42,14 @@ builder.Services.AddAuthentication(x =>
     });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHostedService<EmailConsumerService>();
+
+//builder.Services.AddPersistenceServices(builder.Configuration);
+//builder.Services.AddApplicationServices();
 
 
 var app = builder.Build();
+
 
 
 // Configure the HTTP request pipeline.
