@@ -50,7 +50,7 @@ public class EmailConsumerService : BackgroundService // Background Service : De
 
 				try
 				{
-					await SendRegistrationEmail(userDto.Email);
+					await SendRegistrationEmail(userDto.Email, userDto.Username, userDto.Name, userDto.Password, userDto.Id);
 
 					
 					_logger.LogInformation($"Email sent successfully to {userDto.Email}");
@@ -69,18 +69,19 @@ public class EmailConsumerService : BackgroundService // Background Service : De
 		}
 	}
 
-	private async Task SendRegistrationEmail(string userEmail)
+	private async Task SendRegistrationEmail(string userEmail,string username, string name, string password, string Id)
 	{
-		await Task.Delay(10000); // 10 sec delay to see it on RabbitMQ Management
+	//	await Task.Delay(10000); // 10 sec delay to see it on RabbitMQ Management
 
 		string fromMail = "taskmanager0707@gmail.com";
 		string fromPassword = "u v j x y q u w u s y w a a z x";
+		string emailBody = $"<html><body> Hello {name} <br> This is your current username and password : <br> Username : {username} <br> Password : {password}  <br><br> And this is your <a href='http://localhost:4200/password-change/?{Id}' >change password</a>  link. </body></html>";
 
 		MailMessage message = new MailMessage();
 		message.From = new MailAddress(fromMail);
-		message.Subject = "Test Subject";
+		message.Subject = "Reset Password";
 		message.To.Add(new MailAddress(userEmail));
-		message.Body = "<html><body> Test Body </body></html>";
+		message.Body = emailBody;
 		message.IsBodyHtml = true;
 
 		var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com")

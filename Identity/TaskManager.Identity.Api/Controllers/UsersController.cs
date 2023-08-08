@@ -48,6 +48,7 @@ namespace TaskManager.Identity.Api.Controllers
 
 
 
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResponse<List<UserDto>>> GetAllUsers()
@@ -62,7 +63,7 @@ namespace TaskManager.Identity.Api.Controllers
             {
                 UserDto userDto = new();
                 userDto.Id = user.Id;
-                userDto.Name= user.Name;
+                userDto.Name = user.Name;
                 userDto.Surname = user.Surname;
                 userDto.Username = user.UserName;
                 userDto.Email = user.Email;
@@ -74,10 +75,30 @@ namespace TaskManager.Identity.Api.Controllers
             return response;
 
 
-            
+
         }
-           
 
 
-    } 
+
+
+
+
+        //   [HttpPost("{id}")]
+        //   public async Task<IActionResult> ChangePassword(string id, [FromBody] PasswordChangeCommandRequest passwordChangeCommandRequest)
+        //   {
+        //       passwordChangeCommandRequest.Id = id;
+
+        //       var response = await _mediator.Send(passwordChangeCommandRequest);
+
+        //       if (response.IsSuccessful)
+        //       {
+        //           return Ok(response.Data);
+        //       }
+        //       else
+        //       {
+        //           return BadRequest(response.Message);
+        //       }
+        //   }
+        //}
+    }
 }
