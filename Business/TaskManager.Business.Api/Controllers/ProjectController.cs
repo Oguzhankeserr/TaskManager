@@ -29,7 +29,6 @@ namespace TaskManager.Business.Api.Controllers
         [Authorize]
         [HttpPost]
         public async Task<ActionResponse<Project>> CreateProject(CreateProjectCommandRequest createProjectRequest)
-
         {
 
             ActionResponse<Project> response = await _mediator.Send(createProjectRequest);

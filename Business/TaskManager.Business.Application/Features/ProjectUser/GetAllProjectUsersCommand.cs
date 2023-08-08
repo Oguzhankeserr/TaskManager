@@ -37,7 +37,6 @@ namespace TaskManager.Business.Application.Features.ProjectUser
                 {
                     UserDto userDto = new();
                     userDto.Id = user.UserId;
-                    userDto.Username = user.Username;
                     userList.Add(userDto);
 
                 }

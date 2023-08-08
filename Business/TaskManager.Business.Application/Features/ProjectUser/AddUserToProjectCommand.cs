@@ -46,7 +46,6 @@ namespace TaskManager.Business.Application.Features.ProjectUser
                     {
                         ProjectId = addUserRequest.ProjectId,
                         UserId = user.Id,
-                        Username = user.Username,
                         Status = true
                     };
 

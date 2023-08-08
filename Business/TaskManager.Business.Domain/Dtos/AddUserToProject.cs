@@ -9,6 +9,5 @@ namespace TaskManager.Business.Domain.Dtos
     public class AddUserToProject
     {
         public string Id { get; set; }
-        public string Username { get; set; }
     }
 }

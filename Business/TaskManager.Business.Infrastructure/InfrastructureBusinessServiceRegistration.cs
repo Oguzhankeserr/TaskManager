@@ -16,6 +16,7 @@ using TaskManager.Business.Infrastructure.Services.Storage;
 using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Enums;
 using TaskManager.Business.Infrastructure.Services.Storage.Azure;
+using Microsoft.Extensions.Options;
 
 namespace TaskManager.Business.Infrastructure
 {
@@ -23,9 +24,15 @@ namespace TaskManager.Business.Infrastructure
     {
         public static void AddBusinessInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BusinessDbContext>(options => options.UseNpgsql
-                (configuration.GetConnectionString("TaskManagerBusinessConnection")));
+            services.AddDbContext<BusinessDbContext>(options =>
+            {
+                options.UseNpgsql(configuration.GetConnectionString("TaskManagerBusinessConnection")).UseLowerCaseNamingConvention();
 
+
+            });
+      
+
+            //.UseLowerCaseNamingConvention()
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<IUnitOfWork, Infrastructure.UnitOfWork.UnitOfWork>();

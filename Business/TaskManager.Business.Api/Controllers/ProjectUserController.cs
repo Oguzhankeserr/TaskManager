@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using TaskManager.Business.Application.Features;
 using TaskManager.Business.Application.Features.ProjectUser;
 using TaskManager.Business.Domain.Dtos;
@@ -44,6 +45,14 @@ namespace TaskManager.Business.Api.Controllers
         {
             return await _mediator.Send(getAllProjectsRequest);
         }
+
+        [HttpGet]
+        public async Task<ActionResponse<List<UserDto>>> GetSelectedUsersForProject([FromQuery]GetSelectedUsersForProjectQuery selectedUserQuery)
+        {
+            ActionResponse < List < UserDto >> res = await _mediator.Send(selectedUserQuery);
+            return res;
+        }
+
 
 
     }
