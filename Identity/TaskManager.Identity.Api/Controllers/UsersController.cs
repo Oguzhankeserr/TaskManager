@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using TaskManager.CommonModels;
 using TaskManager.Identity.Application.Features.Users.Commands.GetUser;
 using TaskManager.Identity.Application.Features.Users.Commands.LoginUser;
+using TaskManager.Identity.Application.Features.Users.Commands.ForgotPassword;
 using TaskManager.Identity.Application.Features.Users.Commands.PasswordChange;
 using TaskManager.Identity.Application.Features.Users.Commands.RegisterUser;
 using TaskManager.Identity.Application.Models;
@@ -57,6 +58,13 @@ namespace TaskManager.Identity.Api.Controllers
 		public async Task<IActionResult> ChangePasswordWithToken(PasswordChangeCommandRequest passwordChangeCommandRequest)
         {
 			return await _mediator.Send(passwordChangeCommandRequest);
+
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordCommandRequest forgotPasswordCommandRequest)
+		{
+			return await _mediator.Send(forgotPasswordCommandRequest);
 
 		}
 

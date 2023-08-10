@@ -24,6 +24,7 @@ namespace TaskManager.Identity.Application
 			services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 			services.AddTransient<IRabbitMQService, RabbitMQService>();
 			services.AddHostedService<EmailConsumerService>(); // AddHostedService :  It is used to register a background service 
+			services.AddScoped<ForgotPasswordService>();// AddHosted Yapınca çalışmıyor. AddScoped doğrusu mu ?
 		}
 
 
