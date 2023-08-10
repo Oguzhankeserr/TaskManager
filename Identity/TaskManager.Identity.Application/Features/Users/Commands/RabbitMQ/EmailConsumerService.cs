@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TaskManager.Identity.Application.Features.Token.Commands;
 using MediatR;
+using System.Xml.Linq;
 
 public class EmailConsumerService : BackgroundService // Background Service : Designed to run in the background and continuously perform its designated tasks.
 													  // By running the consumer as a background service, it can continuously listen for new messages without blocking or affecting the main application's responsiveness.
@@ -75,7 +76,7 @@ public class EmailConsumerService : BackgroundService // Background Service : De
 		}
 	}
 
-	private async Task SendRegistrationEmail(string userEmail,string username, string name, string password, string Id)
+	public async Task SendRegistrationEmail(string userEmail,string username, string name, string password, string Id)
 	{
 		//await Task.Delay(10000); // 10 sec delay to see it on RabbitMQ Management
 
@@ -106,13 +107,39 @@ public class EmailConsumerService : BackgroundService // Background Service : De
 
 	}
 
-	private async Task<string> GeneratePasswordResetToken(string userId)
+	public async Task<string> GeneratePasswordResetToken(string userId)
 	{
 
 		var command = new PasswordTokenCommandRequest { Id = userId };
 		var result = await _mediator.Send(command); // Inject and use MediatR to send the command
 
 		return result.Data.PasswordTokenAccess;
+	}
+
+	public async Task SendChangePasswordEmail(string userEmail, string Id)
+	{
+		string fromMail = "taskmanager0707@gmail.com";
+		string fromPassword = "u v j x y q u w u s y w a a z x";
+
+		string token = await GeneratePasswordResetToken(Id); // Call a method to generate the token
+		string resetUrl = $"http://localhost:4200/password-change?token={token}";
+
+		string emailBody = $"<html><body> Hello, this is your <a href='{resetUrl}'> change password </a>  link. </body></html>";
+		MailMessage message = new MailMessage();
+		message.From = new MailAddress(fromMail);
+		message.Subject = "Reset Password";
+		message.To.Add(new MailAddress(userEmail));
+		message.Body = emailBody;
+		message.IsBodyHtml = true;
+
+		var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com")
+		{
+			Port = 587,
+			Credentials = new NetworkCredential(fromMail, fromPassword),
+			EnableSsl = true,
+		};
+
+		smtpClient.Send(message);
 	}
 
 
