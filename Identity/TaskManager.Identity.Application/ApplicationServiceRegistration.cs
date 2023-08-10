@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿ using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using System;
 using System.Collections.Generic;

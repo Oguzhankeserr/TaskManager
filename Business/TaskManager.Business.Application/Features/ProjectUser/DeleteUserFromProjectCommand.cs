@@ -1,6 +1,9 @@
-﻿using MediatR;
+﻿using Dapper;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +17,7 @@ namespace TaskManager.Business.Application.Features
     public class DeleteUserFromProjectCommandRequest : IRequest<ActionResponse<ProjectUserDto>>
     {
         public int ProjectId { get; set; }
-        public string UserId { get; set; }
+        public List<ProjectUserList> Users { get; set; }
     }
 
     public class DeleteUserFromProjectCommand : IRequestHandler<DeleteUserFromProjectCommandRequest, ActionResponse<ProjectUserDto>>
@@ -31,30 +34,22 @@ namespace TaskManager.Business.Application.Features
             ActionResponse<ProjectUserDto> response = new();
             response.IsSuccessful = false;
 
-            Domain.Entities.ProjectUser projectUser = _businessDbContext.ProjectUsers.FirstOrDefault(p => 
-            p.UserId== deleteUserRequest.UserId && p.ProjectId == deleteUserRequest.ProjectId);
+            string query = "UPDATE projectusers SET status = false WHERE projectusers.UserId in (";
+            foreach (var user in deleteUserRequest.Users)
+            {
+                query += "'" + user.Id + "',";
+            }
+            query = query.TrimEnd(',');
+            query += ")";
 
-            if (projectUser != null && projectUser.Status == false)
-            {
-                response.Message = "User already deleted from the project.";
-                response.IsSuccessful = true;
-                return response;
+            await _businessDbContext.Database.ExecuteSqlRawAsync(query);
 
-            }
-            else if (projectUser != null)
-            {
-                projectUser.Status = false;
-                await _businessDbContext.SaveChangesAsync();
-                response.Message = "User deleted from the project successfully";
-                response.IsSuccessful = true;
-                return response;
-            }
-            else
-            {
-                response.IsSuccessful = false;
-                response.Message = "User or project cannot found.";
-                return response;    
-            }
+            response.IsSuccessful = true;
+            response.Message = "Users deleted from the project successfully.";
+
+            return response;
+
         }
     }
 }
+

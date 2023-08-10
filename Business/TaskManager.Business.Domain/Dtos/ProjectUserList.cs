@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Business.Domain.Dtos
 {
-    public class AddUserToProject
+    public class ProjectUserList
     {
         public string Id { get; set; }
     }

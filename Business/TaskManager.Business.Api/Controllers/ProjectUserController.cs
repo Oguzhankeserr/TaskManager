@@ -26,11 +26,7 @@ namespace TaskManager.Business.Api.Controllers
         [HttpPost]
         public async Task<ActionResponse<ProjectUserDto>> AddUserToProject(AddUserToProjectCommandRequest addUserRequest)
         {
-			///return await _mediator.Send(addUserRequest);
-			ActionResponse<ProjectUserDto> res = await _mediator.Send(addUserRequest);
-            return res;
-
-
+			return await _mediator.Send(addUserRequest);
 		}
 
         [HttpPost]
@@ -47,9 +43,9 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResponse<List<UserDto>>> GetSelectedUsersForProject([FromQuery]GetSelectedUsersForProjectQuery selectedUserQuery)
+        public async Task<ActionResponse<List<ProjectUserDto>>> GetSelectedUsersForProject([FromQuery]GetSelectedUsersForProjectQuery selectedUserQuery)
         {
-            ActionResponse < List < UserDto >> res = await _mediator.Send(selectedUserQuery);
+            ActionResponse < List <ProjectUserDto>> res = await _mediator.Send(selectedUserQuery);
             return res;
         }
 

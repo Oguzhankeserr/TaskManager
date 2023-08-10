@@ -16,12 +16,12 @@ using TaskManager.Business.Domain.Entities;
 
 namespace TaskManager.Business.Application.Features.ProjectUser
 {
-    public class GetSelectedUsersForProjectQuery : IRequest<ActionResponse<List<UserDto>>>
+    public class GetSelectedUsersForProjectQuery : IRequest<ActionResponse<List<ProjectUserDto>>>
     {
         public int ProjectId { get; set; }
     }
 
-    public class GetSelectedUsersForProjectQueryHandler : IRequestHandler<GetSelectedUsersForProjectQuery, ActionResponse<List<UserDto>>>
+    public class GetSelectedUsersForProjectQueryHandler : IRequestHandler<GetSelectedUsersForProjectQuery, ActionResponse<List<ProjectUserDto>>>
     {
         private readonly string _connectionString;
 
@@ -30,9 +30,9 @@ namespace TaskManager.Business.Application.Features.ProjectUser
             _connectionString = configuration.GetConnectionString("TaskManagerBusinessConnection");
         }
 
-        public async Task<ActionResponse<List<UserDto>>> Handle(GetSelectedUsersForProjectQuery request, CancellationToken cancellationToken)
+        public async Task<ActionResponse<List<ProjectUserDto>>> Handle(GetSelectedUsersForProjectQuery request, CancellationToken cancellationToken)
         {
-            ActionResponse<List<UserDto>> response = new ActionResponse<List<UserDto>>();
+            ActionResponse<List<ProjectUserDto>> response = new();
             response.IsSuccessful = false;
 
           
@@ -41,7 +41,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser
                 var sql = "SELECT id, projectid, userId FROM projectusers WHERE projectid = @ProjectId AND status = true";
                 try 
                 {
-                    var selectedUsers = await connection.QueryAsync<UserDto>(sql, new { ProjectId = request.ProjectId });
+                    var selectedUsers = await connection.QueryAsync<ProjectUserDto>(sql, new { ProjectId = request.ProjectId });
                     response.Data = selectedUsers.ToList();
                     response.IsSuccessful = true;
                 }

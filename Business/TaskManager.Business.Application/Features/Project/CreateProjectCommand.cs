@@ -63,9 +63,9 @@ namespace TaskManager.Business.Application.Features
             var addUserRequest = new AddUserToProjectCommandRequest
             {
                 ProjectId = project.Id,
-                Users = new List<AddUserToProject>
+                Users = new List<ProjectUserList>
             {
-                new AddUserToProject
+                new ProjectUserList
                 {
                     Id = _userInfoRepository.User.UserId.ToString()
                 }
