@@ -1,12 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskManager.CommonModels;
 using TaskManager.Identity.Application.Features.Users.Commands.GetUser;
 using TaskManager.Identity.Application.Features.Users.Commands.LoginUser;
+using TaskManager.Identity.Application.Features.Users.Commands.PasswordChange;
 using TaskManager.Identity.Application.Features.Users.Commands.RegisterUser;
 using TaskManager.Identity.Application.Models;
 using TaskManager.Identity.Domain.Dtos;
@@ -21,11 +23,14 @@ namespace TaskManager.Identity.Api.Controllers
     {
         readonly IMediator _mediator;
         readonly TaskManagerDbContext _taskManagerDbContext;
+		readonly UserManager<AppUser> _userManager;
 
-        public UsersController(IMediator mediator, TaskManagerDbContext taskManagerDbContext)
+
+		public UsersController(IMediator mediator, TaskManagerDbContext taskManagerDbContext, UserManager<AppUser> userManager)
         {
             _mediator = mediator;
-            _taskManagerDbContext = taskManagerDbContext;
+			_userManager = userManager;
+			_taskManagerDbContext = taskManagerDbContext;
         }
 
         //[Authorize(Roles = "Admin")]
@@ -48,8 +53,15 @@ namespace TaskManager.Identity.Api.Controllers
 
 
 
+		[HttpPost]
+		public async Task<IActionResult> ChangePasswordWithToken(PasswordChangeCommandRequest passwordChangeCommandRequest)
+        {
+			return await _mediator.Send(passwordChangeCommandRequest);
 
-        [Authorize(Roles = "Admin")]
+		}
+
+
+		[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResponse<List<UserDto>>> GetAllUsers()
         {
@@ -78,27 +90,9 @@ namespace TaskManager.Identity.Api.Controllers
 
         }
 
+		
+		
 
-
-
-
-
-        //   [HttpPost("{id}")]
-        //   public async Task<IActionResult> ChangePassword(string id, [FromBody] PasswordChangeCommandRequest passwordChangeCommandRequest)
-        //   {
-        //       passwordChangeCommandRequest.Id = id;
-
-        //       var response = await _mediator.Send(passwordChangeCommandRequest);
-
-        //       if (response.IsSuccessful)
-        //       {
-        //           return Ok(response.Data);
-        //       }
-        //       else
-        //       {
-        //           return BadRequest(response.Message);
-        //       }
-        //   }
-        //}
-    }
+	}
 }
+

@@ -1,17 +1,5 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using TaskManager.CommonModels;
 using TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ;
 using TaskManager.Identity.Domain.Dtos;
@@ -20,7 +8,7 @@ using TaskManager.Identity.Domain.Entities;
 
 namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
 {
-    public class RegisterUserCommandRequest : IRequest<ActionResponse<UserDto>>
+	public class RegisterUserCommandRequest : IRequest<ActionResponse<UserDto>>
     {
         public string UserName { get; set; }
         public string Name { get; set; }

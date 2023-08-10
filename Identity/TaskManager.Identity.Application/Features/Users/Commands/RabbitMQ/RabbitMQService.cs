@@ -1,11 +1,6 @@
 ﻿using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TaskManager.Identity.Domain.Dtos;
-using System.Text.Json;
 
 namespace TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ
 {

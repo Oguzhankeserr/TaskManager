@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using TaskManager.Identity.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ;
+using TaskManager.Identity.Application.Features.Token.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +43,7 @@ builder.Services.AddAuthentication(x =>
     });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHostedService<EmailConsumerService>();
+
 
 //builder.Services.AddPersistenceServices(builder.Configuration);
 //builder.Services.AddApplicationServices();
