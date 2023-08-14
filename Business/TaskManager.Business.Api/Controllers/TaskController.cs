@@ -25,13 +25,13 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResponse<Domain.Entities.Task>> CreateTask( CreateTaskCommandRequest createTaskRequest)//[FromForm]
+        public async Task<ActionResponse<Domain.Entities.Task>> CreateTask(CreateTaskCommandRequest createTaskRequest)//[FromForm]
         {
             ActionResponse<Domain.Entities.Task> response = await _mediator.Send(createTaskRequest);
             return response;
         }
 
-        [HttpPost]
+		[HttpPost]
         public async Task<ActionResponse<List<TaskListDto>>> GetAllProjectTask(GetAllTaskCommandRequest getAllTaskRequest)
         {
             return await _mediator.Send(getAllTaskRequest);

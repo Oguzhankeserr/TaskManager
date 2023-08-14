@@ -22,7 +22,7 @@ namespace TaskManager.Business.Application.Features
         //public string TaskId { get; set; }
         //[FromForm(Name = "Files")] //Burası da denedikten sonra silinecek
         //public IFormFile? Files { get; set; }
-        public DateTime UserUpdatedDate { get; set; }
+        //public DateTime UserUpdatedDate { get; set; }
         public DateTime EndDate { get; set; }
         public string AssigneeId { get; set; }
         public string ReporterId { get; set; }
@@ -51,14 +51,14 @@ namespace TaskManager.Business.Application.Features
 
 
 
-            task.ProjectId = createTaskRequest.ProjectId;
+			task.ProjectId = createTaskRequest.ProjectId;
             task.ColumnId = createTaskRequest.ColumnId;
             task.Priority = createTaskRequest.Priority;
-            task.UserUpdatedDate = createTaskRequest.UserUpdatedDate;
-            task.EndDate = createTaskRequest.EndDate;
+            task.UserUpdatedDate = DateTime.UtcNow;
+			task.EndDate = createTaskRequest.EndDate;
             task.CreatedDate = task.UpdatedDate = DateTime.UtcNow;
             task.Status = true;
-            task.CreatedByUser = task.UpdatedByUser; //admin 
+            task.CreatedByUser = task.UpdatedByUser; 
             task.AssigneeId = createTaskRequest.AssigneeId;
             task.ReporterId = createTaskRequest.ReporterId;
 

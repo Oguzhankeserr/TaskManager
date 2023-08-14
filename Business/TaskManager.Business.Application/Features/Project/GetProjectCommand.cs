@@ -28,8 +28,7 @@ namespace TaskManager.Business.Application.Features
         {
             ActionResponse<Project> response = new();
             response.IsSuccessful = false;
-
-            Project project  = await _businessDbContext.Projects.FirstOrDefaultAsync(p => p.Id == getProjectRequest.Id);
+			Project project  = await _businessDbContext.Projects.FirstOrDefaultAsync(p => p.Id == getProjectRequest.Id);
             if(project != null && project.Status == true)
             {
                 response.Data = project;
