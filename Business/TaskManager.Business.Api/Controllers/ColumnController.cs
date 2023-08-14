@@ -52,5 +52,11 @@ namespace TaskManager.Business.Api.Controllers
             return await _mediator.Send(columnsTasksRequest);
         }
 
+        [HttpPost] 
+        public async Task<ActionResponse<ColumnDto>> TransferColumnTasks(TransferColumnTaskCommandRequest transferTaskRequest)
+        {
+            return await _mediator.Send(transferTaskRequest);
+        }
+
     }
 }
