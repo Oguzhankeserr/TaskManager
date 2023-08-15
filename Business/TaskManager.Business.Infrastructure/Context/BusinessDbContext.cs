@@ -20,6 +20,7 @@ namespace TaskManager.Business.Infrastructure.Context
         public DbSet<TaskFile> TaskFiles { get; set; }
         public DbSet<ProjectFile> ProjectFiles { get; set; }
         public DbSet<UserFile> UserFiles { get; set; }
+        public DbSet<Comments> Comments { get; set; }
 
     }
 }
