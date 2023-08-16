@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Azure.Core;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,13 +38,14 @@ namespace TaskManager.Business.Application.Features
         readonly IStorageService _storageService;
         readonly IUserInfoRepository _userInfoRepository;
 
+
         public CreateTaskCommand(BusinessDbContext businessDbContext, IMediator mediator, IStorageService storageService, IUserInfoRepository userInfoRepository)
         {
             _businessDbContext = businessDbContext;
             _mediator = mediator;
             _storageService = storageService;
             _userInfoRepository = userInfoRepository;
-         }
+        }
 
         public async Task<ActionResponse<Domain.Entities.Task>> Handle(CreateTaskCommandRequest createTaskRequest, CancellationToken cancellationToken)
         {
@@ -51,9 +53,6 @@ namespace TaskManager.Business.Application.Features
             response.IsSuccessful = false;
             Domain.Entities.Task task = new();
             task.Name = createTaskRequest.Name;
-
-
-
 			task.ProjectId = createTaskRequest.ProjectId;
             task.ColumnId = createTaskRequest.ColumnId;
             task.Priority = createTaskRequest.Priority;
@@ -62,21 +61,13 @@ namespace TaskManager.Business.Application.Features
             task.CreatedDate = task.UpdatedDate = DateTime.UtcNow;
             task.Status = true;
             task.CreatedByUser = _userInfoRepository.User.UserId;
-            //task.UpdatedByUser;
             task.AssigneeId = createTaskRequest.AssigneeId;
             task.ReporterId = createTaskRequest.ReporterId;
-
-            //var fileUpload = _mediator.Send(new UploadTaskFileCommandRequest() { TaskId = Convert.ToInt32(createTaskRequest.TaskId), Files = createTaskRequest.Files }).Result;
-
-            //if (!fileUpload.IsSuccessful)
-            //{
-            //    response.IsSuccessful = false;
-            //    response.Message = fileUpload.Message;
-            //    return response;
-            //}
+            
 
             await _businessDbContext.Tasks.AddAsync(task);
             await _businessDbContext.SaveChangesAsync();
+
 
             task.CreatedDate = task.UpdatedDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc); //for return
 
@@ -85,5 +76,6 @@ namespace TaskManager.Business.Application.Features
 
             return response;
         }
+
     }
 }

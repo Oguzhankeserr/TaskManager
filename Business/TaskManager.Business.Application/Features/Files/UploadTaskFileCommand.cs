@@ -19,6 +19,8 @@ namespace TaskManager.Business.Application.Features.Files
     {
         public int TaskId { get; set; }
         public List<IFormFile>? Files { get; set; }
+        //public IFormFile? Files { get; set; }
+
     }
     public class UploadTaskFileCommand : IRequestHandler<UploadTaskFileCommandRequest,ActionResponse<TaskFile>>
     {
@@ -41,12 +43,14 @@ namespace TaskManager.Business.Application.Features.Files
 
                 foreach (var item in result)
                 {
-                    TaskFile taskFile = new();
-                    taskFile.FileName = item.fileName;
-                    taskFile.Path = item.pathOrContainerName;
-                    taskFile.Storage = _storageService.StorageName;
-                    taskFile.TaskId = request.TaskId;
-                   await _businessDbContext.Files.AddAsync(taskFile);
+                    TaskFile taskFile = new()
+                    {
+                        FileName = item.fileName,
+                        Path = item.pathOrContainerName,
+                        Storage = _storageService.StorageName,
+                        TaskId = request.TaskId
+                    };
+                    await _businessDbContext.Files.AddAsync(taskFile);
 
                 }
 

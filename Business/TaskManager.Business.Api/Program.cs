@@ -9,8 +9,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Services.Storage.Azure;
+using TaskManager.Business.Api;
 
 var builder = WebApplication.CreateBuilder(args);
+//var startup = new Startup(builder.Configuration);
+//startup.ConfigureServices(builder.Services); 
 
 
 builder.Services.AddControllers();
@@ -47,7 +50,7 @@ builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
-
+//startup.Configure(app, builder.Environment);
 //app.UseCors(options =>
 //           options.WithOrigins("http://localhost:4200")
 //           .AllowAnyMethod()
