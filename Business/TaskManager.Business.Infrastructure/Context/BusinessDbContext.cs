@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.Domain.Entities;
+using Dapper;
 
 namespace TaskManager.Business.Infrastructure.Context
 {
@@ -22,5 +23,10 @@ namespace TaskManager.Business.Infrastructure.Context
         public DbSet<UserFile> UserFiles { get; set; }
         public DbSet<Comments> Comments { get; set; }
 
+        public List<T> ExecuteQuery<T>(string querty, object param = null)
+        {
+            return this.Database.GetDbConnection().QueryAsync<T>(querty, param).Result.ToList();
+        }
+      
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Dapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
@@ -21,11 +22,11 @@ namespace TaskManager.Business.Application.Features.Comment
     }
     public class GetTaskCommentsQuery : IRequestHandler<GetTaskCommentsQueryRequest, ActionResponse<List<CommentDto>>>
     {
-        private readonly string _connectionString;
+        private readonly BusinessDbContext _dbContext;
 
-        public GetTaskCommentsQuery(IConfiguration configuration)
+        public GetTaskCommentsQuery(BusinessDbContext dbContext)
         {
-            _connectionString = configuration.GetConnectionString("TaskManagerBusinessConnection");
+            _dbContext = dbContext;
         }
 
         public async Task<ActionResponse<List<CommentDto>>> Handle(GetTaskCommentsQueryRequest commentRequest, CancellationToken cancellationToken)
@@ -34,20 +35,16 @@ namespace TaskManager.Business.Application.Features.Comment
             response.IsSuccessful = false;
 
 
-            using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
+            var sql = "SELECT id, comment, createddate, updateddate, createdbyuser, rewrite FROM comments WHERE taskid = @TaskId AND status = true";
+            try
             {
-
-                var sql = "SELECT id, comment, createddate, updateddate, createdbyuser, rewrite FROM comments WHERE taskid = @TaskId AND status = true";
-                try
-                {
-                    var selectedUsers = await connection.QueryAsync<CommentDto>(sql, new { TaskId = commentRequest.TaskId });
-                    response.Data = selectedUsers.ToList();
-                    response.IsSuccessful = true;
-                }
-                catch (Exception ex)
-                {
-                    response.Message = ex.Message;
-                }
+                var selectedUsers =  _dbContext.ExecuteQuery<CommentDto>(sql, new { TaskId = commentRequest.TaskId });
+                response.Data = selectedUsers.ToList();
+                response.IsSuccessful = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
             }
 
             return response;

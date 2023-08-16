@@ -67,7 +67,19 @@ namespace TaskManager.Business.Api.Controllers
             return await _mediator.Send(getAllTaskForUserRequest);
         }
 
-        
+        [HttpGet]
+        public async Task<ActionResponse<List<TaskDto>>> UnplannedTask([FromQuery]GetUnplannedTasksRequest unplannedTaskRequest)
+        {
+            return await _mediator.Send(unplannedTaskRequest);
+        }
+
+        [HttpGet]
+        public async Task<ActionResponse<List<TaskDto>>> UnassignedTask([FromQuery] GetUnassignedTasksRequest unassignedTaskRequest)
+        {
+            return await _mediator.Send(unassignedTaskRequest);
+        }
+
+
 
     }
 }

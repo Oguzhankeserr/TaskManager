@@ -10,6 +10,7 @@ using TaskManager.Business.Application.Features.Files;
 using TaskManager.Business.Domain.Abstractions.Storage;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
+using TaskManager.CommonModels.Repositories;
 
 namespace TaskManager.Business.Application.Features
 {
@@ -34,13 +35,15 @@ namespace TaskManager.Business.Application.Features
         readonly BusinessDbContext _businessDbContext;
         readonly IMediator _mediator;
         readonly IStorageService _storageService;
+        readonly IUserInfoRepository _userInfoRepository;
 
-        public CreateTaskCommand(BusinessDbContext businessDbContext, IMediator mediator, IStorageService storageService)
+        public CreateTaskCommand(BusinessDbContext businessDbContext, IMediator mediator, IStorageService storageService, IUserInfoRepository userInfoRepository)
         {
             _businessDbContext = businessDbContext;
             _mediator = mediator;
             _storageService = storageService;
-        }
+            _userInfoRepository = userInfoRepository;
+         }
 
         public async Task<ActionResponse<Domain.Entities.Task>> Handle(CreateTaskCommandRequest createTaskRequest, CancellationToken cancellationToken)
         {
@@ -58,7 +61,8 @@ namespace TaskManager.Business.Application.Features
 			task.EndDate = createTaskRequest.EndDate;
             task.CreatedDate = task.UpdatedDate = DateTime.UtcNow;
             task.Status = true;
-            task.CreatedByUser = task.UpdatedByUser; 
+            task.CreatedByUser = _userInfoRepository.User.UserId;
+            //task.UpdatedByUser;
             task.AssigneeId = createTaskRequest.AssigneeId;
             task.ReporterId = createTaskRequest.ReporterId;
 
