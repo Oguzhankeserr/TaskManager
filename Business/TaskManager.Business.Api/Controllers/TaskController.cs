@@ -32,7 +32,7 @@ namespace TaskManager.Business.Api.Controllers
         }
 
 		[HttpPost]
-        public async Task<ActionResponse<List<TaskListDto>>> GetAllProjectTask(GetAllTaskCommandRequest getAllTaskRequest)
+        public async Task<ActionResponse<List<TaskListDto>>> GetAllProjectTask(GetAllTaskQueryRequest getAllTaskRequest)
         {
             return await _mediator.Send(getAllTaskRequest);
         }
