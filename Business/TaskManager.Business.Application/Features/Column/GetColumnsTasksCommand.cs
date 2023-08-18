@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.EntityFrameworkCore;
 
 namespace TaskManager.Business.Application.Features
 {
@@ -25,46 +28,52 @@ namespace TaskManager.Business.Application.Features
             _businessDbContext = businessDbContext;
         }
 
-        //todo 
         public async Task<ActionResponse<List<ColumnTaskDto>>> Handle(GetColumnsTasksCommandRequest columnsTasksRequest, CancellationToken cancellationToken)
         {
             ActionResponse<List<ColumnTaskDto>> response = new();
             response.IsSuccessful = false;
 
-            List<Domain.Entities.Column> columns = _businessDbContext.Columns.Where(c => c.ProjectId == columnsTasksRequest.Id && c.Status == true).ToList();
-            if (columns.Count > 0)
+            string sql = @" SELECT c.projectid, c.name, c.id,
+                             t.id AS Id, t.name AS Name, t.priority AS Priority, t.columnid AS ColumnId
+                             FROM columns c 
+                             LEFT JOIN tasks t ON c.id = t.columnid 
+                             WHERE c.projectid = @ProjectId AND c.status = true AND t.status = true ";
+            try
             {
-                List<ColumnTaskDto> columnTaskDtos = new();
-                foreach (var column in columns)
+                var queryResult = await _businessDbContext.Database.GetDbConnection().QueryAsync<ColumnTaskDto, TaskDto, ColumnTaskDto>(
+                     sql, (column, task) =>
+                     {
+                         column.Tasks ??= new List<TaskDto>();
+                         if (task != null)
+                         {
+                             column.Tasks.Add(task);
+                         }
+                         return column;
+                     },
+                     new { ProjectId = columnsTasksRequest.Id }, splitOn: "Id,Id");
+
+                var groupTasks = queryResult.GroupBy(column => column.Id).Select(group => new ColumnTaskDto
                 {
-                    ColumnTaskDto col = new();
-                    List<Domain.Entities.Task> tasks = new();
-                   
-                    List<TaskDto> taskDtos= new();
-
-                    col.ProjectId = column.ProjectId;
-                    col.Name = column.Name;
-                    col.Id = column.Id;
-
-                    tasks = _businessDbContext.Tasks.Where(t => t.ProjectId == columnsTasksRequest.Id && t.ColumnId == column.Id && t.Status == true).ToList();
-                    foreach(var task in tasks) 
-                    {
-                        TaskDto taskT = new();
-                        taskT.Id = task.Id;
-                        taskT.Name = task.Name;
-                        taskT.Priority = task.Priority;
-                        taskT.ColumnId= task.ColumnId;
-
-                        taskDtos.Add(taskT);
-                    }
-                    col.Tasks = taskDtos;
-
-                    columnTaskDtos.Add(col);
+                    ProjectId = group.First().ProjectId,
+                    Name = group.First().Name,
+                    Id = group.Key,
+                    Tasks = group.SelectMany(column => column.Tasks).ToList()
                 }
-                response.Data= columnTaskDtos;
+                ).ToList();
+                response.Data = groupTasks;
                 response.IsSuccessful = true;
             }
+
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                response.IsSuccessful = false;
+            }
+
             return response;
         }
     }
 }
+            
+    
+
