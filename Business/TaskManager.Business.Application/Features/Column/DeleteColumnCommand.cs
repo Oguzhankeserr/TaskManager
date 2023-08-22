@@ -19,10 +19,12 @@ namespace TaskManager.Business.Application.Features
     public class DeleteColumnCommand : IRequestHandler<DeleteColumnCommandRequest, ActionResponse<Domain.Entities.Column>>
     {
         readonly BusinessDbContext _businessDbContext;
+        readonly GenericService<Domain.Entities.Column> _genericService;
 
-        public DeleteColumnCommand(BusinessDbContext businessDbContext)
+        public DeleteColumnCommand(BusinessDbContext businessDbContext, GenericService<Domain.Entities.Column> genericService)
         {
             _businessDbContext = businessDbContext;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<Domain.Entities.Column>> Handle(DeleteColumnCommandRequest deleteColumnRequest, CancellationToken cancellationToken)
@@ -34,7 +36,8 @@ namespace TaskManager.Business.Application.Features
             if(column != null && column.Status == true)
             {
                 column.Status = false;
-                await _businessDbContext.SaveChangesAsync();
+                //await _businessDbContext.SaveChangesAsync();
+                _genericService.Update(column);
                 response.Data = column;
                 response.IsSuccessful |= true;
             }

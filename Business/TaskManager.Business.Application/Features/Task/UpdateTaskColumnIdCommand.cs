@@ -19,10 +19,12 @@ namespace TaskManager.Business.Application.Features.Task
     public class UpdateTaskColumnIdCommand : IRequestHandler<UpdateTaskColumnIdCommandRequest, ActionResponse<Domain.Entities.Task>>
     {
         readonly BusinessDbContext _businessDbContext;
+        readonly GenericService<Domain.Entities.Task> _genericService;
 
-        public UpdateTaskColumnIdCommand(BusinessDbContext businessDbContext)
+        public UpdateTaskColumnIdCommand(BusinessDbContext businessDbContext, GenericService<Domain.Entities.Task> genericService)
         {
             _businessDbContext = businessDbContext;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<Domain.Entities.Task>> Handle(UpdateTaskColumnIdCommandRequest updateTaskColumnIdCommandRequest, CancellationToken cancellationToken)
@@ -37,7 +39,8 @@ namespace TaskManager.Business.Application.Features.Task
 
                 task.UpdatedDate = DateTime.UtcNow;
 
-                await _businessDbContext.SaveChangesAsync();
+                //await _businessDbContext.SaveChangesAsync();
+                _genericService.Update(task);
 
                 response.Data = task;
                 response.IsSuccessful = true;

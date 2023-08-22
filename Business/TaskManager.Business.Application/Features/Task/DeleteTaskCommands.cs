@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,13 +18,15 @@ namespace TaskManager.Business.Application.Features.Task
     public class DeleteTaskCommand : IRequestHandler<DeleteTaskCommandRequest, ActionResponse<Domain.Entities.Task>>
     {
         readonly BusinessDbContext _businessDbContext;
+        readonly GenericService<Domain.Entities.Task> _genericService;
 
-        public DeleteTaskCommand(BusinessDbContext businessDbContext)
+        public DeleteTaskCommand(BusinessDbContext businessDbContext, GenericService<Domain.Entities.Task> genericService)
         {
             _businessDbContext = businessDbContext;
+            _genericService = genericService;
         }
 
-    public async Task<ActionResponse<Domain.Entities.Task>> Handle(DeleteTaskCommandRequest deleteTaskRequest, CancellationToken cancellationToken)
+        public async Task<ActionResponse<Domain.Entities.Task>> Handle(DeleteTaskCommandRequest deleteTaskRequest, CancellationToken cancellationToken)
         {
             ActionResponse<Domain.Entities.Task> response = new();
             response.IsSuccessful = false;
@@ -32,7 +35,8 @@ namespace TaskManager.Business.Application.Features.Task
             if (task != null && task.Status == true) 
             {
                 task.Status = false;
-                await _businessDbContext.SaveChangesAsync();
+                //await _businessDbContext.SaveChangesAsync();
+                _genericService.Update(task);
                 response.Data=task;
                 response.IsSuccessful = true;
             }

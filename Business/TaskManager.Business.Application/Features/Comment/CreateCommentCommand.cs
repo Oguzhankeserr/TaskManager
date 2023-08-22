@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,11 +23,13 @@ namespace TaskManager.Business.Application.Features.Comment
     {
         readonly BusinessDbContext _businessDbContext;
         readonly IUserInfoRepository _userInfoRepository;
+        readonly GenericService<Comments> _genericService;
 
-        public CreateCommentCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository)
+        public CreateCommentCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository, GenericService<Comments> genericService)
         {
             _businessDbContext = businessDbContext;
             _userInfoRepository = userInfoRepository;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<CommentDto>> Handle(CreateCommentCommandRequest createCommendRequest, CancellationToken cancellationToken)
@@ -43,8 +46,9 @@ namespace TaskManager.Business.Application.Features.Comment
             comment.Rewrite = false;
             //comment.UpdatedDate 
 
-            _businessDbContext.Comments.AddAsync(comment);
-            _businessDbContext.SaveChangesAsync();
+            //_businessDbContext.Comments.AddAsync(comment);
+            //_businessDbContext.SaveChangesAsync();
+            _genericService.AddAsync(comment);
 
             response.IsSuccessful = true;
             return response;

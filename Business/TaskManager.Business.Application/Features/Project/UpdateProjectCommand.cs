@@ -24,13 +24,15 @@ namespace TaskManager.Business.Application.Features
         readonly BusinessDbContext _businessDbContext;
 
         readonly IRepository<Project> _repository;
-        readonly IUnitOfWork _unitOfWork;
+        readonly IUnitOfWork<Project> _unitOfWork;
+        readonly GenericService<Project> _genericService;
 
-        public UpdateProjectCommand(BusinessDbContext businessDbContext, IRepository<Project> repository, IUnitOfWork unitOfWork )
+        public UpdateProjectCommand(BusinessDbContext businessDbContext, IRepository<Project> repository, IUnitOfWork<Project> unitOfWork,GenericService<Project> genericService)
         {
             _businessDbContext = businessDbContext;
             _repository = repository;
             _unitOfWork = unitOfWork;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<Project>> Handle(UpdateProjectCommandRequest updateProjectRequest, CancellationToken cancellationToken)
@@ -45,8 +47,9 @@ namespace TaskManager.Business.Application.Features
                 project.UpdatedDate = DateTime.UtcNow;
 
                 //await _businessDbContext.SaveChangesAsync();
-                _repository.Update(project);
-                _unitOfWork.Commit();
+                //_repository.Update(project);
+                //_unitOfWork.Commit();
+                _genericService.Update(project);
 
                 project.UpdatedDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc); // for response
                 response.Data = project;

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +19,12 @@ namespace TaskManager.Business.Application.Features
     public class DeleteProjectCommand : IRequestHandler<DeleteProjectCommandRequest, ActionResponse<Project>>
     {
         readonly BusinessDbContext _businessDbContext;
+        readonly GenericService<Project> _genericService;
 
-        public DeleteProjectCommand(BusinessDbContext businessDbContext)
+        public DeleteProjectCommand(BusinessDbContext businessDbContext, GenericService<Project> genericService)
         {
             _businessDbContext = businessDbContext;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<Project>> Handle(DeleteProjectCommandRequest deleteProjectRequest, CancellationToken cancellationToken)
@@ -33,7 +36,8 @@ namespace TaskManager.Business.Application.Features
             if(project != null && project.Status == true )
             {
                 project.Status = false;
-                await _businessDbContext.SaveChangesAsync();
+                //await _businessDbContext.SaveChangesAsync();
+                _genericService.Update(project);
                 response.Data = project;
                 response.IsSuccessful = true;
                 //todo update time 

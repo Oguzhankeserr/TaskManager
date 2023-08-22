@@ -17,6 +17,7 @@ using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Enums;
 using TaskManager.Business.Infrastructure.Services.Storage.Azure;
 using Microsoft.Extensions.Options;
+using TaskManager.Business.Domain.UnitOfWork;
 
 namespace TaskManager.Business.Infrastructure
 {
@@ -35,7 +36,7 @@ namespace TaskManager.Business.Infrastructure
             //.UseLowerCaseNamingConvention()
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            services.AddScoped<IUnitOfWork, Infrastructure.UnitOfWork.UnitOfWork>();
+            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
             services.AddScoped<IStorageService, StorageService>();
 

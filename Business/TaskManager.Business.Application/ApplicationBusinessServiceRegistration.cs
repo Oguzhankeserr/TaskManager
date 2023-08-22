@@ -7,6 +7,8 @@ using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Domain;
 using TaskManager.Business.Infrastructure;
 using TaskManager.CommonModels.Repositories;
+using TaskManager.Business.Domain.UnitOfWork;
+using TaskManager.Business.Infrastructure.UnitOfWork;
 
 namespace TaskManager.Business.Application
 {
@@ -19,8 +21,21 @@ namespace TaskManager.Business.Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
             services.AddScoped<IUserInfoRepository, UserInfoRepository>();
+
             services.AddScoped<IRepository<Project>, Repository<Project>>();
+            services.AddScoped<IRepository<Domain.Entities.Task>, Repository<Domain.Entities.Task>>();
+            services.AddScoped<IRepository< Domain.Entities.Column>, Repository< Domain.Entities.Column>>();
+            services.AddScoped<IRepository<Comments>, Repository< Comments>>();
+
+            services.AddScoped<IUnitOfWork<Project>, UnitOfWork<Project>>();
+            services.AddScoped<IUnitOfWork<Domain.Entities.Task>, UnitOfWork<Domain.Entities.Task>>();
+            services.AddScoped<IUnitOfWork<Domain.Entities.Column>, UnitOfWork<Domain.Entities.Column>>();
+            services.AddScoped<IUnitOfWork<Comments>, UnitOfWork<Comments>>();
+
             services.AddScoped<GenericService<Project>>();
+            services.AddScoped<GenericService<Domain.Entities.Column>>();
+            services.AddScoped<GenericService<Domain.Entities.Task>>();
+            services.AddScoped<GenericService<Comments>>();
 
         }
     }

@@ -10,7 +10,7 @@ using TaskManager.Business.Infrastructure.Context;
 
 namespace TaskManager.Business.Infrastructure.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork<T> : IUnitOfWork<T> where T : class
     {
         private readonly BusinessDbContext _businessDbContext;
 

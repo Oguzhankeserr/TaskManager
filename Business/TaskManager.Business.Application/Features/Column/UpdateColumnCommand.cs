@@ -21,11 +21,13 @@ namespace TaskManager.Business.Application.Features.Column
     {
         readonly BusinessDbContext _businessDbContext;
         readonly IUserInfoRepository _userInfoRepository;
+        readonly GenericService<Domain.Entities.Column> _genericService;
 
-        public UpdateColumnCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository)
+        public UpdateColumnCommand(BusinessDbContext businessDbContext, IUserInfoRepository userInfoRepository, GenericService<Domain.Entities.Column> genericService)
         {
             _businessDbContext = businessDbContext;
             _userInfoRepository = userInfoRepository;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<Domain.Entities.Column>> Handle(UpdateColumnCommandRequest updateColumnRequest, CancellationToken cancellationToken)
@@ -40,7 +42,8 @@ namespace TaskManager.Business.Application.Features.Column
                 column.Name = updateColumnRequest.Name;
                 column.UpdatedDate = DateTime.UtcNow;
                 column.UpdatedByUser = _userInfoRepository.User.UserId;
-                await _businessDbContext.SaveChangesAsync();
+                //await _businessDbContext.SaveChangesAsync();
+                _genericService.Update(column);
                 response.Data = column;
                 response.IsSuccessful = true;
             }

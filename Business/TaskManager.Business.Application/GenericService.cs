@@ -11,15 +11,13 @@ namespace TaskManager.Business.Application
 {
     public class GenericService<T> where T : class
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork<T> _unitOfWork;
         private readonly IRepository<T> _repository;
-        private readonly IMediator _mediator;
 
-        public GenericService(IUnitOfWork unitOfWork, IRepository<T> repository, IMediator mediator)
+        public GenericService(IUnitOfWork<T> unitOfWork, IRepository<T> repository)
         {
             _unitOfWork = unitOfWork;
             _repository = repository;
-            _mediator = mediator;
         }
 
         public void Add(T entity)
@@ -35,74 +33,74 @@ namespace TaskManager.Business.Application
                 _unitOfWork.Rollback();
             }
         }
-        public void AddAsync(T entity)
+        public async void AddAsync(T entity)
         {
             try
             {
-                _repository.AddAsync(entity);
-                _unitOfWork.CommitAsync();
+                await _repository.AddAsync(entity);
+                await _unitOfWork.CommitAsync();
             }
             catch
             {
-                _unitOfWork.RollbackAsync();
+                await _unitOfWork.RollbackAsync();
             }
 
         }
 
-        public void Update(T entity)
+        public async void Update(T entity)
         {
             try
             {
                 _repository.Update(entity);
-                _unitOfWork.CommitAsync();
+                await _unitOfWork.CommitAsync();
             }
             catch 
             {
-                _unitOfWork.RollbackAsync();  
+                await _unitOfWork.RollbackAsync();  
             }
         
         }
 
-        public void UpdateRange(IEnumerable<T> entities)
+        public async void UpdateRange(IEnumerable<T> entities)
         {
             try
             {
                 _repository.UpdateRange(entities);
-                _unitOfWork.CommitAsync();  
+                await _unitOfWork.CommitAsync();  
             }
             catch 
             {
-                _unitOfWork.RollbackAsync();
+                await _unitOfWork.RollbackAsync();
             }
         }
 
-        public void Remove(T entity)
+        public async void Remove(T entity)
         {
             try
             {
               _repository.Remove(entity);
-              _unitOfWork.CommitAsync();
+              await _unitOfWork.CommitAsync();
             }
             catch 
             {
-                _unitOfWork.RollbackAsync();
+                await _unitOfWork.RollbackAsync();
             }
         }
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public async void RemoveRange(IEnumerable<T> entities)
         {
             try
             {
-               _repository.RemoveRange(entities);
-               _unitOfWork.CommitAsync();
+                _repository.RemoveRange(entities);
+               await _unitOfWork.CommitAsync();
             }
             catch 
             {
-                _unitOfWork.RollbackAsync();
+                await _unitOfWork.RollbackAsync();
             }
         }
 
-        public void GetAll() // Kontrol edilecek 
+        public async void GetAll() // Kontrol edilecek 
         {
             try
             {
@@ -111,7 +109,7 @@ namespace TaskManager.Business.Application
             }
             catch 
             {
-                _unitOfWork.RollbackAsync();
+                await _unitOfWork.RollbackAsync();
             }
         }
         public async Task GetAllAsync()

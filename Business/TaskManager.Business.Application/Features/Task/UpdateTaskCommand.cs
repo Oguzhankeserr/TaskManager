@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,12 @@ namespace TaskManager.Business.Application.Features
     public class UpdateTaskCommand : IRequestHandler<UpdateTaskCommandRequest, ActionResponse<Domain.Entities.Task>>
     {
         readonly BusinessDbContext _businessDbContext;
+        readonly GenericService<Domain.Entities.Task> _genericService;
 
-        public UpdateTaskCommand(BusinessDbContext businessDbContext)
+        public UpdateTaskCommand(BusinessDbContext businessDbContext, GenericService<Domain.Entities.Task> genericService)
         {
             _businessDbContext = businessDbContext;
+            _genericService = genericService;
         }
 
         public async Task<ActionResponse<Domain.Entities.Task>> Handle(UpdateTaskCommandRequest updateTaskRequest, CancellationToken cancellationToken)
@@ -39,7 +42,8 @@ namespace TaskManager.Business.Application.Features
 
                 task.UpdatedDate = DateTime.UtcNow;
 
-                await _businessDbContext.SaveChangesAsync();
+                //await _businessDbContext.SaveChangesAsync();
+                _genericService.Update(task);
 
                 response.Data = task;
                 response.IsSuccessful = true;

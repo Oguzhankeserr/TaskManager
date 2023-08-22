@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Business.Domain.UnitOfWork
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork<T> where T : class
     {
         void Commit();
         void Rollback();
