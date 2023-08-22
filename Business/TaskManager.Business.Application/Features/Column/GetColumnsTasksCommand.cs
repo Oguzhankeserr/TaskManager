@@ -9,7 +9,6 @@ using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.EntityFrameworkCore;
 
 namespace TaskManager.Business.Application.Features
@@ -33,34 +32,48 @@ namespace TaskManager.Business.Application.Features
             ActionResponse<List<ColumnTaskDto>> response = new();
             response.IsSuccessful = false;
 
-            string sql = @" SELECT c.projectid, c.name, c.id,
-                             t.id AS Id, t.name AS Name, t.priority AS Priority, t.columnid AS ColumnId
-                             FROM columns c 
-                             LEFT JOIN tasks t ON c.id = t.columnid 
-                             WHERE c.projectid = @ProjectId AND c.status = true AND t.status = true ";
+            string columnsQuery = @"SELECT id, name, projectid FROM columns
+                                WHERE projectid = @ProjectId AND status = true order by createddate";
             try
             {
-                var queryResult = await _businessDbContext.Database.GetDbConnection().QueryAsync<ColumnTaskDto, TaskDto, ColumnTaskDto>(
-                     sql, (column, task) =>
-                     {
-                         column.Tasks ??= new List<TaskDto>();
-                         if (task != null)
-                         {
-                             column.Tasks.Add(task);
-                         }
-                         return column;
-                     },
-                     new { ProjectId = columnsTasksRequest.Id }, splitOn: "Id,Id");
+                var columns = await _businessDbContext.Database.GetDbConnection().QueryAsync<ColumnTaskDto>(columnsQuery, new { ProjectId = columnsTasksRequest.Id });
 
-                var groupTasks = queryResult.GroupBy(column => column.Id).Select(group => new ColumnTaskDto
+                var columnIds = columns.Select(column => column.Id).ToArray();
+                string taskQuery = "SELECT id, name, priority, columnid FROM tasks WHERE status = true AND tasks.columnid in (";
+                foreach (var column in columnIds)
                 {
-                    ProjectId = group.First().ProjectId,
-                    Name = group.First().Name,
-                    Id = group.Key,
-                    Tasks = group.SelectMany(column => column.Tasks).ToList()
+                    taskQuery += "'" + column + "',";
                 }
-                ).ToList();
-                response.Data = groupTasks;
+                taskQuery = taskQuery.TrimEnd(',');
+                taskQuery += ")";
+
+                if (columns.Any())
+                {
+                    var tasks = await _businessDbContext.Database.GetDbConnection().QueryAsync<TaskDto>(taskQuery);
+
+                    foreach (var task in tasks)
+                    {
+                        var column = columns.FirstOrDefault(c => c.Id  == task.ColumnId);
+                        if (column != null)
+                        {
+                            if (column.Tasks == null)
+                            {
+                                column.Tasks = new List<TaskDto>();
+                            }
+                            column.Tasks.Add(task);
+                        }
+                    }
+                }
+
+                foreach (var column in columns)
+                {
+                    if (column.Tasks == null)
+                    {
+                        column.Tasks = new List<TaskDto>();
+                    }
+                }
+
+                response.Data = columns.ToList();
                 response.IsSuccessful = true;
             }
 

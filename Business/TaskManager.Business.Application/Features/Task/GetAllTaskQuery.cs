@@ -32,7 +32,7 @@ namespace TaskManager.Business.Application.Features.Task
             ActionResponse<List<TaskListDto>> response = new();
             response.IsSuccessful = false;
 
-            string query = @" SELECT id, name, priority, columnid, createddate, updateddate, enddate AS DueDate, assigneeid, reporterid, isdone
+            string query = @" SELECT id, name, priority, columnid, createddate, updateddate, enddate AS DueDate, assigneeid, reporterid, isdone, CAST(createdbyuser AS varchar(50)) AS createdByUser
                             FROM tasks
                             WHERE projectid = @ProjectId AND status = true";
             try
