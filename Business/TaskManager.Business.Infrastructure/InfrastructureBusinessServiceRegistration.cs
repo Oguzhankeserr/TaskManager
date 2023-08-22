@@ -17,7 +17,6 @@ using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Enums;
 using TaskManager.Business.Infrastructure.Services.Storage.Azure;
 using Microsoft.Extensions.Options;
-using TaskManager.Business.Domain.UnitOfWork;
 
 namespace TaskManager.Business.Infrastructure
 {
@@ -47,23 +46,23 @@ namespace TaskManager.Business.Infrastructure
         {
             services.AddScoped<IStorage, T>();
         }
-        public static void AddStorage<T>(this IServiceCollection serviceCollection, StorageType storageType) //Burayı kaldırabilirim daha sonra bakacağım
-        {
-            switch (storageType)
-            {
-                case StorageType.Local:
-                    serviceCollection.AddScoped<IStorage, LocalStorage>();
-                    break;
-                case StorageType.Azure:
-                    serviceCollection.AddScoped<IStorage, AzureStorage>();
-                    break;
-                case StorageType.AWS:
-                    break;
-                default:
-                    serviceCollection.AddScoped<IStorage, LocalStorage>();
-                    break;
-            }
-        }
+        //public static void AddStorage<T>(this IServiceCollection serviceCollection, StorageType storageType) where T : Storage, IStorage //Burayı kaldırabilirim daha sonra bakacağım
+        //{
+        //    switch (storageType)
+        //    {
+        //        case StorageType.Local:
+        //            serviceCollection.AddScoped<IStorage, LocalStorage>();
+        //            break;
+        //        case StorageType.Azure:
+        //            serviceCollection.AddScoped<IStorage, AzureStorage>();
+        //            break;
+        //        case StorageType.AWS:
+        //            break;
+        //        default:
+        //            serviceCollection.AddScoped<IStorage, LocalStorage>();
+        //            break;
+        //    }
+        //}
 
         public static void Migration(IServiceScope scope)
         {

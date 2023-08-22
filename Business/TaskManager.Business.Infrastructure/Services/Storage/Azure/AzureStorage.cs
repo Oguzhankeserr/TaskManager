@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,20 @@ namespace TaskManager.Business.Infrastructure.Services.Storage.Azure
 {
     public class AzureStorage : Storage, IAzureStorage
     {
-        readonly BlobServiceClient _blobServiceClient;
+         BlobServiceClient _blobServiceClient;
         BlobContainerClient _blobContainerClient;
-
-        public AzureStorage(IConfiguration configuration)
+        public static string azureConStr { get; set; }
+        public AzureStorage()
         {
-            _blobServiceClient = new(configuration["Storage: Azure"]);
+            var configurationBuilder = new ConfigurationBuilder();
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+            configurationBuilder.AddJsonFile(path, false);
+            azureConStr = configurationBuilder.Build().GetSection("Storage:Azure").Value ?? "";
+
+            //_blobServiceClient. = azureConStr ?? "";
+            _blobServiceClient = new BlobServiceClient(azureConStr);
         }
+
 
         public async Task DeleteAsync(string containerName, string fileName)
         {
