@@ -12,8 +12,6 @@ namespace TaskManager.Business.Domain.Dtos
         public string Name { get; set; }
         public int ColumnId { get; set; }
         public int Priority { get; set; }
-
-        public int Label { get; set; }
     }
 
     public class TaskListDto

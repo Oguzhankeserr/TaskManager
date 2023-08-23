@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
-using TaskManager.Business.Application.Features.Column;
-using TaskManager.Business.Domain.Entities;
 
 namespace TaskManager.Business.Application.Features.Task
 {
@@ -16,15 +14,12 @@ namespace TaskManager.Business.Application.Features.Task
     {
         public int Id { get; set; }
         public int ColumnId { get; set; }
-        public int? Label { get; set; }
     }
     
     public class UpdateTaskColumnIdCommand : IRequestHandler<UpdateTaskColumnIdCommandRequest, ActionResponse<Domain.Entities.Task>>
     {
         readonly BusinessDbContext _businessDbContext;
         readonly GenericService<Domain.Entities.Task> _genericService;
-        
-        
 
         public UpdateTaskColumnIdCommand(BusinessDbContext businessDbContext, GenericService<Domain.Entities.Task> genericService)
         {
@@ -36,47 +31,20 @@ namespace TaskManager.Business.Application.Features.Task
         {
             ActionResponse<Domain.Entities.Task> response = new();
             response.IsSuccessful = false;
-            
 
-            try
+            Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(p => p.Id == updateTaskColumnIdCommandRequest.Id);
+            if (task != null && task.Status ==true) 
             {
-                Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(p => p.Id == updateTaskColumnIdCommandRequest.Id);
+                task.ColumnId = updateTaskColumnIdCommandRequest.ColumnId;
 
-               
-                if (task != null && task.Status == true)
-                {
-                    task.ColumnId = updateTaskColumnIdCommandRequest.ColumnId;
-                    task.UpdatedDate = DateTime.UtcNow;
+                task.UpdatedDate = DateTime.UtcNow;
 
+                //await _businessDbContext.SaveChangesAsync();
+                _genericService.Update(task);
 
-
-                    if (task.Label == (-1))
-                    {
-                        task.Label = 0;
-
-                    }
-
-   
-
-                    
-                    
-
-
-                    //await _businessDbContext.SaveChangesAsync();
-                    _genericService.Update(task);
-
-                    response.Data = task;
-                    response.IsSuccessful = true;
-                }
-                
-
+                response.Data = task;
+                response.IsSuccessful = true;
             }
-            catch (Exception ex)
-            {
-                response.Message = ex.Message;
-                response.IsSuccessful = false;
-            }
-            
             return response;
         }
     }

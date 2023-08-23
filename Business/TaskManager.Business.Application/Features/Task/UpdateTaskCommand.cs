@@ -16,8 +16,6 @@ namespace TaskManager.Business.Application.Features
         public int Id { get; set; } 
         public string Name{ get; set; }
         public int Priority { get; set; }
-
-        public int? Label { get; set; }
     }
 
     public class UpdateTaskCommand : IRequestHandler<UpdateTaskCommandRequest, ActionResponse<Domain.Entities.Task>>
@@ -43,7 +41,6 @@ namespace TaskManager.Business.Application.Features
                 task.Priority = updateTaskRequest.Priority;
 
                 task.UpdatedDate = DateTime.UtcNow;
-                task.Label = updateTaskRequest.Label;
 
                 //await _businessDbContext.SaveChangesAsync();
                 _genericService.Update(task);

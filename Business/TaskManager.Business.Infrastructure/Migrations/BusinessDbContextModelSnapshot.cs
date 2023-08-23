@@ -263,9 +263,9 @@ namespace TaskManager.Business.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("enddate");
 
-                    b.Property<int>("Label")
-                        .HasColumnType("integer")
-                        .HasColumnName("label");
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("boolean")
+                        .HasColumnName("isdone");
 
                     b.Property<string>("Name")
                         .IsRequired()
