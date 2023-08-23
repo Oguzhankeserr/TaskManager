@@ -18,7 +18,8 @@ namespace TaskManager.Business.Domain.Entities
         public bool Status { get; set; }
         public string AssigneeId { get; set; }
         public string ReporterId { get; set; }
-        public Boolean IsDone { get; set; }
+        public int? Label { get; set; }
+        //public Boolean IsDone { get; set; }
         //public string AssignedTime { get; set; }
     }
 }
