@@ -31,6 +31,7 @@ namespace TaskManager.Business.Application.Features
         public DateTime EndDate { get; set; }
         public string AssigneeId { get; set; }
         public string ReporterId { get; set; }
+        public int Label { get; set; }
 
     }
 
@@ -70,6 +71,7 @@ namespace TaskManager.Business.Application.Features
             task.CreatedByUser = _userInfoRepository.User.UserId;
             task.AssigneeId = createTaskRequest.AssigneeId;
             task.ReporterId = createTaskRequest.ReporterId;
+            task.Label = createTaskRequest.Label;
 
 
             //await _businessDbContext.Tasks.AddAsync(task);
