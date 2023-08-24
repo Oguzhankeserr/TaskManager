@@ -13,7 +13,7 @@ namespace TaskManager.Business.Domain.Dtos
         public int ColumnId { get; set; }
         public int Priority { get; set; }
 
-        public int Label { get; set; }
+        public int? Label { get; set; }
     }
 
     public class TaskListDto
@@ -38,6 +38,7 @@ namespace TaskManager.Business.Domain.Dtos
         public int ProjectId { get; set; }
         public int Priority { get; set; }
         public string AssigneeId { get; set; }
+        public int? Label { get; set; }
 
         //public int AssigneeId { get; set; }
         //public int ReporterId { get; set; }
