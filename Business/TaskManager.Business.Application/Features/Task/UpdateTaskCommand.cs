@@ -17,6 +17,9 @@ namespace TaskManager.Business.Application.Features
         public string Name{ get; set; }
         public int Priority { get; set; }
         public int? Label { get; set; }
+        public string ReporterId { get; set; }
+        public string AssigneeId { get; set; }
+        public DateTime EndDate { get; set; }
     }
 
     public class UpdateTaskCommand : IRequestHandler<UpdateTaskCommandRequest, ActionResponse<Domain.Entities.Task>>
@@ -40,6 +43,9 @@ namespace TaskManager.Business.Application.Features
             {
                 task.Name = updateTaskRequest.Name;
                 task.Priority = updateTaskRequest.Priority;
+                task.ReporterId = updateTaskRequest.ReporterId;
+                task.AssigneeId = updateTaskRequest.AssigneeId;
+                task.EndDate = updateTaskRequest.EndDate;
 
                 task.UpdatedDate = DateTime.UtcNow;
                 task.Label = updateTaskRequest.Label;

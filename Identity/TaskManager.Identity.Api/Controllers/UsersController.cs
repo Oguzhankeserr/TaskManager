@@ -49,7 +49,7 @@ namespace TaskManager.Identity.Api.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpPost] //Get idi Post yaptım
         public async Task<IActionResult> GetUserById([FromBody] GetUserCommandRequest getUserCommandRequest) => Ok(await _mediator.Send(getUserCommandRequest));
 
 

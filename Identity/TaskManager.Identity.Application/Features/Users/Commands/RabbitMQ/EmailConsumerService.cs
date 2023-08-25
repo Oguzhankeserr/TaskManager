@@ -116,31 +116,7 @@ public class EmailConsumerService : BackgroundService // Background Service : De
 		return result.Data.PasswordTokenAccess;
 	}
 
-	public async Task SendChangePasswordEmail(string userEmail, string Id)
-	{
-		string fromMail = "taskmanager0707@gmail.com";
-		string fromPassword = "u v j x y q u w u s y w a a z x";
-
-		string token = await GeneratePasswordResetToken(Id); // Call a method to generate the token
-		string resetUrl = $"http://localhost:4200/password-change?token={token}";
-
-		string emailBody = $"<html><body> Hello, this is your <a href='{resetUrl}'> change password </a>  link. </body></html>";
-		MailMessage message = new MailMessage();
-		message.From = new MailAddress(fromMail);
-		message.Subject = "Reset Password";
-		message.To.Add(new MailAddress(userEmail));
-		message.Body = emailBody;
-		message.IsBodyHtml = true;
-
-		var smtpClient = new System.Net.Mail.SmtpClient("smtp.gmail.com")
-		{
-			Port = 587,
-			Credentials = new NetworkCredential(fromMail, fromPassword),
-			EnableSsl = true,
-		};
-
-		smtpClient.Send(message);
-	}
+	
 
 
 }
