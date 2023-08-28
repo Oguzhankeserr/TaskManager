@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
+using System.Security.Claims;
 using TaskManager.Business.Application.Features;
 using TaskManager.Business.Application.Features.Task;
 using TaskManager.Business.Domain.Dtos;
@@ -35,6 +37,14 @@ namespace TaskManager.Business.Api.Controllers
         public async Task<ActionResponse<List<TaskListDto>>> GetAllProjectTask(GetAllTaskQueryRequest getAllTaskRequest)
         {
             return await _mediator.Send(getAllTaskRequest);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResponse<List<TaskUserDto>>> GetProjectTasks()
+        {
+            string userId = User.FindFirstValue("UserId");
+            return await _mediator.Send(new GetTasksQueryRequest { UserId = userId});
         }
 
         [HttpPost]

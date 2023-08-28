@@ -29,6 +29,7 @@ namespace TaskManager.Identity.Infrastructure.Persistence
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
+                options.User.AllowedUserNameCharacters = "abcçdefgğhıijklmnoöpqrsştuüvwxyzABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._";
             }
             ).AddEntityFrameworkStores<TaskManagerDbContext>();
         }
