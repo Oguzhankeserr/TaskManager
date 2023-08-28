@@ -68,8 +68,6 @@ namespace TaskManager.Identity.Api.Controllers
 
 		}
 
-
-		[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResponse<List<UserDto>>> GetAllUsers()
         {

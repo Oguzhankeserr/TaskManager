@@ -56,7 +56,7 @@ namespace TaskManager.Business.Application.Features.Task
                     TaskUserDto taskUserDto = new TaskUserDto();
                     taskUserDto.Id = task.Id;
                     taskUserDto.Name = task.Name;
-                    taskUserDto.ProjectId = task.ProjectId;
+                    //taskUserDto.ProjectId = task.ProjectId;
                     taskUserDto.Priority = task.Priority;
                     taskUserDto.AssigneeId = task.AssigneeId;
                     taskUserDto.Label = task.Label;
