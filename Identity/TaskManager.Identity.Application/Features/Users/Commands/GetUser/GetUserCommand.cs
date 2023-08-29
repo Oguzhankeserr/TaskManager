@@ -9,7 +9,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.GetUser
     {
         public string Id { get; set; }
     }
-
+    
     public class GetUserCommand : IRequestHandler<GetUserCommandRequest, ActionResponse<AppUser>>
     {
         readonly UserManager<AppUser> _userManager;
