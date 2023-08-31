@@ -17,6 +17,8 @@ using Microsoft.Extensions.Logging;
 using TaskManager.Identity.Application.Features.Token.Commands;
 using MediatR;
 using System.Xml.Linq;
+using RabbitMQ.Client.Exceptions;
+using System.Net.Sockets;
 
 public class EmailConsumerService : BackgroundService // Background Service : Designed to run in the background and continuously perform its designated tasks.
 													  // By running the consumer as a background service, it can continuously listen for new messages without blocking or affecting the main application's responsiveness.
@@ -40,40 +42,55 @@ public class EmailConsumerService : BackgroundService // Background Service : De
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
 		var factory = new ConnectionFactory() { Uri = new Uri(rabbitMQUri) };
+        try
+        {
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(queName, false, false, false, null);
 
-		using (var connection = factory.CreateConnection())
-		using (var channel = connection.CreateModel())
-		{
-			channel.QueueDeclare(queName, false, false, false, null);
+                var consumer = new EventingBasicConsumer(channel);
+                consumer.Received += async (sender, e) =>
+                {
+                    var body = e.Body.ToArray();
+                    var message = Encoding.UTF8.GetString(body);
 
-			var consumer = new EventingBasicConsumer(channel);
-			consumer.Received += async (sender, e) =>
-			{
-				var body = e.Body.ToArray();
-				var message = Encoding.UTF8.GetString(body);
+                    var userDto = System.Text.Json.JsonSerializer.Deserialize<UserDto>(message);
 
-				var userDto = System.Text.Json.JsonSerializer.Deserialize<UserDto>(message);
+                    try
+                    {
+                        await SendRegistrationEmail(userDto.Email, userDto.Username, userDto.Name, userDto.Password, userDto.Id);
 
-				try
-				{
-					await SendRegistrationEmail(userDto.Email, userDto.Username, userDto.Name, userDto.Password, userDto.Id);
 
-					
-					_logger.LogInformation($"Email sent successfully to {userDto.Email}");
-				}
-				catch (Exception ex)
-				{
-					_logger.LogError($"Error sending email to {userDto.Email}: {ex.Message}");
-					
-				}
+                        _logger.LogInformation($"Email sent successfully to {userDto.Email}");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError($"Error sending email to {userDto.Email}: {ex.Message}");
 
-				channel.BasicAck(e.DeliveryTag, false);
-			};
+                    }
 
-			channel.BasicConsume(queName, false, consumer);
+                    channel.BasicAck(e.DeliveryTag, false);
+                };
 
-			await Task.Delay(Timeout.Infinite, stoppingToken); // It is used to keep the background service running indefinitely until it is explicitly stopped or the application is shut down.
-		}
+                channel.BasicConsume(queName, false, consumer);
+
+                await Task.Delay(Timeout.Infinite, stoppingToken); // It is used to keep the background service running indefinitely until it is explicitly stopped or the application is shut down.
+            }
+        }
+        catch (BrokerUnreachableException ex)
+        {
+            _logger.LogError($"Broker unreachable: {ex.Message}, Inner Exception: {ex.InnerException?.Message}");
+        }
+        catch (SocketException ex)
+        {
+            _logger.LogError($"Socket exception: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"General exception: {ex.Message}");
+        }
+       
 	}
 
 	public async Task SendRegistrationEmail(string userEmail,string username, string name, string password, string Id)

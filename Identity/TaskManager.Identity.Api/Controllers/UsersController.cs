@@ -15,6 +15,7 @@ using TaskManager.Identity.Application.Models;
 using TaskManager.Identity.Domain.Dtos;
 using TaskManager.Identity.Domain.Entities;
 using TaskManager.Identity.Infrastructure.Context;
+using TaskManager.Identity.Application.Features.Users.Commands.SendsEmail;
 
 namespace TaskManager.Identity.Api.Controllers
 {
@@ -67,6 +68,13 @@ namespace TaskManager.Identity.Api.Controllers
 			return await _mediator.Send(forgotPasswordCommandRequest);
 
 		}
+
+        [HttpPost]
+        public async Task<IActionResult> SendsEmail(SendsEmailCommandRequest sendsEmailCommandRequest)
+        {
+            return await _mediator.Send(sendsEmailCommandRequest);
+
+        }
 
         [HttpGet]
         public async Task<ActionResponse<List<UserDto>>> GetAllUsers()
