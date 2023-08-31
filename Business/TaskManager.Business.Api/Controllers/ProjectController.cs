@@ -65,21 +65,9 @@ namespace TaskManager.Business.Api.Controllers
             ActionResponse<List<ProjectDto>> response = new();
             response.IsSuccessful = false;
 
-            //string userId = User.FindFirstValue("UserId");
-            //List<ProjectUser> userProjects = _businessDbContext.ProjectUsers.Where(p => p.UserId == userId && p.Status == true).ToList();
-            //List<ProjectDto> projects = new();
-            //foreach (var userProject in userProjects) 
-            //{
-            //    ProjectDto projectDto = new();
-            //    var project = _businessDbContext.Projects.FirstOrDefault(x => x.Status == true && x.Id == userProject.ProjectId);
-            //    projectDto.Id= project.Id;
-            //    projectDto.Name = project.Name;
-            //    projects.Add(projectDto);
-            //}
-
-            string userId = User.FindFirstValue("UserId");
-
-            List<ProjectDto> projects = await _businessDbContext.ProjectUsers
+            /*
+             
+                 List<ProjectDto> projects = await _businessDbContext.ProjectUsers
                 .Where(p => p.UserId == userId && p.Status == true)
                 .Join(
                     _businessDbContext.Projects.Where(pr => pr.Status == true),
@@ -93,9 +81,18 @@ namespace TaskManager.Business.Api.Controllers
                     }
                 )
                 .ToListAsync();
+             */
+
+            string userId = User.FindFirstValue("UserId");
+            if(userId != null) 
+            {
+                string query = "SELECT p.id, p.name, p.createddate FROM projectusers pu JOIN projects p ON pu.projectid = p.id WHERE pu.userid = @UserId  AND pu.status = true AND p.status = true";
+                var projects = _businessDbContext.ExecuteQuery<ProjectDto>(query, new { UserId = userId });
+
+                response.Data = projects;
+                response.IsSuccessful = true;
+            }
             
-            response.Data = projects;
-            response.IsSuccessful = true;
             return response;
         }
 

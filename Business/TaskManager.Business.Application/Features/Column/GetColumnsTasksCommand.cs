@@ -45,7 +45,7 @@ namespace TaskManager.Business.Application.Features
                     taskQuery += "'" + column + "',";
                 }
                 taskQuery = taskQuery.TrimEnd(',');
-                taskQuery += ")";
+                taskQuery += ") order by updateddate desc";
 
                 if (columns.Any())
                 {

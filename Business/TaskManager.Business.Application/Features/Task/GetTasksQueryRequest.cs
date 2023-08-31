@@ -36,7 +36,7 @@ namespace TaskManager.Business.Application.Features.Task
 
                 if (projectIds.Any())
                 {
-                    string taskQuery = @"SELECT id, name, priority, assigneeid, label
+                    string taskQuery = @"SELECT id, name, priority, projectid, assigneeid, label
                                      FROM tasks
                                      WHERE status = true AND tasks.projectid in (";
                     foreach(var id in projectIds)

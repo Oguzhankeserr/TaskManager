@@ -17,7 +17,7 @@ namespace TaskManager.Business.Application.Features
     public class DeleteUserFromProjectCommandRequest : IRequest<ActionResponse<ProjectUserDto>>
     {
         public int ProjectId { get; set; }
-        public List<ProjectUserList> Users { get; set; }
+        public List<string> Users { get; set; }
     }
 
     public class DeleteUserFromProjectCommand : IRequestHandler<DeleteUserFromProjectCommandRequest, ActionResponse<ProjectUserDto>>
@@ -37,7 +37,7 @@ namespace TaskManager.Business.Application.Features
             string query = "UPDATE projectusers SET status = false WHERE projectusers.UserId in (";
             foreach (var user in deleteUserRequest.Users)
             {
-                query += "'" + user.Id + "',";
+                query += "'" + user + "',";
             }
             query = query.TrimEnd(',');
             query += ")";
