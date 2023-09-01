@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using MediatR;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,18 +36,27 @@ namespace TaskManager.Business.Application.Features
             ActionResponse<ProjectUserDto> response = new();
             response.IsSuccessful = false;
 
-            string query = "UPDATE projectusers SET status = false WHERE projectusers.UserId in (";
-            foreach (var user in deleteUserRequest.Users)
+            try
             {
-                query += "'" + user + "',";
+                string query = "UPDATE projectusers SET status = false WHERE projectid = @ProjectId AND projectusers.UserId in (";
+                foreach (var user in deleteUserRequest.Users)
+                {
+                    query += "'" + user + "',";
+                }
+                query = query.TrimEnd(',');
+                query += ")";
+
+                await _businessDbContext.Database.ExecuteSqlRawAsync(query, new NpgsqlParameter("@ProjectId", deleteUserRequest.ProjectId));
+
+
+                response.IsSuccessful = true;
+                response.Message = "Users deleted from the project successfully.";
             }
-            query = query.TrimEnd(',');
-            query += ")";
-
-            await _businessDbContext.Database.ExecuteSqlRawAsync(query);
-
-            response.IsSuccessful = true;
-            response.Message = "Users deleted from the project successfully.";
+            catch(Exception ex)
+            {
+                response.IsSuccessful = false;
+                response.Message = ex.Message;
+            }
 
             return response;
 

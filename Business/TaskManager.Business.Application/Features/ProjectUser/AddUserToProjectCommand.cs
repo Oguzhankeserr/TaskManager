@@ -17,7 +17,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser
     public class AddUserToProjectCommandRequest : IRequest<ActionResponse<ProjectUserDto>>
     {
         public int ProjectId { get; set; }
-        public List<ProjectUserList> Users { get; set; }
+        public List<string> Users { get; set; }
         
     }
 
@@ -40,14 +40,14 @@ namespace TaskManager.Business.Application.Features.ProjectUser
             foreach (var user in addUserRequest.Users)
             {
                 Domain.Entities.ProjectUser existingUser = _businessDbContext.ProjectUsers.FirstOrDefault(p =>
-                    p.ProjectId == addUserRequest.ProjectId && p.UserId == user.Id);
+                    p.ProjectId == addUserRequest.ProjectId && p.UserId == user);
 
                 if (existingUser == null)
                 {
                     Domain.Entities.ProjectUser projectUser = new()
                     {
                         ProjectId = addUserRequest.ProjectId,
-                        UserId = user.Id,
+                        UserId = user,
                         Status = true
                     };
 

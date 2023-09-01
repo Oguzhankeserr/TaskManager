@@ -61,16 +61,11 @@ namespace TaskManager.Business.Application.Features
             //await _uow.CommitAsync();
             _genericService.Add(project);
 
+            
             var addUserRequest = new AddUserToProjectCommandRequest
             {
                 ProjectId = project.Id,
-                Users = new List<ProjectUserList>
-            {
-                new ProjectUserList
-                {
-                    Id = _userInfoRepository.User.UserId.ToString()
-                }
-            }
+                Users = new List<string> { _userInfoRepository.User.UserId.ToString() }
             };
 
             var addUserResponse = await _mediator.Send(addUserRequest);
