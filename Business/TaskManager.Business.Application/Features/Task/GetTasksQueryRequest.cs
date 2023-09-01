@@ -29,10 +29,12 @@ namespace TaskManager.Business.Application.Features.Task
             ActionResponse<List<TaskUserDto>> response = new();
             response.IsSuccessful = false;
 
-            string projectQuery = @"SELECT projectid FROM projectusers WHERE userid = @UserId AND status = true";
+            string query = @" SELECT id, name, priority, columnid, createddate, updateddate, enddate AS DueDate, assigneeid, reporterid, CAST(createdbyuser AS varchar(50)) AS createdByUser, label
+                        FROM tasks
+                            WHERE projectid = @ProjectId AND status = true";
             try
             {
-                var projectIds = _businessDbContext.ExecuteQuery<int>(projectQuery, new { UserId = getTasksRequest.UserId });
+                var projectIds = _businessDbContext.ExecuteQuery<int>(query, new { UserId = getTasksRequest.UserId });
 
                 if (projectIds.Any())
                 {
