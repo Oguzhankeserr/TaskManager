@@ -86,7 +86,8 @@ namespace TaskManager.Business.Api.Controllers
             string userId = User.FindFirstValue("UserId");
             if(userId != null) 
             {
-                string query = "SELECT p.id, p.name, p.createddate, p.description FROM projectusers pu JOIN projects p ON pu.projectid = p.id WHERE pu.userid = @UserId  AND pu.status = true AND p.status = true";
+                string query = "SELECT p.id, p.name, p.createddate, p.description FROM projectusers pu " +
+                    "JOIN projects p ON pu.projectid = p.id WHERE pu.userid = @UserId  AND pu.status = true AND p.status = true";
                 var projects = _businessDbContext.ExecuteQuery<ProjectDto>(query, new { UserId = userId });
 
                 response.Data = projects;

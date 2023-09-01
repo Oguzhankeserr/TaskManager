@@ -89,6 +89,14 @@ namespace TaskManager.Business.Api.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<List<string>> GetFileForProjectUsers(GetFileForProjectUsersRequest getFileForProjectUsers)
+        {
+            return await _mediator.Send(getFileForProjectUsers);
+
+
+        }
+
     }
 
 }
