@@ -20,6 +20,7 @@ namespace TaskManager.Business.Application.Features
     public class CreateProjectCommandRequest : IRequest<ActionResponse<Project>>
     {
         public string Name { get; set; }
+        public string Description { get; set;}
     }
 
     public class CreateProjectCommand : IRequestHandler<CreateProjectCommandRequest, ActionResponse<Project>>
@@ -49,6 +50,7 @@ namespace TaskManager.Business.Application.Features
             Project project = new();
             
             project.Name = createProjectRequest.Name;
+            project.Description = createProjectRequest.Description;
             project.Status = true;
             project.CreatedDate = project.UpdatedDate = DateTime.UtcNow; //database get local time but response takes utc (wrong time)
 

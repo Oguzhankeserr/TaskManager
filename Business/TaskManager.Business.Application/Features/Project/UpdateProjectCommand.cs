@@ -17,6 +17,7 @@ namespace TaskManager.Business.Application.Features
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; } 
     }
 
     public class UpdateProjectCommand : IRequestHandler<UpdateProjectCommandRequest, ActionResponse<Project>>
@@ -44,6 +45,7 @@ namespace TaskManager.Business.Application.Features
             if (project != null && project.Status == true)
             {
                 project.Name = updateProjectRequest.Name;
+                project.Description = updateProjectRequest.Description;
                 project.UpdatedDate = DateTime.UtcNow;
 
                 //await _businessDbContext.SaveChangesAsync();

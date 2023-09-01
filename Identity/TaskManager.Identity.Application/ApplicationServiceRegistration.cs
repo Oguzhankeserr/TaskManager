@@ -25,6 +25,7 @@ namespace TaskManager.Identity.Application
 			services.AddTransient<IRabbitMQService, RabbitMQService>();
 			services.AddHostedService<EmailConsumerService>(); // AddHostedService :  It is used to register a background service 
 			services.AddScoped<ForgotPasswordService>();// AddHosted Yapınca çalışmıyor. AddScoped doğrusu mu ?
+			services.AddScoped<SendsEmailService>();
 		}
 
 
