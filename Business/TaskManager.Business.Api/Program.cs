@@ -42,8 +42,8 @@ builder.Services.AddBusinessInfrastructureServices(builder.Configuration);
 
 builder.Services.AddApplicationBusinessServices();
 
-builder.Services.AddStorage<LocalStorage>();
-//builder.Services.AddStorage<AzureStorage>();
+//builder.Services.AddStorage<LocalStorage>();
+builder.Services.AddStorage<AzureStorage>();
 
 //builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
@@ -57,7 +57,7 @@ var app = builder.Build();
 //           .AllowAnyHeader());
 
 //app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 

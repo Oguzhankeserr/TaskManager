@@ -14,7 +14,7 @@ namespace TaskManager.Business.Infrastructure.Services.Storage
             string extension = Path.GetExtension(fileName);
             string oldName = Path.GetFileNameWithoutExtension(fileName);
             Regex regex = new Regex("[*'\",+-._&#^@|/<>~]");
-            string newFileName = regex.Replace(oldName, string.Empty);
+            string newFileName = regex.Replace(oldName, string.Empty).ToLower();
             DateTime datetimenow = DateTime.UtcNow;
             string datetimeutcnow = datetimenow.ToString("yyyyMMddHHmmss");
             string fullName = $"{datetimeutcnow}-{newFileName}{extension}";

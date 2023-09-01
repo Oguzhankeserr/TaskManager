@@ -48,7 +48,7 @@ namespace TaskManager.Identity.Api.Controllers
             return Ok(token);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost] //Get idi Post yaptım
         public async Task<IActionResult> GetUserById([FromBody] GetUserCommandRequest getUserCommandRequest) => Ok(await _mediator.Send(getUserCommandRequest));
 

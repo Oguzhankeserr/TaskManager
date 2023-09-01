@@ -22,6 +22,7 @@ namespace TaskManager.Business.Infrastructure.Services.Storage.Local
            
         public List<string> GetFiles(string path)
         {
+            path = Path.Combine(_webHostEnvironment.WebRootPath, path);
             DirectoryInfo directory = new(path);
             return directory.GetFiles().Select(f => f.Name).ToList();
         }
@@ -45,14 +46,14 @@ namespace TaskManager.Business.Infrastructure.Services.Storage.Local
             }
         }
 
-        public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string path, List<IFormFile>? files)
+        public async Task<List<string>> UploadAsync(string path, List<IFormFile>? files)
         {
             string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, path);
             if (!Directory.Exists(uploadPath))
                 Directory.CreateDirectory(uploadPath);
 
 
-            List<(string fileName, string path)> datas = new();
+            List<string> datas = new();
             foreach (IFormFile file in files)
             {
                 //string fileNewName = await FileRenameAsync(uploadPath, file.Name, HasFile);
@@ -62,8 +63,9 @@ namespace TaskManager.Business.Infrastructure.Services.Storage.Local
 
                 string fileNewName = await FileRenameAsync(uploadPath, file.FileName, HasFile);
 
-                await CopyFileAsync($"{uploadPath}\\{fileNewName}", file);
-                datas.Add((fileNewName, $"{path}\\{fileNewName}"));
+                string newFilePath = Path.Combine(uploadPath, fileNewName);
+                await CopyFileAsync(newFilePath, file);
+                datas.Add(newFilePath);
             }
             return datas;
         }

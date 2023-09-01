@@ -6,6 +6,7 @@ using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 using System.Net.Http.Headers;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TaskManager.Business.Api.Controllers
 {
@@ -24,6 +25,7 @@ namespace TaskManager.Business.Api.Controllers
             _mediator = mediator;
             _hostingEnvironment = hostingEnvironment;
             _businessDbContext = businessDbContext;
+            
             
         }
 
@@ -52,54 +54,41 @@ namespace TaskManager.Business.Api.Controllers
             return response;
         }
 
-        //[HttpPost]
-        //[DisableRequestSizeLimit]
-        //public async Task<IActionResult> UploadFile()
-        //{
-        //    if (!Request.Form.Files.Any())
-        //        return BadRequest("No files found in the request");
+        [HttpPost]
+        public async Task<ActionResponse<UserFile>> AddFile([FromQuery] string userId)
+        {
+            var x = Request.Form;
 
-        //    if (Request.Form.Files.Count > 1)
-        //        return BadRequest("Cannot upload more than one file at a time");
-
-        //    if (Request.Form.Files[0].Length <= 0)
-        //        return BadRequest("Invalid file length, seems to be empty");
-
-        //    try
-        //    {
-        //        string webRootPath = _hostingEnvironment.WebRootPath;
-        //        string uploadsDir = Path.Combine(webRootPath, "uploads");
-
-        //        wwwroot / uploads /
-        //        if (!Directory.Exists(uploadsDir))
-        //            Directory.CreateDirectory(uploadsDir);
-
-        //        IFormFile file = Request.Form.Files[0];
-        //        string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-        //        string fullPath = Path.Combine(uploadsDir, fileName);
-
-        //        var buffer = 1024 * 1024;
-        //        using var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None, buffer, useAsync: false);
-        //        await file.CopyToAsync(stream);
-        //        await stream.FlushAsync();
-
-        //        string location = $"images/{fileName}";
-
-        //        var result = new
-        //        {
-        //            message = "Upload successful",
-        //            url = location
-
-        //        };
+            List<IFormFile> file = Request.Form.Files.ToList();
 
 
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "Upload failed: " + ex.Message);
-        //    }
-        //}
+            var c = new UploadUserFileCommand
+            {
+                Files = file,
+                UserId = userId
+            };
+            ActionResponse<UserFile> response = await _mediator.Send(c);
+            return response;
+
+            
+        }
+
+        [HttpPost]
+        public async Task<List<string>> GetFile(GetUserFileRequest getUserFileRequest)
+        {
+            return await _mediator.Send(getUserFileRequest);
+            
+            
+        }
+
+        [HttpPost]
+        public async Task<List<string>> GetFileForTask(GetTaskFileRequest getTaskFileRequest)
+        {
+            return await _mediator.Send(getTaskFileRequest);
+
+
+        }
+
     }
 
 }

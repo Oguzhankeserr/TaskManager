@@ -8,6 +8,6 @@ namespace TaskManager.Business.Domain.Entities
 {
     public class UserFile : File
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

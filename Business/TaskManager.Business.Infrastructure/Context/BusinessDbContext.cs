@@ -27,6 +27,6 @@ namespace TaskManager.Business.Infrastructure.Context
         {
             return this.Database.GetDbConnection().QueryAsync<T>(querty, param).Result.ToList();
         }
-      
+
     }
 }

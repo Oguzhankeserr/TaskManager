@@ -1,13 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManager.Business.Domain;
 using TaskManager.Business.Domain.Abstractions.Storage;
 using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
@@ -15,46 +12,47 @@ using TaskManager.CommonModels;
 
 namespace TaskManager.Business.Application.Features.Files
 {
-    public class UploadTaskFileCommandRequest : IRequest<ActionResponse<TaskFile>>
+    public class UploadUserFileCommand : IRequest<ActionResponse<UserFile>>
     {
-        public int TaskId { get; set; }
+        public string UserId { get; set; }
         public List<IFormFile>? Files { get; set; }
-
     }
-    public class UploadTaskFileCommand : IRequestHandler<UploadTaskFileCommandRequest,ActionResponse<TaskFile>>
+
+    public class UploadUserFileCommandRequest : IRequestHandler<UploadUserFileCommand, ActionResponse<UserFile>>
     {
         readonly IStorageService _storageService;
         readonly BusinessDbContext _businessDbContext;
 
-        public UploadTaskFileCommand(BusinessDbContext businessDbContext, IStorageService storageService)
+        public UploadUserFileCommandRequest(BusinessDbContext businessDbContext, IStorageService storageService)
         {
             _businessDbContext = businessDbContext;
             _storageService = storageService;
         }
 
-        public async Task<ActionResponse<TaskFile>> Handle(UploadTaskFileCommandRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResponse<UserFile>> Handle(UploadUserFileCommand request, CancellationToken cancellationToken)
         {
-            ActionResponse<TaskFile> response = new();
+            ActionResponse<UserFile> response = new();
             response.IsSuccessful = true;
             try
             {
-                List<string> result = await _storageService.UploadAsync("files", request.Files);
+                List<string> paths = await _storageService.UploadAsync("files", request.Files);
 
-                foreach (var item in result)
+                
+                foreach (var path in paths)
                 {
-                    TaskFile taskFile = new()
+                    
+                    UserFile userFile = new()
                     { 
-                        Path = item,
+                        Path = path,
                         Storage = _storageService.StorageName,
-                        TaskId = request.TaskId
+                        UserId = request.UserId
                     };
-                    await _businessDbContext.Files.AddAsync(taskFile);
-
+                    await _businessDbContext.Files.AddAsync(userFile);
+                    
                 }
 
                 await _businessDbContext.SaveChangesAsync();
-                //response.Data = datas;
-                
+
             }
             catch (Exception ex)
             {

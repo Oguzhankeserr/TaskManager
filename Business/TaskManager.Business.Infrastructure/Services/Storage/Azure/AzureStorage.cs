@@ -50,20 +50,22 @@ namespace TaskManager.Business.Infrastructure.Services.Storage.Azure
             return _blobContainerClient.GetBlobs().Any(x => x.Name == fileName);
         }
 
-        public async Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string containerName, List<IFormFile>? files)
+        public async Task<List<string>> UploadAsync(string containerName, List<IFormFile>? files)
         {
             _blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             await _blobContainerClient.CreateIfNotExistsAsync();
             await _blobContainerClient.SetAccessPolicyAsync(PublicAccessType.BlobContainer);
 
-            List<(string fileName, string pathOrContainerName)> datas = new();
+            List<string> datas = new();
             foreach (IFormFile file in files)
             {
-                string fileNewName = await FileRenameAsync(containerName, file.Name, HasFile);
+                string fileNewName = await FileRenameAsync(containerName, file.FileName, HasFile);
 
                 BlobClient blobClient = _blobContainerClient.GetBlobClient(fileNewName);
                await blobClient.UploadAsync(file.OpenReadStream());
-                datas.Add((fileNewName, containerName)); //Alttakine dikkat
+
+                datas.Add(blobClient.Uri.ToString());
+                 //Alttakine dikkat
                 //datas.Add((fileNewName, $"{containerName}/{fileNewName}"));
             }
             return datas;

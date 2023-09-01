@@ -30,7 +30,7 @@ namespace TaskManager.Business.Infrastructure.Services.Storage
         public bool HasFile(string pathOrContainerName, string fileName)
          => _storage.HasFile(pathOrContainerName, fileName);
 
-        public Task<List<(string fileName, string pathOrContainerName)>> UploadAsync(string pathOrContainerName, List<IFormFile>? files)
+        public Task<List<string>> UploadAsync(string pathOrContainerName, List<IFormFile>? files)
          => _storage.UploadAsync(pathOrContainerName, files);
     }
 }
