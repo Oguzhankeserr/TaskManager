@@ -16,7 +16,7 @@ using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 using TaskManager.CommonModels.Repositories;
 
-namespace TaskManager.Business.Application.Features
+namespace TaskManager.Business.Application.Features.Task.Commands
 {
     public class CreateTaskCommandRequest : IRequest<ActionResponse<Domain.Entities.Task>>
     {
@@ -61,11 +61,11 @@ namespace TaskManager.Business.Application.Features
             response.IsSuccessful = false;
             Domain.Entities.Task task = new();
             task.Name = createTaskRequest.Name;
-			task.ProjectId = createTaskRequest.ProjectId;
+            task.ProjectId = createTaskRequest.ProjectId;
             task.ColumnId = createTaskRequest.ColumnId;
             task.Priority = createTaskRequest.Priority;
             task.UserUpdatedDate = DateTime.UtcNow;
-			task.EndDate = createTaskRequest.EndDate;
+            task.EndDate = createTaskRequest.EndDate;
             task.CreatedDate = task.UpdatedDate = DateTime.UtcNow;
             task.Status = true;
             task.CreatedByUser = _userInfoRepository.User.UserId;

@@ -8,13 +8,13 @@ using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
-namespace TaskManager.Business.Application.Features.Task
+namespace TaskManager.Business.Application.Features.Task.Query
 {
     public class GetUnplannedTasksRequest : IRequest<ActionResponse<List<TaskDto>>>
     {
         public int Id { get; set; }
     }
-    public  class GetUnplannedTasksQuery : IRequestHandler<GetUnplannedTasksRequest, ActionResponse<List<TaskDto>>>
+    public class GetUnplannedTasksQuery : IRequestHandler<GetUnplannedTasksRequest, ActionResponse<List<TaskDto>>>
     {
         readonly BusinessDbContext _businessDbContext;
 
@@ -32,7 +32,7 @@ namespace TaskManager.Business.Application.Features.Task
 
             try
             {
-                var selectedTasks =  _businessDbContext.ExecuteQuery<TaskDto>(query, new { Id = request.Id });
+                var selectedTasks = _businessDbContext.ExecuteQuery<TaskDto>(query, new { request.Id });
                 response.Data = selectedTasks;
                 response.IsSuccessful = true;
             }

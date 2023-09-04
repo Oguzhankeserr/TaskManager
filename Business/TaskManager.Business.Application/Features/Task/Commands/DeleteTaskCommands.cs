@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
-namespace TaskManager.Business.Application.Features.Task
+namespace TaskManager.Business.Application.Features.Task.Commands
 {
     public class DeleteTaskCommandRequest : IRequest<ActionResponse<Domain.Entities.Task>>
     {
@@ -32,12 +32,12 @@ namespace TaskManager.Business.Application.Features.Task
             response.IsSuccessful = false;
 
             Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(c => c.Id == deleteTaskRequest.Id);
-            if (task != null && task.Status == true) 
+            if (task != null && task.Status == true)
             {
                 task.Status = false;
                 //await _businessDbContext.SaveChangesAsync();
                 _genericService.Update(task);
-                response.Data=task;
+                response.Data = task;
                 response.IsSuccessful = true;
             }
             return response;

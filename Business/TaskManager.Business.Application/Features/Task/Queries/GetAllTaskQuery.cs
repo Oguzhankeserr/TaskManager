@@ -11,7 +11,7 @@ using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace TaskManager.Business.Application.Features.Task
+namespace TaskManager.Business.Application.Features.Task.Query
 {
     public class GetAllTaskQueryRequest : IRequest<ActionResponse<List<TaskListDto>>>
     {
@@ -43,7 +43,7 @@ namespace TaskManager.Business.Application.Features.Task
                 response.Data = tasks.ToList();
                 response.IsSuccessful = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Message = ex.Message;
                 response.IsSuccessful = false;

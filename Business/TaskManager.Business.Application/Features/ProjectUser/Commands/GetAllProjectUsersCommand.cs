@@ -8,14 +8,14 @@ using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
-namespace TaskManager.Business.Application.Features.ProjectUser
+namespace TaskManager.Business.Application.Features.ProjectUser.Commands
 {
     public class GetAllProjectUsersCommandRequest : IRequest<ActionResponse<List<UserDto>>>
     {
         public int Id { get; set; }
     }
 
-    public class GetAllProjectUsersCommand : IRequestHandler<GetAllProjectUsersCommandRequest, ActionResponse<List<UserDto>>> 
+    public class GetAllProjectUsersCommand : IRequestHandler<GetAllProjectUsersCommandRequest, ActionResponse<List<UserDto>>>
     {
         readonly BusinessDbContext _businessDbContext;
 
@@ -24,13 +24,13 @@ namespace TaskManager.Business.Application.Features.ProjectUser
             _businessDbContext = businessDbContext;
         }
 
-        public async Task<ActionResponse<List<UserDto>>> Handle(GetAllProjectUsersCommandRequest getAllRequest,  CancellationToken cancellationToken)
+        public async Task<ActionResponse<List<UserDto>>> Handle(GetAllProjectUsersCommandRequest getAllRequest, CancellationToken cancellationToken)
         {
             ActionResponse<List<UserDto>> response = new();
             response.IsSuccessful = false;
 
             List<Domain.Entities.ProjectUser> users = _businessDbContext.ProjectUsers.Where(p => p.ProjectId == getAllRequest.Id && p.Status == true).ToList();
-            if(users != null)
+            if (users != null)
             {
                 List<UserDto> userList = new();
                 foreach (var user in users)
@@ -49,7 +49,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser
                 response.Message = "No users in the project";
                 return response;
             }
-            
+
 
 
         }

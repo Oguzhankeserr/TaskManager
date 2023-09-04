@@ -14,7 +14,7 @@ using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
-namespace TaskManager.Business.Application.Features
+namespace TaskManager.Business.Application.Features.ProjectUser.Commands
 {
     public class DeleteUserFromProjectCommandRequest : IRequest<ActionResponse<ProjectUserDto>>
     {
@@ -52,7 +52,7 @@ namespace TaskManager.Business.Application.Features
                 response.IsSuccessful = true;
                 response.Message = "Users deleted from the project successfully.";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.IsSuccessful = false;
                 response.Message = ex.Message;

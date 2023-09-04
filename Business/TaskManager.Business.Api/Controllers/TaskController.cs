@@ -6,6 +6,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
 using System.Security.Claims;
 using TaskManager.Business.Application.Features;
 using TaskManager.Business.Application.Features.Task;
+using TaskManager.Business.Application.Features.Task.Commands;
+using TaskManager.Business.Application.Features.Task.Query;
 using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Domain.Entities;
 using TaskManager.Business.Infrastructure.Context;

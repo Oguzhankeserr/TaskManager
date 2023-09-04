@@ -10,7 +10,7 @@ using TaskManager.CommonModels;
 using TaskManager.Business.Application.Features.Column;
 using TaskManager.Business.Domain.Entities;
 
-namespace TaskManager.Business.Application.Features.Task
+namespace TaskManager.Business.Application.Features.Task.Commands
 {
     public class UpdateTaskColumnIdCommandRequest : IRequest<ActionResponse<Domain.Entities.Task>>
     {
@@ -18,13 +18,13 @@ namespace TaskManager.Business.Application.Features.Task
         public int ColumnId { get; set; }
         public int? Label { get; set; }
     }
-    
+
     public class UpdateTaskColumnIdCommand : IRequestHandler<UpdateTaskColumnIdCommandRequest, ActionResponse<Domain.Entities.Task>>
     {
         readonly BusinessDbContext _businessDbContext;
         readonly GenericService<Domain.Entities.Task> _genericService;
-        
-        
+
+
 
         public UpdateTaskColumnIdCommand(BusinessDbContext businessDbContext, GenericService<Domain.Entities.Task> genericService)
         {
@@ -36,13 +36,13 @@ namespace TaskManager.Business.Application.Features.Task
         {
             ActionResponse<Domain.Entities.Task> response = new();
             response.IsSuccessful = false;
-            
+
 
             try
             {
                 Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(p => p.Id == updateTaskColumnIdCommandRequest.Id);
 
-               
+
                 if (task != null && task.Status == true)
                 {
                     task.ColumnId = updateTaskColumnIdCommandRequest.ColumnId;
@@ -50,16 +50,16 @@ namespace TaskManager.Business.Application.Features.Task
 
 
 
-                    if (task.Label == (-1))
+                    if (task.Label == -1)
                     {
                         task.Label = 0;
 
                     }
 
-   
 
-                    
-                    
+
+
+
 
 
                     //await _businessDbContext.SaveChangesAsync();
@@ -68,7 +68,7 @@ namespace TaskManager.Business.Application.Features.Task
                     response.Data = task;
                     response.IsSuccessful = true;
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace TaskManager.Business.Application.Features.Task
                 response.Message = ex.Message;
                 response.IsSuccessful = false;
             }
-            
+
             return response;
         }
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
-namespace TaskManager.Business.Application.Features.Task
+namespace TaskManager.Business.Application.Features.Task.Commands
 {
     public class GetTaskByIdCommandRequest : IRequest<ActionResponse<Domain.Entities.Task>>
     {
@@ -22,12 +22,12 @@ namespace TaskManager.Business.Application.Features.Task
         {
             _businessDbContext = businessDbContext;
         }
-        public async Task<ActionResponse<Domain.Entities.Task>>Handle(GetTaskByIdCommandRequest getTaskByIdRequest, CancellationToken cancellationToken)
+        public async Task<ActionResponse<Domain.Entities.Task>> Handle(GetTaskByIdCommandRequest getTaskByIdRequest, CancellationToken cancellationToken)
         {
             ActionResponse<Domain.Entities.Task> response = new();
             response.IsSuccessful = false;
-            Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(p=>p.Id == getTaskByIdRequest.Id);
-            if(task != null && task.Status == true) 
+            Domain.Entities.Task task = await _businessDbContext.Tasks.FirstOrDefaultAsync(p => p.Id == getTaskByIdRequest.Id);
+            if (task != null && task.Status == true)
             {
                 response.Data = task;
                 response.IsSuccessful = true;

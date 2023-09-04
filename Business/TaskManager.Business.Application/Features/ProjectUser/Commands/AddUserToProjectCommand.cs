@@ -12,13 +12,13 @@ using TaskManager.Business.Domain.UnitOfWork;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
-namespace TaskManager.Business.Application.Features.ProjectUser
+namespace TaskManager.Business.Application.Features.ProjectUser.Commands
 {
     public class AddUserToProjectCommandRequest : IRequest<ActionResponse<ProjectUserDto>>
     {
         public int ProjectId { get; set; }
         public List<string> Users { get; set; }
-        
+
     }
 
 

@@ -8,7 +8,7 @@ using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 
-namespace TaskManager.Business.Application.Features.Task
+namespace TaskManager.Business.Application.Features.Task.Query
 {
     public class GetUnassignedTasksRequest : IRequest<ActionResponse<List<TaskDto>>>
     {
@@ -33,7 +33,7 @@ namespace TaskManager.Business.Application.Features.Task
 
             try
             {
-                var selectedTasks = _businessDbContext.ExecuteQuery<TaskDto>(query, new { Id = request.Id, User = "unassigned" });
+                var selectedTasks = _businessDbContext.ExecuteQuery<TaskDto>(query, new { request.Id, User = "unassigned" });
                 response.Data = selectedTasks;
                 response.IsSuccessful = true;
             }
