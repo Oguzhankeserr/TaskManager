@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using TaskManager.Business.Domain.UnitOfWork;
 using TaskManager.Business.Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using TaskManager.Business.Infrastructure.Context;
 
 namespace TaskManager.Business.Application
 {
@@ -13,11 +15,13 @@ namespace TaskManager.Business.Application
     {
         private readonly IUnitOfWork<T> _unitOfWork;
         private readonly IRepository<T> _repository;
+        private readonly BusinessDbContext  _businessDbContext;
 
-        public GenericService(IUnitOfWork<T> unitOfWork, IRepository<T> repository)
+        public GenericService(IUnitOfWork<T> unitOfWork, IRepository<T> repository, BusinessDbContext businessDbContext)
         {
             _unitOfWork = unitOfWork;
             _repository = repository;
+            _businessDbContext = businessDbContext;
         }
 
         public void Add(T entity)

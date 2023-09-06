@@ -10,6 +10,7 @@ using System.Text;
 using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Services.Storage.Azure;
 using TaskManager.Business.Api;
+using TaskManager.Business.LogService;
 
 var builder = WebApplication.CreateBuilder(args);
 //var startup = new Startup(builder.Configuration);
@@ -41,6 +42,7 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddBusinessInfrastructureServices(builder.Configuration);
 
 builder.Services.AddApplicationBusinessServices();
+builder.Services.BusinessLogServices();
 
 //builder.Services.AddStorage<LocalStorage>();
 builder.Services.AddStorage<AzureStorage>();
@@ -64,5 +66,6 @@ app.UseAuthorization();
 InfrastructureBusinessServiceRegistration.Migration(app.Services.CreateScope());
 
 app.MapControllers();
+
 
 app.Run();

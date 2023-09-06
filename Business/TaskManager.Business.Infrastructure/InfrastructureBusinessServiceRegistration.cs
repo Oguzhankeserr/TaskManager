@@ -17,6 +17,7 @@ using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Enums;
 using TaskManager.Business.Infrastructure.Services.Storage.Azure;
 using Microsoft.Extensions.Options;
+using TaskManager.Business.LogService.Context;
 
 namespace TaskManager.Business.Infrastructure
 {
@@ -27,12 +28,15 @@ namespace TaskManager.Business.Infrastructure
             services.AddDbContext<BusinessDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("TaskManagerBusinessConnection")).UseLowerCaseNamingConvention();
-
-
             });
-      
 
-            //.UseLowerCaseNamingConvention()
+
+            services.AddDbContext<LogDbContext>(options =>
+            {
+                options.UseNpgsql(configuration.GetConnectionString("TaskManagerLogConnection")).UseLowerCaseNamingConvention();
+            });
+
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
