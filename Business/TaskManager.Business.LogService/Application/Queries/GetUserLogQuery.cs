@@ -30,15 +30,7 @@ namespace TaskManager.Business.LogService.Application.Queries
         {
             ActionResponse<List<LogUserDto>> response = new();
             response.IsSuccessful = false;
-            /*
-             string query = "UPDATE projectusers SET status = false WHERE projectid = @ProjectId AND projectusers.UserId in (";
-                foreach (var user in deleteUserRequest.Users)
-                {
-                    query += "'" + user + "',";
-                }
-                query = query.TrimEnd(',');
-                query += ")";
-             */
+            
             try
             {
                 string query = "Select fieldname, oldvalue, newvalue, actiondate, projectid FROM logs WHERE userid = @userId AND logs.projectId in (";
