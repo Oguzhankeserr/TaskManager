@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using TaskManager.Business.Domain;
 using TaskManager.Business.Domain.UnitOfWork;
 using TaskManager.Business.Infrastructure.Context;
-using TaskManager.Business.LogService.Application;
+using TaskManager.Business.LogService.Application.Commands;
 using TaskManager.CommonModels.Repositories;
 
 namespace TaskManager.Business.Infrastructure.UnitOfWork
@@ -63,6 +63,7 @@ namespace TaskManager.Business.Infrastructure.UnitOfWork
                             log.ActionDate = now;
                             log.UserId = _userInfoRepository.User.UserId.ToString();
                             log.TableId = entity.OriginalValues.GetValue<int>("Id");
+                            log.ProjectId = entity.OriginalValues.GetValue<int>("ProjectId");
 
                             _mediator.Send(log);
                         }

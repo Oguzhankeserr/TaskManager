@@ -16,25 +16,10 @@ namespace TaskManager.Business.Log.Entity
         public string NewValue { get; set; }
         public DateTime ActionDate { get; set; }
         public string UserId { get; set; } // email?
-        
-        //public string MasterId { get; set; }
+        public int ProjectId { get; set; }
 
 
 
     }
 }
 
-
-/*
-                                    og.OldValue = originalValue;
-                                    log.NewValue = updatedValue;
-                                    log.FieldName = property.Name;
-                                    log.TableName = entity.Entity.GetType().Name;
-                                    log.ActionDate = now;
-                                    log.UserEmail = _userRepository.User.Email;
-                                    log.TableId = id;
-                                    log.MasterId = id;
-                                    _mediator.Send(log);
-
- 
- */

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskManager.Business.LogService.Context;
 
-namespace TaskManager.Business.LogService.Application
+namespace TaskManager.Business.LogService.Application.Commands
 {
     public class AddLogCommand : IRequest<bool>
     {
@@ -17,6 +17,7 @@ namespace TaskManager.Business.LogService.Application
         public string NewValue { get; set; }
         public DateTime ActionDate { get; set; }
         public string UserId { get; set; }
+        public int ProjectId { get; set; }
     }
 
     public class AddLogCommandHandler : IRequestHandler<AddLogCommand, bool>
@@ -40,7 +41,10 @@ namespace TaskManager.Business.LogService.Application
                     OldValue = request.OldValue,
                     NewValue = request.NewValue,
                     ActionDate = request.ActionDate,
-                    UserId = request.UserId
+                    UserId = request.UserId,
+                    ProjectId = request.ProjectId
+
+                    
                 };
 
                 _logDbContext.Logs.Add(log);
@@ -48,11 +52,11 @@ namespace TaskManager.Business.LogService.Application
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
-            
+
         }
     }
 }

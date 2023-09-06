@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,14 @@ namespace TaskManager.Business.LogService.Context
     {
         public LogDbContext(DbContextOptions<LogDbContext> options) : base(options) { }
         public DbSet<Log.Entity.Log> Logs { get; set; }
+
+        public List<T> ExecuteQuery<T>(string querty, object param = null)
+        {
+            return this.Database.GetDbConnection().QueryAsync<T>(querty, param).Result.ToList();
+        }
     }
+
+  
 }
+
+
