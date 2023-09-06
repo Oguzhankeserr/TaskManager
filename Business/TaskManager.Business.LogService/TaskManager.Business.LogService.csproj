@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CommonModels\TaskManager.CommonModels\TaskManager.CommonModels.csproj" />
     <ProjectReference Include="..\TaskManager.Business.Log\TaskManager.Business.Log.csproj" />
   </ItemGroup>
 
