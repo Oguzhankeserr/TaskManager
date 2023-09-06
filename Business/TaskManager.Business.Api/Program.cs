@@ -11,6 +11,7 @@ using TaskManager.Business.Infrastructure.Services.Storage.Local;
 using TaskManager.Business.Infrastructure.Services.Storage.Azure;
 using TaskManager.Business.Api;
 using TaskManager.Business.LogService;
+using TaskManager.Business.Application.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 //var startup = new Startup(builder.Configuration);
@@ -49,7 +50,7 @@ builder.Services.AddStorage<AzureStorage>();
 
 //builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 //startup.Configure(app, builder.Environment);
@@ -59,13 +60,18 @@ var app = builder.Build();
 //           .AllowAnyHeader());
 
 //app.UseHttpsRedirection();
+app.UseRouting();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 
 InfrastructureBusinessServiceRegistration.Migration(app.Services.CreateScope());
 
-app.MapControllers();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<CommentHub>("/comment-hub");
+});
 
 app.Run();

@@ -38,6 +38,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
 });
 
+app.UseWebSockets();
 await app.UseOcelot();
 
 app.Run();
