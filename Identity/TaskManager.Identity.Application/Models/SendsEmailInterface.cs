@@ -10,6 +10,6 @@ namespace TaskManager.Identity.Application.Models
     public class SendsEmailInterface
     {
         public string Message { get; set; }  
-        public UserDto[] Users { get; set; } 
+        public List<string> Users { get; set; } 
     }
 }

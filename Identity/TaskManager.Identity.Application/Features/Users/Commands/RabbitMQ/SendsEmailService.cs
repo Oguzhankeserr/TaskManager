@@ -79,20 +79,20 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ
             return result.Data.PasswordTokenAccess;
         }
 
-        public async Task SendEmailToUsers(string theMessage, UserDto[] users)
+        public async Task SendEmailToUsers(string theMessage, List<string> users)
         {
             string fromMail = "taskmanager0707@gmail.com";
             string fromPassword = "u v j x y q u w u s y w a a z x";
 
-            foreach (UserDto user in users)
+            foreach (string userMail in users)
             {
-                if (user.Email != null)  // Make sure the email property is not null
+                if (userMail != null)  // Make sure the email property is not null
                 {
                     string emailBody = theMessage;
                     MailMessage message = new MailMessage();
                     message.From = new MailAddress(fromMail);
-                    message.Subject = "Change Password";
-                    message.To.Add(new MailAddress(user.Email));  // Use user.Email here
+                    message.Subject = "TaskManager";
+                    message.To.Add(new MailAddress(userMail));  // Use user.Email here
                     message.Body = emailBody;
                     message.IsBodyHtml = true;
 

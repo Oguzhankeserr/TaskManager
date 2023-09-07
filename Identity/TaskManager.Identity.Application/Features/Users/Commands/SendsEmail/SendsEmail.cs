@@ -12,7 +12,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.SendsEmail
     {
 
         public string Message { get; set; }
-        public UserDto[] Users { get; set; }
+        public List<string> Users { get; set; }
 
         public class SendsEmailCommand : IRequestHandler<SendsEmailCommandRequest, IActionResult>
         {
@@ -40,7 +40,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.SendsEmail
                     if (users != null)
                     {
 
-                        await _sendsEmailService.SendEmailToUsers(message, users); 
+                        await _sendsEmailService.SendEmailToUsers(message, users);
                         return new OkResult();
 
                     }
