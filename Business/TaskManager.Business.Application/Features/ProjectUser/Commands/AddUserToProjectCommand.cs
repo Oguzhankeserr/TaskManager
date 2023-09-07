@@ -17,7 +17,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser.Commands
     public class AddUserToProjectCommandRequest : IRequest<ActionResponse<ProjectUserDto>>
     {
         public int ProjectId { get; set; }
-        public List<string> Users { get; set; }
+        public List<UserActionDto> Users { get; set; }
 
     }
 
@@ -40,14 +40,15 @@ namespace TaskManager.Business.Application.Features.ProjectUser.Commands
             foreach (var user in addUserRequest.Users)
             {
                 Domain.Entities.ProjectUser existingUser = _businessDbContext.ProjectUsers.FirstOrDefault(p =>
-                    p.ProjectId == addUserRequest.ProjectId && p.UserId == user);
+                    p.ProjectId == addUserRequest.ProjectId && p.UserId == user.UserId);
 
                 if (existingUser == null)
                 {
                     Domain.Entities.ProjectUser projectUser = new()
                     {
                         ProjectId = addUserRequest.ProjectId,
-                        UserId = user,
+                        UserId = user.UserId,
+                        ProjectRole = user.RoleId,
                         Status = true
                     };
 
@@ -65,8 +66,8 @@ namespace TaskManager.Business.Application.Features.ProjectUser.Commands
                     }
                 }
             }
-
             await _businessDbContext.SaveChangesAsync();
+
             response.IsSuccessful = true;
             response.Message = "Users added to the project successfully.";
 

@@ -16,6 +16,7 @@ using TaskManager.Identity.Domain.Dtos;
 using TaskManager.Identity.Domain.Entities;
 using TaskManager.Identity.Infrastructure.Context;
 using TaskManager.Identity.Application.Features.Users.Commands.SendsEmail;
+using Dapper;
 
 namespace TaskManager.Identity.Api.Controllers
 {
@@ -81,23 +82,26 @@ namespace TaskManager.Identity.Api.Controllers
         {
             ActionResponse<List<UserDto>> response = new();
             response.IsSuccessful = false;
-            List<UserDto> users = new();
 
-            List<AppUser> tableUsers = await _taskManagerDbContext.Users.ToListAsync();
-
-            foreach (AppUser user in tableUsers)
+            try
             {
-                UserDto userDto = new();
-                userDto.Id = user.Id;
-                userDto.Name = user.Name;
-                userDto.Surname = user.Surname;
-                userDto.Username = user.UserName;
-                userDto.Email = user.Email;
-                users.Add(userDto);
+                string userQuery = @"SELECT u.Id, u.Name, u.Surname, u.UserName, u.Email, ur.RoleId AS Role
+                    FROM aspnetusers u
+                    JOIN  ""AspNetUserRoles"" ur ON u.Id = ur.UserId";
+
+
+                var users = _taskManagerDbContext.Database.GetDbConnection().QueryAsync<UserDto>(userQuery);
+                response.Data = users.Result.ToList();
+
+                response.IsSuccessful = true;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccessful = false;
+                response.Message = ex.Message;
             }
 
-            response.Data = users;
-            response.IsSuccessful = true;
+           
             return response;
 
 

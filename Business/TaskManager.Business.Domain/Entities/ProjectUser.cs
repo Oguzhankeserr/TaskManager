@@ -11,7 +11,7 @@ namespace TaskManager.Business.Domain.Entities
         public int Id { get; set; }
         public int ProjectId { get; set; }
         public string UserId { get; set; }
-        //public string ProjectRole { get; set; }
+        public string ProjectRole { get; set; }
         public bool Status { get; set; }
     }
 }

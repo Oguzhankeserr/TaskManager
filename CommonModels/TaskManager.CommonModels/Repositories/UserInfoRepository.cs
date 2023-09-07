@@ -23,7 +23,8 @@ namespace TaskManager.CommonModels.Repositories
                 var user = new UserInfo()
                 {
                     UserId = new Guid(_httpContextAccessor.HttpContext.User.FindFirst("UserId")?.Value ?? ""),
-                    Username = _httpContextAccessor.HttpContext.User.FindFirst("Username")?.Value ?? ""
+                    Username = _httpContextAccessor.HttpContext.User.FindFirst("Username")?.Value ?? "",
+                    Role = _httpContextAccessor.HttpContext.User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value ?? "",
                 };
                 return user;
             }

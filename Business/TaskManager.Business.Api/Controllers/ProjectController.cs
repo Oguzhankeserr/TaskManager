@@ -65,23 +65,17 @@ namespace TaskManager.Business.Api.Controllers
             ActionResponse<List<ProjectDto>> response = new();
             response.IsSuccessful = false;
 
-            /*
-             
-                 List<ProjectDto> projects = await _businessDbContext.ProjectUsers
-                .Where(p => p.UserId == userId && p.Status == true)
-                .Join(
-                    _businessDbContext.Projects.Where(pr => pr.Status == true),
-                    projectUser => projectUser.ProjectId,
-                    project => project.Id,
-                    (projectUser, project) => new ProjectDto
-                    {
-                        Id = project.Id,
-                        Name = project.Name,
-                        CreatedDate = project.CreatedDate,
-                    }
-                )
-                .ToListAsync();
-             */
+            string userRole = User.FindFirstValue("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+            if (!string.IsNullOrEmpty(userRole) && userRole.Equals("SuperAdmin", StringComparison.OrdinalIgnoreCase))
+            {
+                string query = "SELECT id, name, createddate, description FROM projects WHERE status = true";
+                var projects = _businessDbContext.ExecuteQuery<ProjectDto>(query);
+
+                response.Data = projects;
+                response.IsSuccessful = true;
+                return response;
+            }
+
 
             string userId = User.FindFirstValue("UserId");
             if(userId != null) 
@@ -92,9 +86,16 @@ namespace TaskManager.Business.Api.Controllers
 
                 response.Data = projects;
                 response.IsSuccessful = true;
+
+                return response;
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.Message = "User not found.";
+                return response;
             }
             
-            return response;
         }
 
        

@@ -31,11 +31,11 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResponse<List<LogUserDto>>> GetUserLogs([FromQuery] List<int> ProjectIds, [FromQuery] string UserId)
+        public async Task<ActionResponse<List<LogUserDto>>> GetUserLogs([FromQuery] int [] ProjectIds, [FromQuery] string UserId)
         {
             var parameters = new GetUserLogQuery
             {
-                ProjectIds = ProjectIds,
+                ProjectIds = ProjectIds.ToList(),
                 UserId = UserId
             };
             ActionResponse<List<LogUserDto>> response = await _mediator.Send(parameters);

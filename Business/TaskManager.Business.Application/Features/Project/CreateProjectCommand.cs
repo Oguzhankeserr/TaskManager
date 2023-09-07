@@ -21,7 +21,7 @@ namespace TaskManager.Business.Application.Features
     public class CreateProjectCommandRequest : IRequest<ActionResponse<Project>>
     {
         public string Name { get; set; }
-        public string Description { get; set;}
+        public string Description { get; set; }
     }
 
     public class CreateProjectCommand : IRequestHandler<CreateProjectCommandRequest, ActionResponse<Project>>
@@ -49,7 +49,7 @@ namespace TaskManager.Business.Application.Features
             response.IsSuccessful = false;
 
             Project project = new();
-            
+
             project.Name = createProjectRequest.Name;
             project.Description = createProjectRequest.Description;
             project.Status = true;
@@ -62,12 +62,28 @@ namespace TaskManager.Business.Application.Features
             //await _uow.CommitAsync();
             _genericService.Add(project);
 
-            
+            string role = "";
+            if(_userInfoRepository.User.Role.ToString() == "SuperAdmin")
+            {
+                role = "4dc5874d-f3be-459a-b05f-2244512d13e3";
+            }
+            else if (_userInfoRepository.User.Role.ToString() == "Admin" )
+            {
+                role = "6a2c4fe5-5b10-45b6-a1f6-7cfecc629d3f";
+            }
+
             var addUserRequest = new AddUserToProjectCommandRequest
             {
                 ProjectId = project.Id,
-                Users = new List<string> { _userInfoRepository.User.UserId.ToString() }
+                Users = new List<UserActionDto> {  new UserActionDto
+                    {
+                         UserId = _userInfoRepository.User.UserId.ToString(),
+                         RoleId = role
+                    }
+                }
             };
+
+
 
             var addUserResponse = await _mediator.Send(addUserRequest);
 

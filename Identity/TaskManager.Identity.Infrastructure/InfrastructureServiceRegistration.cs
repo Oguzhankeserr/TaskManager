@@ -20,7 +20,7 @@ namespace TaskManager.Identity.Infrastructure.Persistence
             //services.AddDbContext<TaskManagerDbContext>(options => options.UseNpgsql
             //    (configuration.GetConnectionString("TaskManagerIdentityConnection")));
 
-            services.AddDbContextPool<TaskManagerDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("TaskManagerIdentityConnection")));
+            services.AddDbContextPool<TaskManagerDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("TaskManagerIdentityConnection")).UseLowerCaseNamingConvention()) ;
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
