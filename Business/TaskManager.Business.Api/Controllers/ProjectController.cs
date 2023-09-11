@@ -36,7 +36,7 @@ namespace TaskManager.Business.Api.Controllers
            
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResponse<Project>> UpdateProject(UpdateProjectCommandRequest updateProjectRequest)
         {

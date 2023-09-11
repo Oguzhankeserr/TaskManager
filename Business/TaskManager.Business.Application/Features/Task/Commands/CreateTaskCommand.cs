@@ -32,6 +32,7 @@ namespace TaskManager.Business.Application.Features.Task.Commands
         public string AssigneeId { get; set; }
         public string ReporterId { get; set; }
         public int Label { get; set; }
+        public string? Description { get; set; }
 
     }
 
@@ -72,6 +73,7 @@ namespace TaskManager.Business.Application.Features.Task.Commands
             task.AssigneeId = createTaskRequest.AssigneeId;
             task.ReporterId = createTaskRequest.ReporterId;
             task.Label = createTaskRequest.Label;
+            task.Description = createTaskRequest.Description;
 
 
             //await _businessDbContext.Tasks.AddAsync(task);

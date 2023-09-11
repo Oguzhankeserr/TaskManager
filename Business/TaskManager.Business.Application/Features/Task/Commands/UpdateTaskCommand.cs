@@ -20,6 +20,7 @@ namespace TaskManager.Business.Application.Features
         public string ReporterId { get; set; }
         public string AssigneeId { get; set; }
         public DateTime EndDate { get; set; }
+        public string Description { get; set; }
     }
 
     public class UpdateTaskCommand : IRequestHandler<UpdateTaskCommandRequest, ActionResponse<Domain.Entities.Task>>
@@ -49,6 +50,7 @@ namespace TaskManager.Business.Application.Features
 
                 task.UpdatedDate = DateTime.UtcNow;
                 task.Label = updateTaskRequest.Label;
+                task.Description = updateTaskRequest.Description;
 
                 //await _businessDbContext.SaveChangesAsync();
                 _genericService.Update(task);
