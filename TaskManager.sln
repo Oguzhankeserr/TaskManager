@@ -49,14 +49,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Business.LogSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Business.ChatService", "Business\TaskManager.Business.ChatService\TaskManager.Business.ChatService.csproj", "{1A89D7ED-65FE-474F-BB92-5652FD2ABED3}"
 	ProjectSection(ProjectDependencies) = postProject
-		{F0D0B0FF-88DB-40F4-BC67-44F7CFE746C1} = {F0D0B0FF-88DB-40F4-BC67-44F7CFE746C1}
+		{708E3237-7897-4CD2-8EF7-AD6E919F363F} = {708E3237-7897-4CD2-8EF7-AD6E919F363F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Business.Chat", "Business\TaskManager.Business.Chat\TaskManager.Business.Chat.csproj", "{708E3237-7897-4CD2-8EF7-AD6E919F363F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F0D0B0FF-88DB-40F4-BC67-44F7CFE746C1} = {F0D0B0FF-88DB-40F4-BC67-44F7CFE746C1}
-		{FDD90613-9883-4916-95EC-FD03C8156B82} = {FDD90613-9883-4916-95EC-FD03C8156B82}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Business.Chat", "Business\TaskManager.Business.Chat\TaskManager.Business.Chat.csproj", "{708E3237-7897-4CD2-8EF7-AD6E919F363F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
