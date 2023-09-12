@@ -10,6 +10,7 @@
 	  <PackageReference Include="Dapper" Version="2.0.143" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.17.0" />
     <PackageReference Include="EFCore.NamingConventions" Version="7.0.2" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.8">
@@ -26,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CommonModels\TaskManager.CommonModels\TaskManager.CommonModels.csproj" />
+    <ProjectReference Include="..\TaskManager.Business.ChatService\TaskManager.Business.ChatService.csproj" />
     <ProjectReference Include="..\TaskManager.Business.Domain\TaskManager.Business.Domain.csproj" />
     <ProjectReference Include="..\TaskManager.Business.LogService\TaskManager.Business.LogService.csproj" />
   </ItemGroup>

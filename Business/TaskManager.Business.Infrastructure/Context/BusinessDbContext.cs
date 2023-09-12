@@ -22,8 +22,9 @@ namespace TaskManager.Business.Infrastructure.Context
         public DbSet<ProjectFile> ProjectFiles { get; set; }
         public DbSet<UserFile> UserFiles { get; set; }
         public DbSet<Comments> Comments { get; set; }
+		//public DbSet<Domain.Entities.Chat> Logs { get; set; }
 
-        public List<T> ExecuteQuery<T>(string querty, object param = null)
+		public List<T> ExecuteQuery<T>(string querty, object param = null)
         {
             return this.Database.GetDbConnection().QueryAsync<T>(querty, param).Result.ToList();
         }

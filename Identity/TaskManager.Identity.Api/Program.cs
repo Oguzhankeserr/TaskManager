@@ -12,7 +12,7 @@ using TaskManager.Identity.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ;
 using TaskManager.Identity.Application.Features.Token.Commands;
-
+using AutoMapper;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -21,6 +21,14 @@ builder.Services.AddControllers();
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices();
+var mapperConfig = new MapperConfiguration(mc =>
+{
+	mc.AddProfile(new UserProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -43,6 +51,8 @@ builder.Services.AddAuthentication(x =>
     });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
 
 
 //builder.Services.AddPersistenceServices(builder.Configuration);
