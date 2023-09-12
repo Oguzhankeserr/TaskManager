@@ -27,8 +27,9 @@ namespace TaskManager.Business.Infrastructure
         {
             services.AddDbContext<BusinessDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("TaskManagerBusinessConnection")).UseLowerCaseNamingConvention();
-            });
+                options.UseNpgsql(configuration.GetConnectionString("TaskManagerBusinessConnection"))
+                       .UseLowerCaseNamingConvention();
+            }, ServiceLifetime.Scoped);
 
 
             services.AddDbContext<LogDbContext>(options =>

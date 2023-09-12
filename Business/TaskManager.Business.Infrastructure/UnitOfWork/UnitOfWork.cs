@@ -29,7 +29,7 @@ namespace TaskManager.Business.Infrastructure.UnitOfWork
             _mediator = mediator;
         }
 
-        public void Commit() 
+        public void Commit()
             => _businessDbContext.SaveChanges();
 
         public async Task CommitAsync()
@@ -39,7 +39,6 @@ namespace TaskManager.Business.Infrastructure.UnitOfWork
             foreach (var entity in updatedEntities)
             {
                 var idProperty = entity.OriginalValues.Properties.Where(x => x.Name == "Id").FirstOrDefault();
-               
 
                 foreach (var property in entity.OriginalValues.Properties)
                 {
@@ -48,13 +47,11 @@ namespace TaskManager.Business.Infrastructure.UnitOfWork
 
                     var originalValue = entity.OriginalValues[property]?.ToString();
                     var updatedValue = entity.CurrentValues[property]?.ToString();
+
                     if (originalValue != updatedValue)
                     {
-                       
-                        //var entityType = _businessDbContext.Model.FindEntityType(entity.GetType());
-                        //var tableName = entityType.GetTableName();
                         try
-                        { 
+                        {
                             AddLogCommand log = new AddLogCommand();
                             log.OldValue = originalValue;
                             log.NewValue = updatedValue;
@@ -76,7 +73,7 @@ namespace TaskManager.Business.Infrastructure.UnitOfWork
                 }
 
             }
-                await _businessDbContext.SaveChangesAsync();
+             _businessDbContext.SaveChangesAsync();
         }
 
         public void Rollback() //Doğru bir kullanım olup olmadığına daha sonra bakacağım

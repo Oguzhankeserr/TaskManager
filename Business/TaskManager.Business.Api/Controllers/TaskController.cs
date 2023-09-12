@@ -7,6 +7,7 @@ using System.Security.Claims;
 using TaskManager.Business.Application.Features;
 using TaskManager.Business.Application.Features.Task;
 using TaskManager.Business.Application.Features.Task.Commands;
+using TaskManager.Business.Application.Features.Task.Queries;
 using TaskManager.Business.Application.Features.Task.Query;
 using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Domain.Entities;
@@ -43,10 +44,10 @@ namespace TaskManager.Business.Api.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResponse<List<TaskUserDto>>> GetProjectTasks()
+        public async Task<ActionResponse<List<TaskUserDto>>> GetUsersProjectsTasks()
         {
             string userId = User.FindFirstValue("UserId");
-            return await _mediator.Send(new GetTasksQueryRequest { UserId = userId});
+            return await _mediator.Send(new GetUsersProjectsTasksRequest{ UserId = userId});
         }
 
         [HttpPost]
@@ -73,24 +74,16 @@ namespace TaskManager.Business.Api.Controllers
             return await _mediator.Send(deleteTaskRequest);
         }
 
-        [HttpPost]
-        public async Task<ActionResponse<List<TaskUserDto>>> GetAllTaskForUser(GetAllTaskForUserCommandRequest getAllTaskForUserRequest)
-        {
-            return await _mediator.Send(getAllTaskForUserRequest);
-        }
-
         [HttpGet]
-        public async Task<ActionResponse<List<TaskDto>>> UnplannedTask([FromQuery]GetUnplannedTasksRequest unplannedTaskRequest)
+        public async Task<ActionResponse<List<TaskDto>>> GetAllProjectTaskForUser([FromQuery] GetUserProjectTaskQuery query)
         {
-            return await _mediator.Send(unplannedTaskRequest);
+            //return await _mediator.Send(new GetUserProjectTaskQuery { UserId = userId, ProjectId = projectId });
+            return await _mediator.Send(query);
+
+            //yeni request 
         }
 
-        [HttpGet]
-        public async Task<ActionResponse<List<TaskDto>>> UnassignedTask([FromQuery] GetUnassignedTasksRequest unassignedTaskRequest)
-        {
-            return await _mediator.Send(unassignedTaskRequest);
-        }
-
+      
 
 
     }

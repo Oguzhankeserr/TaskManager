@@ -78,6 +78,20 @@ namespace TaskManager.Business.Application
             }
         }
 
+        public async void UpdateRangeList(List<T> entities)
+        {
+            try
+            {
+                _repository.UpdateRangeList(entities);
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
+        }
+
         public async void Remove(T entity)
         {
             try
