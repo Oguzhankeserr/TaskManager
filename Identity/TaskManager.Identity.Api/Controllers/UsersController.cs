@@ -78,8 +78,21 @@ namespace TaskManager.Identity.Api.Controllers
         public async Task<IActionResult> SendsEmail(SendsEmailCommandRequest sendsEmailCommandRequest)
         {
             return await _mediator.Send(sendsEmailCommandRequest);
-
         }
+
+
+        [HttpPost]
+        public async Task<ActionResponse<UserDto>> UpdateUser(UpdateUserRequest request)
+        {
+            return await _mediator.Send(request);
+        }
+
+        [HttpPost]
+        public async Task<ActionResponse<UserDto>> DeleteUser(DeleteUserRequest request)
+        {
+            return await _mediator.Send(request);
+        }
+
 
         [HttpGet]
         public async Task<ActionResponse<List<UserDto>>> GetAllUsers()
@@ -89,7 +102,7 @@ namespace TaskManager.Identity.Api.Controllers
 
             try
             {
-                string userQuery = @"SELECT u.Id, u.Name, u.Surname, u.UserName, u.Email, ur.RoleId AS Role
+                string userQuery = @"SELECT u.Id, u.Name, u.Surname, u.UserName, u.Email, u.Status, ur.RoleId AS Role
                     FROM aspnetusers u
                     JOIN  ""AspNetUserRoles"" ur ON u.Id = ur.UserId";
 
@@ -108,11 +121,8 @@ namespace TaskManager.Identity.Api.Controllers
            
             return response;
 
-
-
         }
 
-		
 		
 
 	}

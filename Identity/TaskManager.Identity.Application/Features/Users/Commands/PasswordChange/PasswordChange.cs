@@ -43,7 +43,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.PasswordChang
 					var userId = userIdClaim.Value;
 					var user = await _userManager.FindByIdAsync(userId);
 
-					if (user != null)
+					if (user != null && user.Status == true)
 					{
 						var result = await _userManager.RemovePasswordAsync(user); // Remove the existing password
 						if (result.Succeeded)

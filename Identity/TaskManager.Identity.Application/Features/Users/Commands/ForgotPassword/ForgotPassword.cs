@@ -41,7 +41,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.ForgotPasswor
 					var email = request.email;
 					var user = await _userManager.FindByEmailAsync(email);
 
-					if (user != null)
+					if (user != null && user.Status == true)
 					{
 						await _forgotPasswordService.SendChangePasswordEmail(user.Email, user.Id);
 					return new OkResult();

@@ -55,6 +55,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
                     Name = registerRequest.Name,
                     Surname = registerRequest.Surname,
                     Email = registerRequest.Email,
+                    Status = true
                 };
                 var password = GeneratePassword(3, 3, 3);
 

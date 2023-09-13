@@ -14,6 +14,9 @@ using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Numerics;
 using System.Threading.Channels;
+using TaskManager.CommonModels;
+using TaskManager.Identity.Application.Features.Users.Commands.GetUser;
+using TaskManager.Identity.Domain.Dtos;
 
 namespace TaskManager.Identity.Application
 {
@@ -26,8 +29,9 @@ namespace TaskManager.Identity.Application
 			services.AddHostedService<EmailConsumerService>(); // AddHostedService :  It is used to register a background service 
 			services.AddScoped<ForgotPasswordService>();// AddHosted Yapınca çalışmıyor. AddScoped doğrusu mu ?
 			services.AddScoped<SendsEmailService>();
-		}
+
+        }
 
 
-	}
+    }
 }

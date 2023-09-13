@@ -48,6 +48,12 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.LoginUser
                 return response;
             }
 
+            if (!user.Status)
+            {
+                response.Message = "Your account is inactive. Please contact with your project leader.";
+                return response;
+            }
+
             SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (result.Succeeded)

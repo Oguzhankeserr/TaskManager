@@ -67,6 +67,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser.Commands
                 }
                 _taskGenericService.UpdateRangeList(tasks);
                 response.IsSuccessful = true;
+                Thread.Sleep(1000);
 
             }
             catch (Exception ex)
@@ -75,7 +76,7 @@ namespace TaskManager.Business.Application.Features.ProjectUser.Commands
                 response.Message = ex.Message;
             }
 
-            return response;
+            return  response;
 
         }
     }

@@ -16,6 +16,7 @@ namespace TaskManager.Identity.Domain.Dtos
         public string Role { get; set; }
         public string? Password { get; set; }
         public bool IsConnected { get; set; }
+        public bool Status { get; set; }
     }
 }
 
