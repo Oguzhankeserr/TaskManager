@@ -43,8 +43,6 @@ namespace TaskManager.Business.LogService.Application.Commands
                     ActionDate = request.ActionDate,
                     UserId = request.UserId,
                     ProjectId = request.ProjectId
-
-                    
                 };
 
                 _logDbContext.Logs.Add(log);

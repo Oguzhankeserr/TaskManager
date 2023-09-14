@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Business.Domain.Dtos;
 using TaskManager.Business.Log.Dto;
 using TaskManager.Business.LogService.Application.Queries;
 using TaskManager.CommonModels;
@@ -29,17 +30,19 @@ namespace TaskManager.Business.Api.Controllers
             ActionResponse<List<LogDto>> response = await _mediator.Send(parameters);
             return response;
         }
-
         [HttpGet]
-        public async Task<ActionResponse<List<LogUserDto>>> GetUserLogs([FromQuery] List<int> ProjectIds, [FromQuery] string UserId)
-         {
+        public async Task<ActionResponse<PagedResult<LogUserDto>>> GetUserLogs([FromQuery] List<int> ProjectIds, [FromQuery] string UserId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+        {
             var parameters = new GetUserLogQuery
             {
                 ProjectIds = ProjectIds.ToList(),
-                UserId = UserId
+                UserId = UserId,
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
-            ActionResponse<List<LogUserDto>> response = await _mediator.Send(parameters);
+            ActionResponse<PagedResult<LogUserDto>> response = await _mediator.Send(parameters);
             return response;
         }
+
     }
 }
