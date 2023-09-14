@@ -7,6 +7,7 @@ using TaskManager.Business.Infrastructure.Context;
 using TaskManager.CommonModels;
 using System.Net.Http.Headers;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using TaskManager.Business.Domain.Dtos;
 
 namespace TaskManager.Business.Api.Controllers
 {
@@ -90,7 +91,7 @@ namespace TaskManager.Business.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<List<string>> GetFileForProjectUsers(GetFileForProjectUsersRequest getFileForProjectUsers)
+        public async Task<List<FileUserDto>> GetFileForProjectUsers(GetFileForProjectUsersRequest getFileForProjectUsers)
         {
             return await _mediator.Send(getFileForProjectUsers);
 

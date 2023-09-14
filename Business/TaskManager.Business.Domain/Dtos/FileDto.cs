@@ -12,4 +12,10 @@ namespace TaskManager.Business.Domain.Dtos
         public string path { get; set; }
         public string userId { get; set; }
     }
+
+    public class FileUserDto
+    {
+        public string path { get; set; }
+        public string userId { get; set; }
+    }
 }
