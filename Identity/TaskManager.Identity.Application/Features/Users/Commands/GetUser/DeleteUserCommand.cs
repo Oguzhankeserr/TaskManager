@@ -37,7 +37,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.GetUser
             { 
                 user.Status = false;
                 var userRoles = await _userManager.GetRolesAsync(user);
-                await _userManager.RemoveFromRolesAsync(user, userRoles);
+               // await _userManager.RemoveFromRolesAsync(user, userRoles);
                 response.IsSuccessful = true;
                 return response;
             }

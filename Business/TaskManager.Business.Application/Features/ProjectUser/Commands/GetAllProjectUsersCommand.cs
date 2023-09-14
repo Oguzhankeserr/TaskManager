@@ -32,11 +32,13 @@ namespace TaskManager.Business.Application.Features.ProjectUser.Commands
             List<Domain.Entities.ProjectUser> users = _businessDbContext.ProjectUsers.Where(p => p.ProjectId == getAllRequest.Id && p.Status == true).ToList();
             if (users != null)
             {
+                ;
                 List<UserDto> userList = new();
                 foreach (var user in users)
                 {
                     UserDto userDto = new();
                     userDto.Id = user.UserId;
+                    userDto.Role = user.ProjectRole;
                     userList.Add(userDto);
 
                 }

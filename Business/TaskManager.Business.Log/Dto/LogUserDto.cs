@@ -9,6 +9,7 @@ namespace TaskManager.Business.Log.Dto
     public class LogUserDto
     {
         public string ProjectId { get; set; }
+        public string TableName { get; set; }
         public string FieldName { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }

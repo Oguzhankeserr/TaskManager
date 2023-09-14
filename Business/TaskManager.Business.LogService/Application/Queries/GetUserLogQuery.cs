@@ -33,7 +33,7 @@ namespace TaskManager.Business.LogService.Application.Queries
             
             try
             {
-                string query = "Select fieldname, oldvalue, newvalue, actiondate, projectid FROM logs WHERE userid = @userId AND logs.projectId in (";
+                string query = "Select tablename, fieldname, oldvalue, newvalue, actiondate, projectid FROM logs WHERE userid = @userId AND logs.projectId in (";
                 foreach(var projectId in request.ProjectIds)
                 {
                     query += "'" + projectId + "',";
