@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.Metrics;
 using TaskManager.CommonModels;
 using TaskManager.Identity.Application.Features.Users.Commands.RabbitMQ;
 using TaskManager.Identity.Domain.Dtos;
@@ -27,7 +28,7 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
         readonly RoleManager<AppRole> _roleManager;
 		private readonly IRabbitMQService _rabbitMQService;
 		private readonly IServiceProvider _serviceProvider; // Inject IServiceProvider here
-
+        
 
 		public RegisterUserCommand(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IRabbitMQService rabbitMQService, IServiceProvider serviceProvider)
         {
@@ -46,44 +47,87 @@ namespace TaskManager.Identity.Application.Features.Users.Commands.RegisterUser
 
             var roleExists = await _roleManager.RoleExistsAsync(registerRequest.Role);
 
-            if (roleExists)
+            var existEmail = await _userManager.FindByEmailAsync(registerRequest.Email);
+
+
+			
+
+			if (roleExists)
             {
-                var user = new AppUser
+				var baseUserName = registerRequest.UserName;
+				var userName = baseUserName;
+				var counter = 1;
+
+				if (existEmail == null)
+
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    UserName = registerRequest.UserName,
-                    Name = registerRequest.Name,
-                    Surname = registerRequest.Surname,
-                    Email = registerRequest.Email,
-                    Status = true
-                };
-                var password = GeneratePassword(3, 3, 3);
+					while (true)
+					{
+						var existUserName = await _userManager.FindByNameAsync(registerRequest.UserName);
 
-				IdentityResult result = await _userManager.CreateAsync(user, password);
-                
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, registerRequest.Role);
-                    userDto.Username = registerRequest.UserName;
-                    userDto.Id = user.Id;
-                    userDto.Surname = user.Surname;
-                    userDto.Name = registerRequest.Name;
-                    userDto.Role = registerRequest.Role;
-                    userDto.Email = registerRequest.Email;
-                    userDto.Password = password;
-                    response.Data = userDto;
-                    response.IsSuccessful = true;
+						var theUser = await _userManager.FindByNameAsync(userName);
+
+						if (existUserName == null || theUser == null)
+						{
+							var user = new AppUser
+							{
+								Id = Guid.NewGuid().ToString(),
+								UserName = userName,
+								Name = registerRequest.Name,
+								Surname = registerRequest.Surname,
+								Email = registerRequest.Email,
+								Status = true
+							};
+
+							var password = GeneratePassword(3, 3, 3);
+							IdentityResult result = await _userManager.CreateAsync(user, password);
+
+							if (result.Succeeded)
+							{
+								await _userManager.AddToRoleAsync(user, registerRequest.Role);
+								userDto.Username = userName;
+								userDto.Id = user.Id;
+								userDto.Surname = user.Surname;
+								userDto.Name = registerRequest.Name;
+								userDto.Role = registerRequest.Role;
+								userDto.Email = registerRequest.Email;
+								userDto.Password = password;
+								response.Data = userDto;
+								response.IsSuccessful = true;
+
+								await _rabbitMQService.PublishUserRegistrationToRabbitMQ(userDto);
+								
+								response.Data = userDto;
+								counter = 1;
+							}
+							else
+							{
+								foreach (var error in result.Errors)
+									response.Message += $"{error.Code} - {error.Description}\n";
+							}
+
+							break;
+						}
+						else
+						{
+							counter++;
+							userName = $"{baseUserName}{counter}";
+
+							response.Message = "User created but the username has changed";
+						}
+					}
 
 
-					await _rabbitMQService.PublishUserRegistrationToRabbitMQ(userDto);
 
 				}
-				else
-                {
-                    foreach (var error in result.Errors)
-                        response.Message += $"{error.Code} - {error.Description}\n";
 
-                }
+				else
+				{
+					response.Message = "User Email already exist";
+				}
+
+
+				
             }
             else
             {
